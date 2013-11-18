@@ -5,7 +5,7 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 	<persistence-unit name="shopPU">
-	    <jta-data-source>java:jboss/datasources/shop3DS</jta-data-source>
+	    <jta-data-source>java:jboss/datasources/shopDS</jta-data-source>
 				
 		<!-- Caching von Objekten mit @Cacheable -->
 		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
