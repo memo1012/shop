@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.jboss.logging.Logger;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-
+//
 
 @Entity
 @Table(indexes = @Index(columnList = "bezeichnung"))
