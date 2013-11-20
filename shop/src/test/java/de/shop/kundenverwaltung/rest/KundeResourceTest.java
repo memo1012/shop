@@ -416,7 +416,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		final String hausnr = NEUE_HAUSNR;
 
 		final Kunde kunde = new Kunde(nachname, vorname, email, seit);
-		kunde.setVorname(vorname);
 		kunde.setPassword(password);
 		kunde.setPasswordWdh(passwordWdh);
 		final Adresse adresse = new Adresse(plz, ort, strasse, hausnr);
@@ -442,12 +441,12 @@ public class KundeResourceTest extends AbstractResourceTest {
 		
 		ResteasyConstraintViolation violation =
 				                    filter(violations).with("message")
-                                                      .equalsTo("A lastname must have at least 2 and may only have up to 32 characters.")
+                                                      .equalsTo("Lastname must have at least 2 and may only have up to 32 characters.")
                                                       .get()
                                                       .iterator()
                                                       .next();
 		assertThat(violation.getValue()).isEqualTo(String.valueOf(nachname));
-		
+
 		violation = filter(violations).with("message")
                                       .equalsTo("A lastname must start with exactly one capital letter followed by at least one lower letter, and composed names with \"-\" are allowed.")
                                       .get()
@@ -456,12 +455,11 @@ public class KundeResourceTest extends AbstractResourceTest {
 		assertThat(violation.getValue()).isEqualTo(String.valueOf(nachname));
 
 		violation = filter(violations).with("message")
-				                      .equalsTo("The email address is invalid.")
+				                      .equalsTo("The email address is not valid.")
 				                      .get()
 				                      .iterator()
 				                      .next();
-		assertThat(violation.getValue()).isEqualTo(email);
-		
+		assertThat(violation.getValue()).isEqualTo(email); 
 		
 		violation = filter(violations).with("message")
                                       .equalsTo("Passwords are not equal.")
