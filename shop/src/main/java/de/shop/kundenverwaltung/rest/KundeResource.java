@@ -1,5 +1,5 @@
 package de.shop.kundenverwaltung.rest;
-
+//
 import static de.shop.util.Constants.ADD_LINK;
 import static de.shop.util.Constants.FIRST_LINK;
 import static de.shop.util.Constants.KEINE_ID;
