@@ -75,8 +75,8 @@ public class KundeResourceTest extends AbstractResourceTest {
 	
 	private static final Long KUNDE_ID_VORHANDEN_MIT_BESTELLUNGEN = Long.valueOf(101);
 	private static final Long KUNDE_ID_NICHT_VORHANDEN = Long.valueOf(1000);
-	private static final Long KUNDE_ID_UPDATE = Long.valueOf(120);
-	private static final Long KUNDE_ID_DELETE = Long.valueOf(122);
+	private static final Long KUNDE_ID_UPDATE = Long.valueOf(105);
+	private static final Long KUNDE_ID_DELETE = Long.valueOf(108);
 	private static final Long KUNDE_ID_DELETE_MIT_BESTELLUNGEN = Long.valueOf(101);
 	private static final Long KUNDE_ID_DELETE_FORBIDDEN = Long.valueOf(101);
 	private static final String NACHNAME_VORHANDEN = "Alpha";
@@ -408,7 +408,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		final String vorname = NEUER_VORNAME;
 		final String email = NEUE_EMAIL_INVALID;
 		final Date seit = NEU_SEIT;
-		final boolean agbAkzeptiert = false;
 		final String password = NEUES_PASSWORD;
 		final String passwordWdh = NEUES_PASSWORD + "x";
 		final String plz = NEUE_PLZ_FALSCH;
@@ -473,12 +472,6 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// violation.getValue() ruft toString() auf dem Objekt der Klasse Kunde auf
 		assertThat(violation.getValue()).contains(password).contains(passwordWdh);
 		
-		violation = filter(violations).with("message")
-                                      .equalsTo("The terms were not accepted.")
-                                      .get()
-                                      .iterator()
-                                      .next();
-		assertThat(violation.getValue()).isEqualTo(String.valueOf(agbAkzeptiert));
 		
 		
 		violation = filter(violations).with("message")
