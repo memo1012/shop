@@ -1,7 +1,10 @@
 package de.shop.artikelverwaltung.service;
 
+import static de.shop.util.Constants.MAX_AUTOCOMPLETE;
+
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,9 +19,11 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.google.common.base.Strings;
+
 import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
+import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.interceptor.Log;
 
 import javax.persistence.NoResultException;
@@ -134,7 +139,7 @@ public class ArtikelService implements Serializable {
 	 *            Die Bezeichnung der gesuchten Artikel suchen
 	 * @return Liste der gefundenen Artikel suchen
 	 */
-	public List<Artikel> findArtikelByBezeichnung(String bezeichnung) {
+	public Collection<Artikel> findArtikelByBezeichnung(String bezeichnung) {
 		if (Strings.isNullOrEmpty(bezeichnung)) {
 			return findVerfuegbareArtikel();
 		}
@@ -143,9 +148,16 @@ public class ArtikelService implements Serializable {
 				.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZ, Artikel.class)
 				.setParameter(Artikel.PARAM_BEZEICHNUNG,
 						"%" + bezeichnung + "%").getResultList();
-
 	}
-
+	
+	public List<String> findArtikelByPrefix(String bezeichnungPrefix) {
+		return em
+				.createNamedQuery(Artikel.FIND_BEZEICHNUNG_BY_PREFIX, String.class)
+				.setParameter(Artikel.PARAM_ARTIKEL_BEZEICHNUNG_PREFIX,
+						bezeichnungPrefix + '%').setMaxResults(MAX_AUTOCOMPLETE)
+				.getResultList();
+	}
+	
 	/**
 	 */
 	public Artikel updateArtikel(Artikel artikel) {

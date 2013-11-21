@@ -2,6 +2,7 @@ package de.shop.artikelverwaltung.web;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -77,7 +78,7 @@ public class ArtikelModel implements Serializable {
 
 	@Log
 	public String findArtikelByBezeichnung() {
-		final List<Artikel> artikel = as.findArtikelByBezeichnung(bezeichnung);
+		final Collection<Artikel> artikel = as.findArtikelByBezeichnung(bezeichnung);
 		flash.put(FLASH_ARTIKEL, artikel);
 
 		return JSF_LIST_ARTIKEL;

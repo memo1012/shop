@@ -1,6 +1,7 @@
 package de.shop.util;
 
 import static de.shop.util.Constants.REST_PATH;
+import de.shop.artikelverwaltung.rest.ArtikelResource;
 import de.shop.kundenverwaltung.rest.KundeResource;
 
 
@@ -32,6 +33,8 @@ public final class TestConstants {
 	public static final String BESTELLUNGEN_ID_KUNDE_URI = BESTELLUNGEN_ID_URI + "/kunde";
 	
 	public static final String ARTIKEL_URI = BASE_URI + "/artikel";
+	public static final String ARTIKEL_ID_URI = ARTIKEL_URI + "/{" + ArtikelResource.PARAM_ID + "}";
+	public static final String ARTIKEL_BEZEICHNUNG_URI = ARTIKEL_URI + "/bezeichnung/{" + ArtikelResource.PARAM_BEZEICHNUNG + "}";
 	
 	// Username und Password
 	public static final String USERNAME = "102";

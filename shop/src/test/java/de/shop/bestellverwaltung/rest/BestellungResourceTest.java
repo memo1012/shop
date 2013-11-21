@@ -47,6 +47,12 @@ public class BestellungResourceTest extends AbstractResourceTest {
 	private static final Long ARTIKEL_ID_VORHANDEN_2 = Long.valueOf(301);
 	
 	@Test
+	@InSequence(0)
+	public void validate() {
+		assertThat(true).isTrue();
+	}
+	
+	@Test
 	@InSequence(1)
 	public void findBestellungById() {
 		LOGGER.finer("BEGINN");
