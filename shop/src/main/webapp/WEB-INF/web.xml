@@ -124,6 +124,9 @@
     <extension>ecss</extension>
     <mime-type>text/css</mime-type>
   </mime-mapping>
+  
+  <!--
+  
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Kunden erzeugen und modifizieren</web-resource-name>
@@ -139,6 +142,9 @@
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
+  
+  -->
+  
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Kunden loeschen</web-resource-name>

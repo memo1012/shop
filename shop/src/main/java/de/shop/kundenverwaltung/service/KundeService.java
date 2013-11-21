@@ -353,6 +353,8 @@ public class KundeService implements Serializable {
 	/**
 	 */
 	public Kunde createKunde(Kunde kunde) {
+		LOGGER.tracef("Anfang CreateKunde im KundeService:");
+		
 		if (kunde == null) {
 			return kunde;
 		}

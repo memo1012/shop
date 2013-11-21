@@ -43,6 +43,9 @@ import javax.ws.rs.core.UriInfo;
 
 import org.jboss.logging.Logger;
 
+import com.google.common.base.Strings;
+
+import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.rest.BestellungResource;
 import de.shop.bestellverwaltung.service.BestellungService;
@@ -156,7 +159,7 @@ public class KundeResource {
 				kunde.getId(), uriInfo);
 	}
 
-	public Link[] getTransitionalLinks(Kunde kunde, UriInfo uriInfo) {
+	/*public Link[] getTransitionalLinks(Kunde kunde, UriInfo uriInfo) {
 		final Link self = Link.fromUri(getUriKunde(kunde, uriInfo))
 				.rel(SELF_LINK).build();
 
@@ -180,6 +183,35 @@ public class KundeResource {
 
 		return new Link[] { self, list, add, update, remove };
 	}
+	*/
+	
+	
+	public Link[] getTransitionalLinks(Kunde kunde, UriInfo uriInfo) {
+		final Link self = Link.fromUri(getUriKunde(kunde, uriInfo))
+                              .rel(SELF_LINK)
+                              .build();
+
+		return new Link[] { self };
+	}
+	
+	
+	public Link[] getTransitionalLinksKunde(List<? extends Kunde> kunde,
+			UriInfo uriInfo) {
+		if (kunde == null || kunde.isEmpty()) {
+			return null;
+		}
+
+		final Link first = Link.fromUri(getUriKunde(kunde.get(0), uriInfo))
+				.rel(FIRST_LINK).build();
+		final int lastPos = kunde.size() - 1;
+		final Link last = Link
+				.fromUri(getUriKunde(kunde.get(lastPos), uriInfo))
+				.rel(LAST_LINK).build();
+
+		return new Link[] { first, last };
+	}
+	
+	
 
 	/**
 	 * Mit der URL /kunden werden alle Kunden ermittelt oder mit
@@ -349,22 +381,58 @@ public class KundeResource {
 	@POST
 	@Consumes({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
 	@Produces
-	public Response createKunde(@Valid Kunde kunde) {
+	@Transactional
+	public Response createKunde(Kunde kunde) {
 		// final Locale locale = localeHelper.getLocale(headers);
 
+		LOGGER.tracef("Anfang Post Kunde: %s", kunde);
+		
 		kunde.setId(KEINE_ID);
+		final Adresse adresse = kunde.getAdresse();
+		if (adresse != null) {
+			adresse.setKunde(kunde);
+		}
+		if (Strings.isNullOrEmpty(kunde.getPasswordWdh())) {
+			// ein IT-System als REST-Client muss das Password ggf. nur 1x uebertragen
+			kunde.setPasswordWdh(kunde.getPassword());
+		}
+		
+		kunde = ks.createKunde(kunde);
+		LOGGER.trace(kunde);
+		
+		return Response.created(getUriKunde(kunde, uriInfo)).build();
+		
+		
+		/*kunde.setId(KEINE_ID);
+		kunde.setBestellungenUri(null);
+		
 		kunde.setPasswordWdh(kunde.getPassword());
 
 		final Adresse adresse = kunde.getAdresse();
 		if (adresse != null) {
 			adresse.setKunde(kunde);
 		}
-		kunde.setBestellungenUri(null);
+		
 
 		kunde = ks.createKunde(kunde);
 		LOGGER.tracef("Kunde: %s", kunde);
 
 		return Response.created(getUriKunde(kunde, uriInfo)).build();
+		*/
+		/*
+		 LOGGER.trace("In Artikel Post");
+		LOGGER.tracef("Prob Artikel: %s", artikel);
+		
+		artikel.setId(KEINE_ID);
+		//artikel.setBezeichnung(artikel.getBezeichnung());
+		
+		//kunde = (Privatkunde) ks.createKunde(kunde, locale);
+		artikel = as.createArtikel(artikel);
+		LOGGER.tracef("Artikel: %s", artikel);
+		
+		return Response.created(getUriArtikel(artikel, uriInfo)).build(); 
+		 
+		 */
 	}
 
 	/**

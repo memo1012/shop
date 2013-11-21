@@ -60,13 +60,13 @@ public class Adresse implements Serializable {
 	@Column(length = ORT_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{kundenverwaltung.adresse.ort.notNull}")
 	@Size(min = ORT_LENGTH_MIN, max = ORT_LENGTH_MAX, message = "{kundenverwaltung.adresse.ort.length}")
-	@Pattern(regexp = NAME_PATTERN, message = "{kundenverwaltung.kunde.ort.pattern}")
+	//@Pattern(regexp = NAME_PATTERN, message = "{kundenverwaltung.kunde.ort.pattern}")
 	private String ort;
 
 	@Column(length = STRASSE_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNull}")
 	@Size(min = STRASSE_LENGTH_MIN, max = STRASSE_LENGTH_MAX, message = "{kundenverwaltung.adresse.strasse.length}")
-	@Pattern(regexp = NAME_PATTERN, message = "{kundenverwaltung.kunde.strasse.pattern}")
+	//@Pattern(regexp = NAME_PATTERN, message = "{kundenverwaltung.kunde.strasse.pattern}")
 	private String strasse;
 	
 	@Version
