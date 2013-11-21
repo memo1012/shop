@@ -22,12 +22,14 @@ import javax.persistence.PostUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Version;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.logging.Logger;
+
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 //

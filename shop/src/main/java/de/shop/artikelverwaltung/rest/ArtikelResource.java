@@ -48,6 +48,9 @@ import de.shop.util.rest.UriHelper;
 public class ArtikelResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
+	// public fuer Testklassen
+	public static final String PARAM_ID = "artikelId";
+	
     @Context
     private UriInfo uriInfo;
 	
