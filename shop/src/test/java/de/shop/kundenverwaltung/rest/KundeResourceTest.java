@@ -262,7 +262,8 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// Then
 		assertThat(response.getStatus()).isEqualTo(HTTP_NOT_FOUND);
 		final String fehlermeldung = response.readEntity(String.class);
-		assertThat(fehlermeldung).isEqualTo("Kein Kunde gefunden mit Nachname \"" + nachname);
+		assertThat(fehlermeldung).isEqualTo("Kein Kunde gefunden mit Nachname "
+				+ nachname);
 
 		LOGGER.finer("ENDE");
 	}

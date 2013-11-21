@@ -17,6 +17,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.fail;
 import de.shop.artikelverwaltung.domain.Artikel;
+import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.AbstractResourceTest;
 
 import java.lang.invoke.MethodHandles;
@@ -26,9 +27,11 @@ import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 
@@ -37,7 +40,7 @@ import org.junit.Test;
 
 
 
-
+@RunWith(Arquillian.class)
 public class ArtikelResourceTest extends AbstractResourceTest{
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 	
@@ -53,21 +56,29 @@ public class ArtikelResourceTest extends AbstractResourceTest{
 	public void validate() {
 		assertThat(true).isTrue();
 	}
-	
-	@Ignore
+		
 	@Test
-	@InSequence(2)
-	public void beispielIgnore() {
-		assertThat(true).isFalse();
+	@InSequence(10)
+	public void findArtikelById() {
+		LOGGER.finer("BEGINN");
+		
+		// Given
+		final Long artikelId = ARTIKEL_ID;
+		
+		final Response response = getHttpsClient().target(ARTIKEL_URI)
+                								.request()
+                								.accept(APPLICATION_JSON)
+                								.get();
+
+    	// Then
+		assertThat(response.getStatus())
+		.isEqualTo(HTTP_OK);
+		final  Artikel artikel= response.readEntity(Artikel.class);
+		assertThat(artikel.getId()).isEqualTo(artikelId);
+
+		
+		LOGGER.finer("ENDE");
 	}
-	
-	@Ignore
-	@Test
-	@InSequence(3)
-	public void beispielFailMitIgnore() {
-		fail("Beispiel fuer fail()");
-	}
-	
 	
 	@Test
 	@InSequence(10)
@@ -78,7 +89,6 @@ public class ArtikelResourceTest extends AbstractResourceTest{
 		final Long artikelId = ARTIKEL_ID_NICHT_VORHANDEN;
 		
 		final Response response = getHttpsClient().target(ARTIKEL_URI)
-                								.queryParam(ArtikelResource.PARAM_ID,artikelId)
                 								.request()
                 								.accept(APPLICATION_JSON)
                 								.get();
@@ -90,7 +100,6 @@ public class ArtikelResourceTest extends AbstractResourceTest{
 		
 		LOGGER.finer("ENDE");
 	}
-	
 	
 	
 
