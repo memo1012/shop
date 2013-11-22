@@ -7,15 +7,18 @@ import static javax.ws.rs.core.MediaType.TEXT_XML;
 import static de.shop.util.Constants.KEINE_ID;
 
 
+
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.Collection;
+
 
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -145,7 +148,7 @@ public class ArtikelResource {
 	@Consumes({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
 	@Produces
 	@Transactional
-	public Response createArtikel(Artikel artikel) {
+	public Response createArtikel(@Valid Artikel artikel) {
 		LOGGER.trace("In Artikel Post");
 		LOGGER.tracef("Prob Artikel: %s", artikel);
 
