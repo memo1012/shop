@@ -43,12 +43,13 @@ import de.shop.bestellverwaltung.service.BestellungService;
 import de.shop.bestellverwaltung.service.BestellungService.FetchType;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.rest.KundeResource;
+import de.shop.util.Transactional;
 import de.shop.util.interceptor.Log;
 import de.shop.util.rest.NotFoundException;
 import de.shop.util.rest.UriHelper;
 
 
-@Path("/bestellungen")
+@Path("/bestellungen/")
 @Produces({ APPLICATION_JSON, APPLICATION_XML + ";qs=0.75", TEXT_XML + ";qs=0.5" })
 @Consumes
 @Log
@@ -204,7 +205,11 @@ public class BestellungResource {
 	@POST
 	@Consumes({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
 	@Produces
+	@Transactional
 	public Response createBestellung(@Valid Bestellung bestellung) {
+		
+		LOGGER.tracef("Anfang Post Bestellung: %s", bestellung);
+		
 		if (bestellung == null) {
 			return null;
 		}
@@ -256,6 +261,9 @@ public class BestellungResource {
 			throw new NotFoundException(NOT_FOUND_ID_ARTIKEL, artikelIds.get(0));
 		}
 		
+
+
+		
 		// Bestellpositionen haben URIs fuer persistente Artikel.
 		// Diese persistenten Artikel wurden in einem DB-Zugriff ermittelt (s.o.)
 		// Fuer jede Bestellposition wird der Artikel passend zur Artikel-URL bzw. Artikel-ID gesetzt.
@@ -280,12 +288,16 @@ public class BestellungResource {
 		}
 		bestellung.setBestellpositionen(neueBestellpositionen);
 		
+		LOGGER.tracef("Mitte Post Bestellung: %s", bestellung);
+		
 		// Kunde mit den vorhandenen ("alten") Bestellungen ermitteln
 		bestellung = bs.createBestellung(bestellung, username);
 		if (bestellung == null) {
 			throw new NotFoundException(NOT_FOUND_USERNAME, username);
 		}
 		LOGGER.trace(bestellung);
+		
+		LOGGER.tracef("Ende Post Bestellung: %s", bestellung);
 
 		return Response.created(getUriBestellung(bestellung, uriInfo))
 				       .build();
