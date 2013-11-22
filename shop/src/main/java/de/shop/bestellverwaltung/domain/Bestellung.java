@@ -27,6 +27,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -55,6 +56,7 @@ import de.shop.kundenverwaltung.domain.Kunde;
 
 @Entity
 @Table(name = "bestellung", indexes = { @Index(columnList = "kunde_fk")})
+@Inheritance
 @NamedQueries({
 		@NamedQuery(name = Bestellung.FIND_BESTELLUNGEN_BY_KUNDEID, query = "SELECT b"
 				+ " FROM   Bestellung b"

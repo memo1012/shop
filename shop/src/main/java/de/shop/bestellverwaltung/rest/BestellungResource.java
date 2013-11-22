@@ -29,6 +29,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Link;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import javax.transaction.Transactional;
 
 import java.security.Principal;
 
@@ -43,7 +44,7 @@ import de.shop.bestellverwaltung.service.BestellungService;
 import de.shop.bestellverwaltung.service.BestellungService.FetchType;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.rest.KundeResource;
-import de.shop.util.Transactional;
+//import de.shop.util.Transactional;
 import de.shop.util.interceptor.Log;
 import de.shop.util.rest.NotFoundException;
 import de.shop.util.rest.UriHelper;
@@ -204,7 +205,7 @@ public class BestellungResource {
 	 */
 	@POST
 	@Consumes({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
-	@Produces
+	//@Produces
 	@Transactional
 	public Response createBestellung(@Valid Bestellung bestellung) {
 		
@@ -302,4 +303,6 @@ public class BestellungResource {
 		return Response.created(getUriBestellung(bestellung, uriInfo))
 				       .build();
 	}
+	
+	
 }
