@@ -23,7 +23,6 @@ import com.google.common.base.Strings;
 import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
-import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.interceptor.Log;
 
 import javax.persistence.NoResultException;

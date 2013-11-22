@@ -18,8 +18,6 @@ import java.lang.invoke.MethodHandles;
 
 import javax.ws.rs.core.Response;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.jboss.arquillian.junit.Arquillian;

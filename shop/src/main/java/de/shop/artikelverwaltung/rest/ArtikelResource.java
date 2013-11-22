@@ -4,15 +4,13 @@ import static de.shop.util.Constants.SELF_LINK;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import static javax.ws.rs.core.MediaType.TEXT_XML;
-import static de.shop.util.Constants.FIRST_LINK;
 import static de.shop.util.Constants.KEINE_ID;
 
-import static de.shop.util.Constants.LAST_LINK;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.Collection;
-import java.util.List;
+
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -34,7 +32,6 @@ import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
-import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.interceptor.Log;
 import de.shop.util.rest.NotFoundException;
 import de.shop.util.rest.UriHelper;
@@ -92,21 +89,6 @@ public class ArtikelResource {
 		return new Link[] { self };
 	}
 
-	private Link[] getTransitionalLinksArtikel(List<? extends Artikel> artikel,
-			UriInfo uriInfo) {
-		if (artikel == null || artikel.isEmpty()) {
-			return null;
-		}
-
-		final Link first = Link.fromUri(getUriArtikel(artikel.get(0), uriInfo))
-				.rel(FIRST_LINK).build();
-		final int lastPos = artikel.size() - 1;
-		final Link last = Link
-				.fromUri(getUriArtikel(artikel.get(lastPos), uriInfo))
-				.rel(LAST_LINK).build();
-
-		return new Link[] { first, last };
-	}
 
 	public URI getUriArtikel(Artikel artikel, UriInfo uriInfo) {
 		return uriHelper.getUri(ArtikelResource.class, "findArtikelById",
