@@ -49,8 +49,13 @@ public class Adresse implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(nullable = false, updatable = false)
-
 	private Long id = KEINE_ID;
+	/*
+	@Id
+	@GeneratedValue
+	@Column(nullable = false, updatable = false)
+	private Long id = KEINE_ID;
+	*/
 
 	@Column(length = PLZ_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{kundenverwaltung.adresse.plz.notNull}")

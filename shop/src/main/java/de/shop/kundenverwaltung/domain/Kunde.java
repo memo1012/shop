@@ -131,16 +131,35 @@ import de.shop.auth.domain.RolleType;
 				+ Kunde.PARAM_KUNDE_SEIT),
 		@NamedQuery(name = Kunde.FIND_KUNDEN, query = "SELECT k"
 				+ " FROM  Kunde k") })
-@NamedEntityGraphs({
+
+				//Alte Methode
+		/*
+		@NamedEntityGraphs({
 		@NamedEntityGraph(name = Kunde.GRAPH_BESTELLUNGEN, attributeNodes = @NamedAttributeNode("bestellungen")) })
 @ScriptAssert(lang = "javascript", script = "_this.password != null && !_this.password.equals(\"\")"
 		+ "&& _this.password.equals(_this.passwordWdh)", message = "{kundenverwaltung.kunde.password.notEqual}", groups = {
 		Default.class, PasswordGroup.class })
-// script = "(_this.password == null && _this.passwordWdh == null)"
-// + "|| (_this.password != null && _this.password.equals(_this.passwordWdh))",
-// message = "{kundenverwaltung.kunde.password.notEqual}", groups =
-// PasswordGroup.class)
+		*/
+		 
+
+		//Von Dem Skript
+//script = "(_this.password == null && _this.passwordWdh == null)"
+//+ "|| (_this.password != null && _this.password.equals(_this.passwordWdh))",
+//message = "{kundenverwaltung.kunde.password.notEqual}", groups =
+//PasswordGroup.class)
 //@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+
+
+		//Neue Probe Version
+
+	@NamedEntityGraphs({
+	@NamedEntityGraph(name = Kunde.GRAPH_BESTELLUNGEN, attributeNodes = @NamedAttributeNode("bestellungen")) })
+	@ScriptAssert(lang = "javascript", script = "(_this.password == null && _this.passwordWdh == null)"
+					+ "|| (_this.password != null && _this.password.equals(_this.passwordWdh))",
+					message = "{kundenverwaltung.kunde.password.notEqual}", groups = PasswordGroup.class)
+
+
+
 @XmlRootElement
 @Formatted
 public class Kunde implements Serializable, Cloneable {
@@ -148,21 +167,49 @@ public class Kunde implements Serializable, Cloneable {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles
 			.lookup().lookupClass().getName());
 	// Pattern mit UTF-8 (statt Latin-1 bzw. ISO-8859-1) Schreibweise fuer
-	// Umlaute:
-	private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]";
-	private static final String PREFIX_ADEL = "(o'|von|von der|von und zu|van)?";
+		// Umlaute:
+		
+		/*Pattern
+		 */
+		 private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]+";
+		 private static final String NACHNAME_PREFIX = "(o'|von|von der|von und zu|van)?";
+		
+		private static final String VORNAME_PATTERN = NAME_PATTERN;
+		public static final String NACHNAME_PATTERN = NACHNAME_PREFIX + NAME_PATTERN + "(-" + NAME_PATTERN + ")?"; 
+		 
+		 
+		
+		
+		/*
+		//private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]";
+		private static final String PREFIX_ADEL = "(o'|von|von der|von und zu|van)?";
+		
+		//Zusatz
+		
+		private static final String UPP_CASE = "[A-Z\u00C4\u00D6\u00DC]";
+		private static final String LOW_CASE = "[a-z\u00E4\u00F6\u00FC\u00DF]";
+		private static final String STRG_INPUT = UPP_CASE + LOW_CASE + "(-" + LOW_CASE + ")?";
+		private static final String NAME_PATTERN = STRG_INPUT ;
+		
+		
+		public static final String VORNAME_PATTERN =  NAME_PATTERN ;
+		//public static final String VORNAME_PATTERN =  NAME_PATTERN + "( " + NAME_PATTERN + ")?";
+		
+		//public static final String NACHNAME_PATTERN = PREFIX_ADEL + NAME_PATTERN + "(-" + NAME_PATTERN + ")?";
+		public static final String NACHNAME_PATTERN = PREFIX_ADEL + NAME_PATTERN;
+									//NACHNAME_PREFIX + NAME_PATTERN + "(-" + NAME_PATTERN + ")?";
+									  
+									 
+									 */
+		private static final int NACHNAME_LENGTH_MIN = 2;
+		private static final int NACHNAME_LENGTH_MAX = 32;
+		private static final int VORNAME_LENGTH_MAX = 32;
+		private static final int EMAIL_LENGTH_MAX = 128;
+		
+		private static final int PASSWORD_LENGTH_MAX = 256;
 
-	public static final String VORNAME_PATTERN =  NAME_PATTERN + "( " + NAME_PATTERN + ")?";
-	public static final String NACHNAME_PATTERN = PREFIX_ADEL + NAME_PATTERN + "(-" + NAME_PATTERN + ")?";
-	private static final int NACHNAME_LENGTH_MIN = 2;
-	private static final int NACHNAME_LENGTH_MAX = 32;
-	private static final int VORNAME_LENGTH_MAX = 32;
-	private static final int EMAIL_LENGTH_MAX = 128;
-	
-	private static final int PASSWORD_LENGTH_MAX = 256;
-
-	private static final String PREFIX = "Kunde.";
-	public static final String FIND_KUNDEN = PREFIX + "findKunden";
+		private static final String PREFIX = "Kunde.";
+		public static final String FIND_KUNDEN = PREFIX + "findKunden";
 	/*
 	 * public static final String FIND_KUNDEN_FETCH_BESTELLUNGEN = PREFIX +
 	 * "findKundenFetchBestellungen";
@@ -227,12 +274,12 @@ public class Kunde implements Serializable, Cloneable {
 	@Column(length = NACHNAME_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{kundenverwaltung.kunde.nachname.notNull}")
 	@Size(min = NACHNAME_LENGTH_MIN, max = NACHNAME_LENGTH_MAX, message = "{kundenverwaltung.kunde.nachname.length}")
-	//@Pattern(regexp = NACHNAME_PATTERN, message = "{kundenverwaltung.kunde.nachname.pattern}")
+	@Pattern(regexp = NACHNAME_PATTERN, message = "{kundenverwaltung.kunde.nachname.pattern}")
 	private String nachname = "";
 
 	@Column(length = VORNAME_LENGTH_MAX)
 	@Size(max = VORNAME_LENGTH_MAX, message = "{kundenverwaltung.kunde.vorname.length}")
-	//@Pattern(regexp = VORNAME_PATTERN, message = "{kundenverwaltung.kunde.vorname.pattern}")
+	@Pattern(regexp = VORNAME_PATTERN, message = "{kundenverwaltung.kunde.vorname.pattern}")
 	private String vorname = "";
 
 	@Column(name = "geschlecht_fk")
@@ -278,6 +325,7 @@ public class Kunde implements Serializable, Cloneable {
 	// return password.equals(passwordWdh);
 	// }
 
+	//Validation from Post kunde gibt hier problem
 	@OneToOne(cascade = { PERSIST, REMOVE }, mappedBy = "kunde")
 	@Valid
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
