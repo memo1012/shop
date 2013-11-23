@@ -185,8 +185,9 @@ public class BestellungResource {
 	public Response findKundeByBestellungId(@PathParam("id") Long id) {
 		final Kunde kunde = bs.findKundeById(id);
 		if (kunde == null) {
-			final String msg = "Keine Bestellung gefunden mit der ID " + id;
-			throw new NotFoundException(msg);
+			throw new NotFoundException(NOT_FOUND_USERNAME, id);
+			/*final String msg = "Keine Bestellung gefunden mit der ID " + id;
+			throw new NotFoundException(msg);*/
 		}
 
 		kundeResource.setStructuralLinks(kunde, uriInfo);
