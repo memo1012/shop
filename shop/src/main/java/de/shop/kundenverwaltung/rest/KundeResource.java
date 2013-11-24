@@ -386,8 +386,7 @@ public class KundeResource {
 		//Wie geht es fur die Adresse ohne ID ?
 		// final Locale locale = localeHelper.getLocale(headers);
 
-		LOGGER.tracef("Anfang Post Kunde: %s", kunde);
-		
+		LOGGER.tracef("Anfang Post Kunde: %s", kunde);		
 		kunde.setId(KEINE_ID);
 		final Adresse adresse = kunde.getAdresse();
 		if (adresse != null) {

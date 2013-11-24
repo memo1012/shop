@@ -263,8 +263,7 @@ public class Kunde implements Serializable, Cloneable {
 	@Id
 	@GeneratedValue
 	@Column(nullable = false, updatable = false)
-	// @Min(value = MIN_ID, message = "{kundenverwaltung.kunde.id.min}", groups
-	// = IdGroup.class)
+	// @Min(value = MIN_ID, message = "{kundenverwaltung.kunde.id.min}", groups	// = IdGroup.class)
 	private Long id = KEINE_ID;
 
 	@Version
@@ -327,7 +326,7 @@ public class Kunde implements Serializable, Cloneable {
 
 	//Validation from Post kunde gibt hier problem
 	@OneToOne(cascade = { PERSIST, REMOVE }, mappedBy = "kunde")
-	@Valid
+	//@Valid
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
 	private Adresse adresse;
 
