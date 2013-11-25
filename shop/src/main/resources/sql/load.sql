@@ -112,3 +112,4 @@ INSERT INTO bestellung_lieferung (bestellung_fk, lieferung_fk) VALUES (403,602);
 INSERT INTO bestellung_lieferung (bestellung_fk, lieferung_fk) VALUES (404,603);
 
 
+CALL insert_file_kunde(6,1,0,'logo.png','logoindb.png','png','I','01.08.2006 00:00:00','01.08.2006 00:00:00');
