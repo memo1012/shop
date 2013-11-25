@@ -49,8 +49,14 @@ public class Adresse implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(nullable = false, updatable = false)
-
 	private Long id = KEINE_ID;
+	
+	/*
+	@Id
+	@GeneratedValue
+	@Column(nullable = false, updatable = false)
+	private Long id = KEINE_ID;
+	*/
 
 	@Column(length = PLZ_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{kundenverwaltung.adresse.plz.notNull}")
@@ -79,9 +85,9 @@ public class Adresse implements Serializable {
 	private String hausnr;
 
 	@OneToOne
-	@JoinColumn(name = "kunde_fk", nullable = false)
+	@JoinColumn(name = "kunde_fk", nullable = false, unique = true)
 	@NotNull(message = "{kundenverwaltung.adresse.kunde.notNull}")
-	@JsonIgnore
+	@XmlTransient //@JsonIgnore
 	private Kunde kunde;
 
 	@Basic(optional = false)

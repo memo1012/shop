@@ -183,12 +183,13 @@ public class BestellungResource {
 	 * @return Objekt mit Kundendaten, falls die ID vorhanden ist
 	 */
 	@GET
-	@Path("{id:[1-9][0-9]*}/kunden")
+	@Path("{id:[1-9][0-9]*}/kunde")
 	public Response findKundeByBestellungId(@PathParam("id") Long id) {
 		final Kunde kunde = bs.findKundeById(id);
 		if (kunde == null) {
-			final String msg = "Keine Bestellung gefunden mit der ID " + id;
-			throw new NotFoundException(msg);
+			throw new NotFoundException(NOT_FOUND_USERNAME, id);
+			/*final String msg = "Keine Bestellung gefunden mit der ID " + id;
+			throw new NotFoundException(msg);*/
 		}
 
 		kundeResource.setStructuralLinks(kunde, uriInfo);
