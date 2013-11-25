@@ -6,13 +6,9 @@ import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import static javax.ws.rs.core.MediaType.TEXT_XML;
 import static de.shop.util.Constants.KEINE_ID;
 
-
-
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.Collection;
-
-
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -89,9 +85,8 @@ public class ArtikelResource {
 		final Link self = Link.fromUri(getUriArtikel(artikel, uriInfo))
 				.rel(SELF_LINK).build();
 
-		return new Link[] { self };
+		return new Link[] {self};
 	}
-
 
 	public URI getUriArtikel(Artikel artikel, UriInfo uriInfo) {
 		return uriHelper.getUri(ArtikelResource.class, "findArtikelById",

@@ -112,7 +112,8 @@ public class ArtikelService implements Serializable {
 		if (ids.size() == 1) {
 			// Genau 1 id: kein OR notwendig
 			pred = builder.equal(idPath, ids.get(0));
-		} else {
+		}
+		else {
 			// Mind. 2x id, durch OR verknuepft
 			final Predicate[] equals = new Predicate[ids.size()];
 			int i = 0;
@@ -148,15 +149,16 @@ public class ArtikelService implements Serializable {
 				.setParameter(Artikel.PARAM_BEZEICHNUNG,
 						"%" + bezeichnung + "%").getResultList();
 	}
-	
+
 	public List<String> findArtikelByPrefix(String bezeichnungPrefix) {
 		return em
-				.createNamedQuery(Artikel.FIND_BEZEICHNUNG_BY_PREFIX, String.class)
+				.createNamedQuery(Artikel.FIND_BEZEICHNUNG_BY_PREFIX,
+						String.class)
 				.setParameter(Artikel.PARAM_ARTIKEL_BEZEICHNUNG_PREFIX,
-						bezeichnungPrefix + '%').setMaxResults(MAX_AUTOCOMPLETE)
-				.getResultList();
+						bezeichnungPrefix + '%')
+				.setMaxResults(MAX_AUTOCOMPLETE).getResultList();
 	}
-	
+
 	/**
 	 */
 	public Artikel updateArtikel(Artikel artikel) {

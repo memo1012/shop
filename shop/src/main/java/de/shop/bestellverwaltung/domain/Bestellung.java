@@ -129,7 +129,8 @@ public class Bestellung implements Serializable {
 	private List<Bestellposition> bestellpositionen;
 
 	@ManyToMany
-	@JoinTable(name = "bestellung_lieferung", joinColumns = @JoinColumn(name = "bestellung_fk"), inverseJoinColumns = @JoinColumn(name = "lieferung_fk"))
+	@JoinTable(name = "bestellung_lieferung", joinColumns = @JoinColumn(name = "bestellung_fk"), 
+				inverseJoinColumns = @JoinColumn(name = "lieferung_fk"))
 	@XmlTransient
 	private Set<Lieferung> lieferungen;
 
@@ -348,7 +349,8 @@ public class Bestellung implements Serializable {
 			if (other.bestellpositionen != null) {
 				return false;
 			}
-		} else if (!bestellpositionen.equals(other.bestellpositionen)) {
+		} 
+		else if (!bestellpositionen.equals(other.bestellpositionen)) {
 			return false;
 		}
 		if (version != other.version) {
@@ -358,7 +360,8 @@ public class Bestellung implements Serializable {
 			if (other.erzeugt != null) {
 				return false;
 			}
-		} else if (!erzeugt.equals(other.erzeugt)) {
+		} 
+		else if (!erzeugt.equals(other.erzeugt)) {
 			return false;
 		}
 		return true;

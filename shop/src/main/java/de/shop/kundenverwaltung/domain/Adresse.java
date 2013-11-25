@@ -22,23 +22,19 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.jboss.logging.Logger;
-
 
 @Entity
 @Table(name = "adresse")
 public class Adresse implements Serializable {
 	private static final long serialVersionUID = -5108148468525006134L;
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
-	
-	
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles
+			.lookup().lookupClass());
+
 	private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]+";
 	public static final int PLZ_LENGTH_MAX = 5;
 	public static final int ORT_LENGTH_MIN = 2;
@@ -47,12 +43,11 @@ public class Adresse implements Serializable {
 	public static final int STRASSE_LENGTH_MAX = 32;
 	public static final int HAUSNR_LENGTH_MAX = 4;
 
-
 	@Id
 	@GeneratedValue
 	@Column(nullable = false, updatable = false)
 	private Long id = KEINE_ID;
-	
+
 	@Column(length = PLZ_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{kundenverwaltung.adresse.plz.notNull}")
 	@Pattern(regexp = "\\d{5}", message = "{kundenverwaltung.adresse.plz}")
@@ -69,32 +64,32 @@ public class Adresse implements Serializable {
 	@Size(min = STRASSE_LENGTH_MIN, max = STRASSE_LENGTH_MAX, message = "{kundenverwaltung.adresse.strasse.length}")
 	@Pattern(regexp = NAME_PATTERN, message = "{kundenverwaltung.kunde.strasse.pattern}")
 	private String strasse;
-	
+
 	@Version
 	@Basic(optional = false)
 	private int version = ERSTE_VERSION;
 
-	
 	@Column(length = HAUSNR_LENGTH_MAX)
 	@Size(max = HAUSNR_LENGTH_MAX, message = "{kundenverwaltung.adresse.hausnr.length}")
 	private String hausnr;
 
 	@OneToOne
 	@JoinColumn(name = "kunde_fk", nullable = false, unique = true)
-	//@NotNull(message = "{kundenverwaltung.adresse.kunde.notNull}")
-	@XmlTransient //@JsonIgnore
+	// @NotNull(message = "{kundenverwaltung.adresse.kunde.notNull}")
+	@XmlTransient
+	// @JsonIgnore
 	private Kunde kunde;
 
 	@Basic(optional = false)
 	@Temporal(TIMESTAMP)
 	@XmlTransient
 	private Date aktualisiert;
-	
+
 	@Basic(optional = false)
 	@Temporal(TIMESTAMP)
 	@XmlTransient
 	private Date erzeugt;
-	
+
 	public Adresse() {
 		super();
 	}
@@ -106,18 +101,18 @@ public class Adresse implements Serializable {
 		this.strasse = strasse;
 		this.hausnr = hausnr;
 	}
-	
+
 	@PrePersist
 	private void prePersist() {
 		erzeugt = new Date();
 		aktualisiert = new Date();
 	}
-	
+
 	@PostPersist
 	private void postPersist() {
 		LOGGER.debugf("Neue Adresse mit ID=%s", id);
 	}
-	
+
 	@PreUpdate
 	private void preUpdate() {
 		aktualisiert = new Date();
@@ -126,10 +121,11 @@ public class Adresse implements Serializable {
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public int getVersion() {
 		return version;
 	}
@@ -137,10 +133,11 @@ public class Adresse implements Serializable {
 	public void setVersion(int version) {
 		this.version = version;
 	}
-	
+
 	public String getPlz() {
 		return plz;
 	}
+
 	public void setPlz(String plz) {
 		this.plz = plz;
 	}
@@ -148,6 +145,7 @@ public class Adresse implements Serializable {
 	public String getOrt() {
 		return ort;
 	}
+
 	public void setOrt(String ort) {
 		this.ort = ort;
 	}
@@ -163,40 +161,49 @@ public class Adresse implements Serializable {
 	public String getHausnr() {
 		return hausnr;
 	}
+
 	public void setHausnr(String hausnr) {
 		this.hausnr = hausnr;
 	}
-	
+
 	public Date getErzeugt() {
 		return erzeugt == null ? null : (Date) erzeugt.clone();
 	}
+
 	public void setErzeugt(Date erzeugt) {
 		this.erzeugt = erzeugt == null ? null : (Date) erzeugt.clone();
 	}
+
 	public Date getAktualisiert() {
-		return  aktualisiert == null ? null : (Date) aktualisiert.clone();
+		return aktualisiert == null ? null : (Date) aktualisiert.clone();
 	}
+
 	public void setAktualisiert(Date aktualisiert) {
-		this.aktualisiert = aktualisiert == null ? null : (Date) aktualisiert.clone();
+		this.aktualisiert = aktualisiert == null ? null : (Date) aktualisiert
+				.clone();
 	}
 
 	public void setKunde(Kunde kunde) {
 		this.kunde = kunde;
 	}
+
 	public Kunde getKunde() {
 		return kunde;
 	}
+
 	@Override
 	public String toString() {
-		return "Adresse [id=" + id + ", version=" + version + ", plz=" + plz + ", ort=" + ort + ", strasse=" + strasse + ", hausnr=" + hausnr
-		       + ", erzeugt=" + erzeugt + ", aktualisiert=" + aktualisiert + ']';
+		return "Adresse [id=" + id + ", version=" + version + ", plz=" + plz
+				+ ", ort=" + ort + ", strasse=" + strasse + ", hausnr="
+				+ hausnr + ", erzeugt=" + erzeugt + ", aktualisiert="
+				+ aktualisiert + ']';
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-	result = prime * result
+		result = prime * result
 				+ ((aktualisiert == null) ? 0 : aktualisiert.hashCode());
 		result = prime * result + ((hausnr == null) ? 0 : hausnr.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -219,43 +226,43 @@ public class Adresse implements Serializable {
 			return false;
 		}
 		final Adresse other = (Adresse) obj;
-		
+
 		if (plz == null) {
 			if (other.plz != null) {
 				return false;
 			}
-		}
+		} 
 		else if (!plz.equals(other.plz)) {
 			return false;
 		}
-		
+
 		if (ort == null) {
 			if (other.ort != null) {
 				return false;
 			}
-		}
+		} 
 		else if (!ort.equals(other.ort)) {
 			return false;
 		}
-		
+
 		if (strasse == null) {
 			if (other.strasse != null) {
 				return false;
 			}
-		}
+		} 
 		else if (!strasse.equals(other.strasse)) {
 			return false;
 		}
-		
+
 		if (hausnr == null) {
 			if (other.hausnr != null) {
 				return false;
 			}
-		}
+		} 
 		else if (!hausnr.equals(other.hausnr)) {
 			return false;
 		}
-		
+
 		return true;
 	}
 }

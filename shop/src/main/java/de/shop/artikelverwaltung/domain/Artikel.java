@@ -29,7 +29,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.logging.Logger;
 
-
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
@@ -65,7 +64,7 @@ import javax.persistence.PreUpdate;
 		@NamedQuery(name = Artikel.FIND_BEZEICHNUNG_BY_PREFIX, query = "SELECT   DISTINCT a.bezeichnung"
 				+ " FROM  Artikel a "
 				+ " WHERE UPPER(a.bezeichnung) LIKE UPPER(:"
-				+ Artikel.PARAM_ARTIKEL_BEZEICHNUNG_PREFIX + ")"),
+				+ Artikel.PARAM_ARTIKEL_BEZEICHNUNG_PREFIX + ")")
 
 })
 @Cacheable
@@ -257,7 +256,8 @@ public class Artikel implements Serializable {
 			if (other.bezeichnung != null) {
 				return false;
 			}
-		} else if (!bezeichnung.equals(other.bezeichnung)) {
+		}
+		else if (!bezeichnung.equals(other.bezeichnung)) {
 			return false;
 		}
 

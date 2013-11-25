@@ -53,13 +53,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.validation.groups.Default;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
-
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.ScriptAssert;
 import org.jboss.logging.Logger;
@@ -69,22 +65,13 @@ import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.util.persistence.File;
 import de.shop.auth.domain.RolleType;
 
-// Alternativen bei @Inheritance
-//   strategy=SINGLE_TABLE (=default), TABLE_PER_CLASS, JOINED
-// Alternativen bei @DiscriminatorColumn
-//   discriminatorType=STRING (=default), CHAR, INTEGER
+
 @Entity
-// Zu email wird unten ein UNIQUE Index definiert
 @Table(name = "kunde", indexes = { @Index(columnList = "nachname"),
 		@Index(columnList = "file_fk") })
 @NamedQueries({
 		@NamedQuery(name = Kunde.FIND_KUNDEN, query = "SELECT k"
 				+ " FROM   Kunde k"),
-		/*
-		 * @NamedQuery(name = Kunde.FIND_KUNDEN_FETCH_BESTELLUNGEN, query =
-		 * "SELECT  DISTINCT k" +
-		 * " FROM Kunde k LEFT JOIN FETCH k.bestellungen"),
-		 */
 		@NamedQuery(name = Kunde.FIND_KUNDEN_ORDER_BY_ID, query = "SELECT   k"
 				+ " FROM  Kunde k" + " ORDER BY k.id"),
 		@NamedQuery(name = Kunde.FIND_IDS_BY_PREFIX, query = "SELECT   k.id"
@@ -132,34 +119,11 @@ import de.shop.auth.domain.RolleType;
 		@NamedQuery(name = Kunde.FIND_KUNDEN, query = "SELECT k"
 				+ " FROM  Kunde k") })
 
-				//Alte Methode
-		/*
-		@NamedEntityGraphs({
-		@NamedEntityGraph(name = Kunde.GRAPH_BESTELLUNGEN, attributeNodes = @NamedAttributeNode("bestellungen")) })
-@ScriptAssert(lang = "javascript", script = "_this.password != null && !_this.password.equals(\"\")"
-		+ "&& _this.password.equals(_this.passwordWdh)", message = "{kundenverwaltung.kunde.password.notEqual}", groups = {
-		Default.class, PasswordGroup.class })
-		*/
-		 
 
-		//Von Dem Skript
-//script = "(_this.password == null && _this.passwordWdh == null)"
-//+ "|| (_this.password != null && _this.password.equals(_this.passwordWdh))",
-//message = "{kundenverwaltung.kunde.password.notEqual}", groups =
-//PasswordGroup.class)
-//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-
-
-		//Neue Probe Version
-
-	@NamedEntityGraphs({
-	@NamedEntityGraph(name = Kunde.GRAPH_BESTELLUNGEN, attributeNodes = @NamedAttributeNode("bestellungen")) })
-	@ScriptAssert(lang = "javascript", script = "(_this.password == null && _this.passwordWdh == null)"
-					+ "|| (_this.password != null && _this.password.equals(_this.passwordWdh))",
-					message = "{kundenverwaltung.kunde.password.notEqual}", groups = PasswordGroup.class)
-
-
-
+@NamedEntityGraphs({ @NamedEntityGraph(name = Kunde.GRAPH_BESTELLUNGEN, attributeNodes = @NamedAttributeNode("bestellungen")) })
+@ScriptAssert(lang = "javascript", script = "(_this.password == null && _this.passwordWdh == null)"
+		+ "|| (_this.password != null && _this.password.equals(_this.passwordWdh))", message = "{kundenverwaltung.kunde.password.notEqual}", 
+		groups = PasswordGroup.class)
 @XmlRootElement
 @Formatted
 public class Kunde implements Serializable, Cloneable {
@@ -167,48 +131,49 @@ public class Kunde implements Serializable, Cloneable {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles
 			.lookup().lookupClass().getName());
 	// Pattern mit UTF-8 (statt Latin-1 bzw. ISO-8859-1) Schreibweise fuer
-		// Umlaute:
-		
-		/*Pattern
-		 */
-		 private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]+";
-		 private static final String NACHNAME_PREFIX = "(o'|von|von der|von und zu|van)?";
-		
-		private static final String VORNAME_PATTERN = NAME_PATTERN;
-		public static final String NACHNAME_PATTERN = NACHNAME_PREFIX + NAME_PATTERN + "(-" + NAME_PATTERN + ")?"; 
-	 
-		
-		
-		/*
-		//private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]";
-		private static final String PREFIX_ADEL = "(o'|von|von der|von und zu|van)?";
-		
-		//Zusatz
-		
-		private static final String UPP_CASE = "[A-Z\u00C4\u00D6\u00DC]";
-		private static final String LOW_CASE = "[a-z\u00E4\u00F6\u00FC\u00DF]";
-		private static final String STRG_INPUT = UPP_CASE + LOW_CASE + "(-" + LOW_CASE + ")?";
-		private static final String NAME_PATTERN = STRG_INPUT ;
-		
-		
-		public static final String VORNAME_PATTERN =  NAME_PATTERN ;
-		//public static final String VORNAME_PATTERN =  NAME_PATTERN + "( " + NAME_PATTERN + ")?";
-		
-		//public static final String NACHNAME_PATTERN = PREFIX_ADEL + NAME_PATTERN + "(-" + NAME_PATTERN + ")?";
-		public static final String NACHNAME_PATTERN = PREFIX_ADEL + NAME_PATTERN;
-									//NACHNAME_PREFIX + NAME_PATTERN + "(-" + NAME_PATTERN + ")?";
-									  
-									 
-									 */
-		private static final int NACHNAME_LENGTH_MIN = 2;
-		private static final int NACHNAME_LENGTH_MAX = 32;
-		private static final int VORNAME_LENGTH_MAX = 32;
-		private static final int EMAIL_LENGTH_MAX = 128;
-		
-		private static final int PASSWORD_LENGTH_MAX = 256;
+	// Umlaute:
 
-		private static final String PREFIX = "Kunde.";
-		public static final String FIND_KUNDEN = PREFIX + "findKunden";
+	/*
+	 * Pattern
+	 */
+	private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]+";
+	private static final String NACHNAME_PREFIX = "(o'|von|von der|von und zu|van)?";
+
+	private static final String VORNAME_PATTERN = NAME_PATTERN;
+	public static final String NACHNAME_PATTERN = NACHNAME_PREFIX
+			+ NAME_PATTERN + "(-" + NAME_PATTERN + ")?";
+
+	/*
+	 * //private static final String NAME_PATTERN =
+	 * "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]"; private static
+	 * final String PREFIX_ADEL = "(o'|von|von der|von und zu|van)?";
+	 * 
+	 * //Zusatz
+	 * 
+	 * private static final String UPP_CASE = "[A-Z\u00C4\u00D6\u00DC]"; private
+	 * static final String LOW_CASE = "[a-z\u00E4\u00F6\u00FC\u00DF]"; private
+	 * static final String STRG_INPUT = UPP_CASE + LOW_CASE + "(-" + LOW_CASE +
+	 * ")?"; private static final String NAME_PATTERN = STRG_INPUT ;
+	 * 
+	 * 
+	 * public static final String VORNAME_PATTERN = NAME_PATTERN ; //public
+	 * static final String VORNAME_PATTERN = NAME_PATTERN + "( " + NAME_PATTERN
+	 * + ")?";
+	 * 
+	 * //public static final String NACHNAME_PATTERN = PREFIX_ADEL +
+	 * NAME_PATTERN + "(-" + NAME_PATTERN + ")?"; public static final String
+	 * NACHNAME_PATTERN = PREFIX_ADEL + NAME_PATTERN; //NACHNAME_PREFIX +
+	 * NAME_PATTERN + "(-" + NAME_PATTERN + ")?";
+	 */
+	private static final int NACHNAME_LENGTH_MIN = 2;
+	private static final int NACHNAME_LENGTH_MAX = 32;
+	private static final int VORNAME_LENGTH_MAX = 32;
+	private static final int EMAIL_LENGTH_MAX = 128;
+
+	private static final int PASSWORD_LENGTH_MAX = 256;
+
+	private static final String PREFIX = "Kunde.";
+	public static final String FIND_KUNDEN = PREFIX + "findKunden";
 	/*
 	 * public static final String FIND_KUNDEN_FETCH_BESTELLUNGEN = PREFIX +
 	 * "findKundenFetchBestellungen";
@@ -244,7 +209,6 @@ public class Kunde implements Serializable, Cloneable {
 	public static final String FIND_KUNDEN_BY_DATE = PREFIX
 			+ "findKundenByDate";
 
-
 	public static final String PARAM_KUNDE_ID = "kundeId";
 	public static final String PARAM_KUNDE_ID_PREFIX = "idPrefix";
 	public static final String PARAM_KUNDE_NACHNAME = "nachname";
@@ -258,11 +222,11 @@ public class Kunde implements Serializable, Cloneable {
 
 	public static final String GRAPH_BESTELLUNGEN = "bestellungen";
 
-
 	@Id
 	@GeneratedValue
 	@Column(nullable = false, updatable = false)
-	// @Min(value = MIN_ID, message = "{kundenverwaltung.kunde.id.min}", groups	// = IdGroup.class)
+	// @Min(value = MIN_ID, message = "{kundenverwaltung.kunde.id.min}", groups
+	// // = IdGroup.class)
 	private Long id = KEINE_ID;
 
 	@Version
@@ -307,9 +271,10 @@ public class Kunde implements Serializable, Cloneable {
 
 	@Column()
 	private Boolean aktiv = true;
-	
+
 	@Column(length = PASSWORD_LENGTH_MAX)
-	//@Size(max = PASSWORD_LENGTH_MAX, message = "{kundenverwaltung.kunde.password.length}" )
+	// @Size(max = PASSWORD_LENGTH_MAX, message =
+	// "{kundenverwaltung.kunde.password.length}" )
 	private String password;
 
 	@Transient
@@ -325,7 +290,7 @@ public class Kunde implements Serializable, Cloneable {
 	// return password.equals(passwordWdh);
 	// }
 
-	//Validation from Post kunde gibt hier problem
+	// Validation from Post kunde gibt hier problem
 	@OneToOne(cascade = { PERSIST, REMOVE }, mappedBy = "kunde")
 	@Valid
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
@@ -342,8 +307,8 @@ public class Kunde implements Serializable, Cloneable {
 	private URI bestellungenUri;
 
 	@ElementCollection(fetch = EAGER)
-	@CollectionTable(name = "kunde_rolle", joinColumns = @JoinColumn(name = "kunde_fk", nullable = false), uniqueConstraints = @UniqueConstraint(columnNames = {
-			"kunde_fk", "rolle" }))
+	@CollectionTable(name = "kunde_rolle", joinColumns = @JoinColumn(name = "kunde_fk", nullable = false), 
+						uniqueConstraints = @UniqueConstraint(columnNames = {"kunde_fk", "rolle" }))
 	@Column(table = "kunde_rolle", name = "rolle", length = 32, nullable = false)
 	private Set<RolleType> rollen;
 
@@ -615,8 +580,6 @@ public class Kunde implements Serializable, Cloneable {
 		this.file = file;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "Kunde [id=" + id + ", version=" + version + ", nachname="
@@ -657,7 +620,8 @@ public class Kunde implements Serializable, Cloneable {
 			if (other.email != null) {
 				return false;
 			}
-		} else if (!email.equals(other.email)) {
+		} 
+		else if (!email.equals(other.email)) {
 			return false;
 		}
 

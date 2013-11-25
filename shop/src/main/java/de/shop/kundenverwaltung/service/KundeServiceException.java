@@ -8,7 +8,7 @@ public abstract class KundeServiceException extends AbstractShopException {
 	public KundeServiceException(String msg) {
 		super(msg);
 	}
-	
+
 	public KundeServiceException(String msg, Throwable t) {
 		super(msg, t);
 	}

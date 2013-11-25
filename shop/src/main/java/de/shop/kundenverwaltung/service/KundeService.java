@@ -179,28 +179,6 @@ public class KundeService implements Serializable {
 			break;
 		}
 
-		// FIXME https://hibernate.atlassian.net/browse/HHH-8285 :
-		// @NamedEntityGraph ab Java EE 7 bzw. JPA 2.1
-		// final TypedQuery<AbstractKunde> query =
-		// em.createNamedQuery(AbstractKunde.FIND_KUNDEN_BY_NACHNAME,
-		// AbstractKunde.class)
-		// .setParameter(AbstractKunde.PARAM_KUNDE_NACHNAME, nachname);
-		// switch (fetch) {
-		// case NUR_KUNDE:
-		// break;
-		// case MIT_BESTELLUNGEN:
-		// query.setHint("javax.persistence.loadgraph",
-		// AbstractKunde.GRAPH_BESTELLUNGEN);
-		// break;
-		// case MIT_WARTUNGSVERTRAEGEN:
-		// query.setHint("javax.persistence.loadgraph",
-		// AbstractKunde.GRAPH_WARTUNGSVERTRAEGE);
-		// break;
-		// default:
-		// break;
-		// }
-		//
-		// final List<AbstractKunde> kunden = query.getResultList();
 		return kunden;
 	}
 
@@ -316,7 +294,8 @@ public class KundeService implements Serializable {
 			LOGGER.tracef("Neue Datei %s", file);
 			kunde.setFile(file);
 			em.persist(file);
-		} else {
+		} 
+		else {
 			file.set(bytes, filename, mimeType);
 			LOGGER.tracef("Ueberschreiben der Datei %s", file);
 			em.merge(file);
@@ -334,7 +313,7 @@ public class KundeService implements Serializable {
 		managedExecutorService.execute(storeFile);
 	}
 
-	private static boolean hasBestellungen(Kunde kunde) {
+	/*private static boolean hasBestellungen(Kunde kunde) {
 		LOGGER.debugf("hasBestellungen BEGINN: %s", kunde);
 
 		boolean result = false;
@@ -349,12 +328,10 @@ public class KundeService implements Serializable {
 		LOGGER.debugf("hasBestellungen ENDE: %s", result);
 		return result;
 	}
-
-	/**
 	 */
 	public Kunde createKunde(Kunde kunde) {
 		LOGGER.tracef("Anfang CreateKunde im KundeService:");
-		
+
 		if (kunde == null) {
 			return kunde;
 		}
@@ -526,7 +503,7 @@ public class KundeService implements Serializable {
 		final Join<Bestellung, Bestellposition> bp = b
 				.join(Bestellung_.bestellpositionen);
 		criteriaQuery.where(
-				builder.gt(bp.<Short> get(Bestellposition_.anzahl), minMenge))
+				builder.gt(bp.<Short>get(Bestellposition_.anzahl), minMenge))
 				.distinct(true);
 
 		final List<Kunde> kunden = em.createQuery(criteriaQuery)

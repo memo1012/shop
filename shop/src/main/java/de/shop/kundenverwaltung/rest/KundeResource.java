@@ -1,14 +1,9 @@
 package de.shop.kundenverwaltung.rest;
 
-//
-import static de.shop.util.Constants.ADD_LINK;
 import static de.shop.util.Constants.FIRST_LINK;
 import static de.shop.util.Constants.KEINE_ID;
 import static de.shop.util.Constants.LAST_LINK;
-import static de.shop.util.Constants.LIST_LINK;
-import static de.shop.util.Constants.REMOVE_LINK;
 import static de.shop.util.Constants.SELF_LINK;
-import static de.shop.util.Constants.UPDATE_LINK;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
@@ -16,7 +11,6 @@ import static javax.ws.rs.core.MediaType.TEXT_XML;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +21,6 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -46,7 +39,6 @@ import org.jboss.logging.Logger;
 
 import com.google.common.base.Strings;
 
-import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.bestellverwaltung.domain.Bestellung;
 import de.shop.bestellverwaltung.rest.BestellungResource;
 import de.shop.bestellverwaltung.service.BestellungService;
@@ -94,9 +86,6 @@ public class KundeResource {
 	@Inject
 	private UriHelper uriHelper;
 
-	@Inject
-	private Principal principal;
-
 	@PostConstruct
 	private void postConstruct() {
 		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
@@ -125,9 +114,7 @@ public class KundeResource {
 	@Path("{id:[1-9][0-9]*}")
 	public Response findKundeById(@PathParam("id") Long id) {
 		// final Locale locale = localeHelper.getLocale(headers);
-		String username = principal.getName();
-		Kunde angemeldeter_kunde = ks.findKundeByUserName(username);
-
+	
 		final Kunde kunde = ks.findKundeById(id, FetchType.NUR_KUNDE);
 		if (kunde == null) {
 			final String msg = "Kein Kunde gefunden mit der ID " + id;
@@ -198,7 +185,7 @@ public class KundeResource {
 				.fromUri(getUriKunde(kunde.get(lastPos), uriInfo))
 				.rel(LAST_LINK).build();
 
-		return new Link[] { first, last };
+		return new Link[] {first, last};
 	}
 
 	/**
@@ -218,7 +205,8 @@ public class KundeResource {
 				final String msg = "Keine Kunden vorhanden";
 				throw new NotFoundException(msg);
 			}
-		} else {
+		} 
+		else {
 			// final Locale locale = localeHelper.getLocale(headers);
 			kunden = ks.findKundenByNachname(nachname, FetchType.NUR_KUNDE);
 			if (kunden.isEmpty()) {
@@ -250,7 +238,7 @@ public class KundeResource {
 				.fromUri(getUriKunde(kunden.get(lastPos), uriInfo))
 				.rel(LAST_LINK).build();
 
-		return new Link[] { first, last };
+		return new Link[] {first, last};
 	}
 
 	@GET
@@ -332,7 +320,7 @@ public class KundeResource {
 								bestellungen.get(lastPos), uriInfo))
 				.rel(LAST_LINK).build();
 
-		return new Link[] { self, first, last };
+		return new Link[] {self, first, last};
 	}
 
 	@GET

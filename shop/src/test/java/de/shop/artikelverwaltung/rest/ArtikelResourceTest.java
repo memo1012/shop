@@ -3,8 +3,6 @@ package de.shop.artikelverwaltung.rest;
 import static de.shop.util.TestConstants.ARTIKEL_URI;
 import static de.shop.util.TestConstants.ARTIKEL_ID_URI;
 import static de.shop.util.TestConstants.ARTIKEL_BEZEICHNUNG_URI;
-import static de.shop.util.TestConstants.PASSWORD;
-import static de.shop.util.TestConstants.USERNAME;
 import static de.shop.util.TestConstants.PASSWORD_MITARBEITER;
 import static de.shop.util.TestConstants.USERNAME_MITARBEITER;
 import static java.net.HttpURLConnection.HTTP_CREATED;
@@ -144,8 +142,9 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 
 		// When
 		Long id;
-		Response response = getHttpsClient(USERNAME_MITARBEITER, PASSWORD_MITARBEITER)
-				.target(ARTIKEL_URI).request().post(json(artikel));
+		Response response = getHttpsClient(USERNAME_MITARBEITER,
+				PASSWORD_MITARBEITER).target(ARTIKEL_URI).request()
+				.post(json(artikel));
 
 		// Then
 		assertThat(response.getStatus()).isEqualTo(HTTP_CREATED);
@@ -180,15 +179,16 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		Response response = getHttpsClient().target(ARTIKEL_ID_URI)
 				.resolveTemplate(ArtikelResource.PARAM_ID, artikelId).request()
 				.accept(APPLICATION_JSON).get();
-		Artikel artikel = response.readEntity(Artikel.class);
+		final Artikel artikel = response.readEntity(Artikel.class);
 		assertThat(artikel.getId()).isEqualTo(artikelId);
 
 		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem
 		// Nachnamen bauen
 		artikel.setBezeichnung(neueBezeichnung);
 
-		response = getHttpsClient(USERNAME_MITARBEITER, PASSWORD_MITARBEITER).target(ARTIKEL_URI)
-				.request().accept(APPLICATION_JSON).put(json(artikel));
+		response = getHttpsClient(USERNAME_MITARBEITER, PASSWORD_MITARBEITER)
+				.target(ARTIKEL_URI).request().accept(APPLICATION_JSON)
+				.put(json(artikel));
 		assertThat(response.getStatus()).isEqualTo(HTTP_OK);
 
 		response.close();

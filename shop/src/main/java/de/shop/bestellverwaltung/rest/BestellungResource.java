@@ -50,60 +50,64 @@ import de.shop.util.interceptor.Log;
 import de.shop.util.rest.NotFoundException;
 import de.shop.util.rest.UriHelper;
 
-
 @Path("/bestellungen/")
-@Produces({ APPLICATION_JSON, APPLICATION_XML + ";qs=0.75", TEXT_XML + ";qs=0.5" })
+@Produces({ APPLICATION_JSON, APPLICATION_XML + ";qs=0.75",
+		TEXT_XML + ";qs=0.5" })
 @Consumes
 @Log
 public class BestellungResource {
-	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
+	private static final Logger LOGGER = Logger.getLogger(MethodHandles
+			.lookup().lookupClass());
 	private static final String NOT_FOUND_USERNAME = "bestellung.notFound.username";
 	private static final String NOT_FOUND_ID_ARTIKEL = "artikel.notFound.id";
 	private static final String NOT_FOUND_ID_BESTELLUNG = "bestellung.notFound.id";
 
 	@Context
 	private UriInfo uriInfo;
-	
+
 	@Context
 	private HttpHeaders headers;
-	
+
 	@Inject
 	private BestellungService bs;
-	
+
 	@Inject
 	private KundeResource kundeResource;
-	
+
 	@Inject
 	private ArtikelResource artikelResource;
-	
+
 	@Inject
 	private ArtikelService as;
-	
+
 	@Inject
 	private UriHelper uriHelper;
-	
+
 	@Inject
 	private Principal principal;
-	
+
 	@PostConstruct
 	private void postConstruct() {
 		LOGGER.debugf("CDI-faehiges Bean %s wurde erzeugt", this);
 	}
-	
+
 	@PreDestroy
 	private void preDestroy() {
 		LOGGER.debugf("CDI-faehiges Bean %s wird geloescht", this);
 	}
-	
+
 	/**
 	 * Mit der URL /bestellungen/{id} eine Bestellung ermitteln
-	 * @param id ID der Bestellung
+	 * 
+	 * @param id
+	 *            ID der Bestellung
 	 * @return Objekt mit Bestelldaten, falls die ID vorhanden ist
 	 */
 	@GET
 	@Path("{id:[1-9][0-9]*}")
 	public Response findBestellungById(@PathParam("id") Long id) {
-		final Bestellung bestellung = bs.findBestellungById(id,FetchType.NUR_BESTELLUNG);
+		final Bestellung bestellung = bs.findBestellungById(id,
+				FetchType.NUR_BESTELLUNG);
 		if (bestellung == null) {
 			final String msg = "Keine Bestellung gefunden mit der ID " + id;
 			throw new NotFoundException(msg);
@@ -111,26 +115,28 @@ public class BestellungResource {
 
 		// URIs innerhalb der gefundenen Bestellung anpassen
 		setStructuralLinks(bestellung, uriInfo);
-		
+
 		// Link-Header setzen
 		return Response.ok(bestellung)
-                       .links(getTransitionalLinks(bestellung, uriInfo))
-                       .build();
+				.links(getTransitionalLinks(bestellung, uriInfo)).build();
 	}
-	
+
 	public void setStructuralLinks(Bestellung bestellung, UriInfo uriInfo) {
 		// URI fuer Kunde setzen
 		final Kunde kunde = bestellung.getKunde();
 		if (kunde != null) {
-			final URI kundeUri = kundeResource.getUriKunde(bestellung.getKunde(), uriInfo);
+			final URI kundeUri = kundeResource.getUriKunde(
+					bestellung.getKunde(), uriInfo);
 			bestellung.setKundeUri(kundeUri);
 		}
-				
+
 		// URI fuer Artikel in den Bestellpositionen setzen
-		final List<Bestellposition> bestellpositionen = bestellung.getBestellpositionen();
+		final List<Bestellposition> bestellpositionen = bestellung
+				.getBestellpositionen();
 		if (bestellpositionen != null && !bestellpositionen.isEmpty()) {
 			for (Bestellposition bp : bestellpositionen) {
-				final URI artikelUri = artikelResource.getUriArtikel(bp.getArtikel(), uriInfo);
+				final URI artikelUri = artikelResource.getUriArtikel(
+						bp.getArtikel(), uriInfo);
 				bp.setArtikelUri(artikelUri);
 			}
 		}
@@ -139,24 +145,25 @@ public class BestellungResource {
 
 	private Link[] getTransitionalLinks(Bestellung bestellung, UriInfo uriInfo) {
 		final Link self = Link.fromUri(getUriBestellung(bestellung, uriInfo))
-                              .rel(SELF_LINK)
-                              .build();
-		final Link add = Link.fromUri(uriHelper.getUri(BestellungResource.class, uriInfo))
-                              .rel(ADD_LINK)
-                              .build();
+				.rel(SELF_LINK).build();
+		final Link add = Link
+				.fromUri(uriHelper.getUri(BestellungResource.class, uriInfo))
+				.rel(ADD_LINK).build();
 
-		return new Link[] { self, add };
+		return new Link[] {self, add};
 	}
-	
+
 	public URI getUriBestellung(Bestellung bestellung, UriInfo uriInfo) {
-		return uriHelper.getUri(BestellungResource.class, "findBestellungById", bestellung.getId(), uriInfo);
+		return uriHelper.getUri(BestellungResource.class, "findBestellungById",
+				bestellung.getId(), uriInfo);
 	}
 
-	
 	/**
-	 * Mit der URL /bestellungen/{id}/lieferungen die Lieferung ermitteln
-	 * zu einer bestimmten Bestellung ermitteln
-	 * @param id ID der Bestellung
+	 * Mit der URL /bestellungen/{id}/lieferungen die Lieferung ermitteln zu
+	 * einer bestimmten Bestellung ermitteln
+	 * 
+	 * @param id
+	 *            ID der Bestellung
 	 * @return Objekt mit Lieferdaten, falls die ID vorhanden ist
 	 */
 	@GET
@@ -168,18 +175,19 @@ public class BestellungResource {
 		// zurueckgeliefert oder eine Exception geworfen wird oder...
 		// Die Kollegen koennen nun weiterarbeiten, waehrend man selbst
 		// gerade keine Zeit hat, weil andere Aufgaben Vorrang haben.
-		
+
 		// TODO findLieferungenByBestellungId noch nicht implementiert
 		return Response.status(INTERNAL_SERVER_ERROR)
-				       .entity("findLieferungenByBestellungId: NOT YET IMPLEMENTED")
-				       .type(TEXT_PLAIN)
-				       .build();
+				.entity("findLieferungenByBestellungId: NOT YET IMPLEMENTED")
+				.type(TEXT_PLAIN).build();
 	}
 
-	
 	/**
-	 * Mit der URL /bestellungen/{id}/kunde den Kunden einer Bestellung ermitteln
-	 * @param id ID der Bestellung
+	 * Mit der URL /bestellungen/{id}/kunde den Kunden einer Bestellung
+	 * ermitteln
+	 * 
+	 * @param id
+	 *            ID der Bestellung
 	 * @return Objekt mit Kundendaten, falls die ID vorhanden ist
 	 */
 	@GET
@@ -188,41 +196,45 @@ public class BestellungResource {
 		final Kunde kunde = bs.findKundeById(id);
 		if (kunde == null) {
 			throw new NotFoundException(NOT_FOUND_USERNAME, id);
-			/*final String msg = "Keine Bestellung gefunden mit der ID " + id;
-			throw new NotFoundException(msg);*/
+			/*
+			 * final String msg = "Keine Bestellung gefunden mit der ID " + id;
+			 * throw new NotFoundException(msg);
+			 */
 		}
 
 		kundeResource.setStructuralLinks(kunde, uriInfo);
 
 		// Link Header setzen
 		return Response.ok(kunde)
-                       .links(kundeResource.getTransitionalLinks(kunde, uriInfo))
-                       .build();
+				.links(kundeResource.getTransitionalLinks(kunde, uriInfo))
+				.build();
 	}
 
-	
 	/**
 	 * Mit der URL /bestellungen eine neue Bestellung anlegen
-	 * @param bestellung die neue Bestellung
+	 * 
+	 * @param bestellung
+	 *            die neue Bestellung
 	 * @return Objekt mit Bestelldaten, falls die ID vorhanden ist
 	 */
 	@POST
 	@Consumes({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
-	//@Produces
+	// @Produces
 	@Transactional
 	public Response createBestellung(@Valid Bestellung bestellung) {
-		
+
 		LOGGER.tracef("Anfang Post Bestellung: %s", bestellung);
-		
+
 		if (bestellung == null) {
 			return null;
 		}
-		
+
 		// Username aus dem Principal ermitteln
 		final String username = principal.getName();
-		
+
 		// IDs der (persistenten) Artikel ermitteln
-		final Collection<Bestellposition> bestellpositionen = bestellung.getBestellpositionen();
+		final Collection<Bestellposition> bestellpositionen = bestellung
+				.getBestellpositionen();
 		final List<Long> artikelIds = new ArrayList<>(bestellpositionen.size());
 		for (Bestellposition bp : bestellpositionen) {
 			final URI artikelUri = bp.getArtikelUri();
@@ -235,15 +247,14 @@ public class BestellungResource {
 			Long artikelId = null;
 			try {
 				artikelId = Long.valueOf(artikelIdStr);
-			}
-			catch (NumberFormatException ignore) {
+			} catch (NumberFormatException ignore) {
 				// Ungueltige Artikel-ID: wird nicht beruecksichtigt
 				continue;
 			}
-			
+
 			artikelIds.add(artikelId);
 		}
-		
+
 		if (artikelIds.isEmpty()) {
 			// keine einzige Artikel-ID als gueltige Zahl
 			String artikelId = null;
@@ -259,83 +270,81 @@ public class BestellungResource {
 			}
 			throw new NotFoundException(NOT_FOUND_ID_ARTIKEL, artikelId);
 		}
-		
+
 		final List<Artikel> gefundeneArtikel = as.findArtikelByIds(artikelIds);
 		if (gefundeneArtikel.isEmpty()) {
 			throw new NotFoundException(NOT_FOUND_ID_ARTIKEL, artikelIds.get(0));
 		}
-		
 
-
-		
 		// Bestellpositionen haben URIs fuer persistente Artikel.
-		// Diese persistenten Artikel wurden in einem DB-Zugriff ermittelt (s.o.)
-		// Fuer jede Bestellposition wird der Artikel passend zur Artikel-URL bzw. Artikel-ID gesetzt.
+		// Diese persistenten Artikel wurden in einem DB-Zugriff ermittelt
+		// (s.o.)
+		// Fuer jede Bestellposition wird der Artikel passend zur Artikel-URL
+		// bzw. Artikel-ID gesetzt.
 		// Bestellpositionen mit nicht-gefundene Artikel werden eliminiert.
 		int i = 0;
-		final List<Bestellposition> neueBestellpositionen =
-			                        new ArrayList<>(bestellpositionen.size());
+		final List<Bestellposition> neueBestellpositionen = new ArrayList<>(
+				bestellpositionen.size());
 		for (Bestellposition bp : bestellpositionen) {
 			// Artikel-ID der aktuellen Bestellposition (s.o.):
 			// artikelIds haben gleiche Reihenfolge wie bestellpositionen
 			final long artikelId = artikelIds.get(i++);
-			
+
 			// Wurde der Artikel beim DB-Zugriff gefunden?
 			for (Artikel artikel : gefundeneArtikel) {
 				if (artikel.getId().longValue() == artikelId) {
 					// Der Artikel wurde gefunden
 					bp.setArtikel(artikel);
 					neueBestellpositionen.add(bp);
-					break;					
+					break;
 				}
 			}
 		}
 		bestellung.setBestellpositionen(neueBestellpositionen);
-		
+
 		LOGGER.tracef("Mitte Post Bestellung: %s", bestellung);
-		
+
 		// Kunde mit den vorhandenen ("alten") Bestellungen ermitteln
 		bestellung = bs.createBestellung(bestellung, username);
 		if (bestellung == null) {
 			throw new NotFoundException(NOT_FOUND_USERNAME, username);
 		}
 		LOGGER.trace(bestellung);
-		
+
 		LOGGER.tracef("Ende Post Bestellung: %s", bestellung);
 
-		return Response.created(getUriBestellung(bestellung, uriInfo))
-				       .build();
+		return Response.created(getUriBestellung(bestellung, uriInfo)).build();
 	}
-	
+
 	/*
-	 * Bestellung Updaten --> d.h. Flag Status auf Verschickt setzen 
-	 * und Lieferung auslösen
+	 * Bestellung Updaten --> d.h. Flag Status auf Verschickt setzen und
+	 * Lieferung auslösen
 	 */
 	@PUT
 	@Consumes({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
 	@Produces({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
 	@Transactional
 	public Response updateBestellung(@Valid Bestellung bestellung) {
-		//Vorhandene Bestellung ermitteln
-		final Bestellung orgBestellung = bs.findBestellungById(bestellung.getId(), FetchType.NUR_BESTELLUNG);
+		// Vorhandene Bestellung ermitteln
+		final Bestellung orgBestellung = bs.findBestellungById(
+				bestellung.getId(), FetchType.NUR_BESTELLUNG);
 		if (orgBestellung == null) {
-			throw new NotFoundException(NOT_FOUND_ID_BESTELLUNG, bestellung.getId());
+			throw new NotFoundException(NOT_FOUND_ID_BESTELLUNG,
+					bestellung.getId());
 		}
 		LOGGER.tracef("Bestellung vorher = %s", orgBestellung);
-		
-		//Daten der vorhandenen Bestellung überschreiben
+
+		// Daten der vorhandenen Bestellung überschreiben
 		orgBestellung.setValues(bestellung);
 		LOGGER.tracef("Bestellung nachher %s", orgBestellung);
-		
-		//Update durchführen
+
+		// Update durchführen
 		bestellung = bs.updateBestellung(orgBestellung);
-		
-		
+
 		setStructuralLinks(bestellung, uriInfo);
-		
+
 		return Response.ok(bestellung)
-					   .links(getTransitionalLinks(bestellung, uriInfo))
-					   .build();
-		
+				.links(getTransitionalLinks(bestellung, uriInfo)).build();
+
 	}
 }
