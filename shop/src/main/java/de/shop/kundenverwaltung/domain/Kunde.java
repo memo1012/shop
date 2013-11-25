@@ -176,8 +176,7 @@ public class Kunde implements Serializable, Cloneable {
 		
 		private static final String VORNAME_PATTERN = NAME_PATTERN;
 		public static final String NACHNAME_PATTERN = NACHNAME_PREFIX + NAME_PATTERN + "(-" + NAME_PATTERN + ")?"; 
-		 
-		 
+	 
 		
 		
 		/*
@@ -296,7 +295,7 @@ public class Kunde implements Serializable, Cloneable {
 	private BigDecimal umsatz = BigDecimal.ZERO;
 
 	@Column(length = EMAIL_LENGTH_MAX, nullable = false, unique = true)
-	@Email(message = "{kundenverwaltung.kunde.email}")
+	@Email(message = "{kundenverwaltung.kunde.email.pattern}")
 	@NotNull(message = "{kundenverwaltung.kunde.email.notNull}")
 	@Size(max = EMAIL_LENGTH_MAX, message = "{kundenverwaltung.kunde.email.length}")
 	private String email = "";
@@ -309,6 +308,7 @@ public class Kunde implements Serializable, Cloneable {
 	private boolean newsletter = false;
 
 	@Column(length = PASSWORD_LENGTH_MAX)
+	//@Size(max = PASSWORD_LENGTH_MAX, message = "{kundenverwaltung.kunde.password.length}" )
 	private String password;
 
 	@Transient

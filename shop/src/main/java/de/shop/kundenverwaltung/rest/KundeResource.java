@@ -475,7 +475,7 @@ public class KundeResource {
 	 * @param kundeId
 	 *            des zu l&ouml;schenden Kunden
 	 */
-	@Path("{id:[0-9]+}")
+	@Path("{id:[1-9][0-9]*}")
 	@DELETE
 	@Produces
 	public void deleteKunde(@PathParam("id") Long kundeId) {
