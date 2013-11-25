@@ -5,6 +5,8 @@ import static de.shop.util.TestConstants.ARTIKEL_ID_URI;
 import static de.shop.util.TestConstants.ARTIKEL_BEZEICHNUNG_URI;
 import static de.shop.util.TestConstants.PASSWORD;
 import static de.shop.util.TestConstants.USERNAME;
+import static de.shop.util.TestConstants.PASSWORD_MITARBEITER;
+import static de.shop.util.TestConstants.USERNAME_MITARBEITER;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -142,7 +144,7 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 
 		// When
 		Long id;
-		Response response = getHttpsClient(USERNAME, PASSWORD)
+		Response response = getHttpsClient(USERNAME_MITARBEITER, PASSWORD_MITARBEITER)
 				.target(ARTIKEL_URI).request().post(json(artikel));
 
 		// Then
@@ -185,7 +187,7 @@ public class ArtikelResourceTest extends AbstractResourceTest {
 		// Nachnamen bauen
 		artikel.setBezeichnung(neueBezeichnung);
 
-		response = getHttpsClient(USERNAME, PASSWORD).target(ARTIKEL_URI)
+		response = getHttpsClient(USERNAME_MITARBEITER, PASSWORD_MITARBEITER).target(ARTIKEL_URI)
 				.request().accept(APPLICATION_JSON).put(json(artikel));
 		assertThat(response.getStatus()).isEqualTo(HTTP_OK);
 
