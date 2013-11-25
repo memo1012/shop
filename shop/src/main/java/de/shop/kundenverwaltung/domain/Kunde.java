@@ -305,8 +305,9 @@ public class Kunde implements Serializable, Cloneable {
 	@XmlTransient
 	private File file;
 
-	private boolean newsletter = false;
-
+	@Column()
+	private Boolean aktiv = true;
+	
 	@Column(length = PASSWORD_LENGTH_MAX)
 	//@Size(max = PASSWORD_LENGTH_MAX, message = "{kundenverwaltung.kunde.password.length}" )
 	private String password;
@@ -345,8 +346,6 @@ public class Kunde implements Serializable, Cloneable {
 			"kunde_fk", "rolle" }))
 	@Column(table = "kunde_rolle", name = "rolle", length = 32, nullable = false)
 	private Set<RolleType> rollen;
-
-	
 
 	@Basic(optional = false)
 	// @Column(nullable = false)
@@ -482,12 +481,12 @@ public class Kunde implements Serializable, Cloneable {
 		this.email = email;
 	}
 
-	public void setNewsletter(boolean newsletter) {
-		this.newsletter = newsletter;
+	public void setAktiv(boolean aktiv) {
+		this.aktiv = aktiv;
 	}
 
-	public boolean isNewsletter() {
-		return newsletter;
+	public boolean isAktiv() {
+		return aktiv;
 	}
 
 	public String getPassword() {
@@ -675,7 +674,7 @@ public class Kunde implements Serializable, Cloneable {
 		neuesObjekt.geschlecht = geschlecht;
 		neuesObjekt.umsatz = umsatz;
 		neuesObjekt.email = email;
-		neuesObjekt.newsletter = newsletter;
+		neuesObjekt.aktiv = aktiv;
 		neuesObjekt.password = password;
 		neuesObjekt.passwordWdh = passwordWdh;
 		neuesObjekt.adresse = adresse;

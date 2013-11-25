@@ -1,4 +1,5 @@
 package de.shop.kundenverwaltung.rest;
+
 //
 import static de.shop.util.Constants.ADD_LINK;
 import static de.shop.util.Constants.FIRST_LINK;
@@ -74,8 +75,7 @@ public class KundeResource {
 	public static final String KUNDEN_PLZ_QUERY_PARAM = "plz";
 	public static final String KUNDEN_EMAIL_QUERY_PARAM = "email";
 	public static final String KUNDEN_GESCHLECHT_QUERY_PARAM = "geschlecht";
-	
-	
+
 	private static final String NOT_FOUND_ID = "kunde.notFound.id";
 	private static final String NOT_FOUND_FILE = "kunde.notFound.file";
 
@@ -128,7 +128,6 @@ public class KundeResource {
 		String username = principal.getName();
 		Kunde angemeldeter_kunde = ks.findKundeByUserName(username);
 
-		
 		final Kunde kunde = ks.findKundeById(id, FetchType.NUR_KUNDE);
 		if (kunde == null) {
 			final String msg = "Kein Kunde gefunden mit der ID " + id;
@@ -159,42 +158,33 @@ public class KundeResource {
 				kunde.getId(), uriInfo);
 	}
 
-	/*public Link[] getTransitionalLinks(Kunde kunde, UriInfo uriInfo) {
+	/*
+	 * public Link[] getTransitionalLinks(Kunde kunde, UriInfo uriInfo) { final
+	 * Link self = Link.fromUri(getUriKunde(kunde, uriInfo))
+	 * .rel(SELF_LINK).build();
+	 * 
+	 * final Link list = Link .fromUri(uriHelper.getUri(KundeResource.class,
+	 * uriInfo)) .rel(LIST_LINK).build();
+	 * 
+	 * final Link add = Link .fromUri(uriHelper.getUri(KundeResource.class,
+	 * uriInfo)) .rel(ADD_LINK).build();
+	 * 
+	 * final Link update = Link .fromUri(uriHelper.getUri(KundeResource.class,
+	 * uriInfo)) .rel(UPDATE_LINK).build();
+	 * 
+	 * final Link remove = Link .fromUri( uriHelper.getUri(KundeResource.class,
+	 * "deleteKunde", kunde.getId(), uriInfo)).rel(REMOVE_LINK) .build();
+	 * 
+	 * return new Link[] { self, list, add, update, remove }; }
+	 */
+
+	public Link[] getTransitionalLinks(Kunde kunde, UriInfo uriInfo) {
 		final Link self = Link.fromUri(getUriKunde(kunde, uriInfo))
 				.rel(SELF_LINK).build();
 
-		final Link list = Link
-				.fromUri(uriHelper.getUri(KundeResource.class, uriInfo))
-				.rel(LIST_LINK).build();
-
-		final Link add = Link
-				.fromUri(uriHelper.getUri(KundeResource.class, uriInfo))
-				.rel(ADD_LINK).build();
-
-		final Link update = Link
-				.fromUri(uriHelper.getUri(KundeResource.class, uriInfo))
-				.rel(UPDATE_LINK).build();
-
-		final Link remove = Link
-				.fromUri(
-						uriHelper.getUri(KundeResource.class, "deleteKunde",
-								kunde.getId(), uriInfo)).rel(REMOVE_LINK)
-				.build();
-
-		return new Link[] { self, list, add, update, remove };
-	}
-	*/
-	
-	
-	public Link[] getTransitionalLinks(Kunde kunde, UriInfo uriInfo) {
-		final Link self = Link.fromUri(getUriKunde(kunde, uriInfo))
-                              .rel(SELF_LINK)
-                              .build();
-
 		return new Link[] { self };
 	}
-	
-	
+
 	public Link[] getTransitionalLinksKunde(List<? extends Kunde> kunde,
 			UriInfo uriInfo) {
 		if (kunde == null || kunde.isEmpty()) {
@@ -210,8 +200,6 @@ public class KundeResource {
 
 		return new Link[] { first, last };
 	}
-	
-	
 
 	/**
 	 * Mit der URL /kunden werden alle Kunden ermittelt oder mit
@@ -299,17 +287,17 @@ public class KundeResource {
 			throw new NotFoundException("Kein Kunde mit der ID " + kundeId
 					+ " gefunden.");
 		}
-		
+
 		final List<Bestellung> bestellungen = bs.findBestellungenByKunde(kunde,
 				BestellungService.FetchType.NUR_BESTELLUNG);
-		
+
 		// URIs innerhalb der gefundenen Bestellungen anpassen
 		if (bestellungen != null) {
 			for (Bestellung bestellung : bestellungen) {
 				bestellungResource.setStructuralLinks(bestellung, uriInfo);
 			}
 		}
-		
+
 		// URLs innerhalb der gefundenen Bestellungen anpassen
 		// for (Bestellung bestellung : bestellungen) {
 		// uriHelperBestellung.updateUriBestellung(bestellung, uriInfo);
@@ -383,55 +371,50 @@ public class KundeResource {
 	@Produces
 	@Transactional
 	public Response createKunde(@Valid Kunde kunde) {
-		//Wie geht es fur die Adresse ohne ID ?
+		// Wie geht es fur die Adresse ohne ID ?
 		// final Locale locale = localeHelper.getLocale(headers);
 
-		LOGGER.tracef("Anfang Post Kunde: %s", kunde);		
+		LOGGER.tracef("Anfang Post Kunde: %s", kunde);
 		kunde.setId(KEINE_ID);
 		final Adresse adresse = kunde.getAdresse();
 		if (adresse != null) {
 			adresse.setKunde(kunde);
 		}
 		if (Strings.isNullOrEmpty(kunde.getPasswordWdh())) {
-			// ein IT-System als REST-Client muss das Password ggf. nur 1x uebertragen
+			// ein IT-System als REST-Client muss das Password ggf. nur 1x
+			// uebertragen
 			kunde.setPasswordWdh(kunde.getPassword());
 		}
-		
+
 		kunde = ks.createKunde(kunde);
 		LOGGER.trace(kunde);
-		
-		return Response.created(getUriKunde(kunde, uriInfo)).build();
-		
-		
-		/*kunde.setId(KEINE_ID);
-		kunde.setBestellungenUri(null);
-		
-		kunde.setPasswordWdh(kunde.getPassword());
-
-		final Adresse adresse = kunde.getAdresse();
-		if (adresse != null) {
-			adresse.setKunde(kunde);
-		}
-		
-
-		kunde = ks.createKunde(kunde);
-		LOGGER.tracef("Kunde: %s", kunde);
 
 		return Response.created(getUriKunde(kunde, uriInfo)).build();
-		*/
+
 		/*
-		 LOGGER.trace("In Artikel Post");
-		LOGGER.tracef("Prob Artikel: %s", artikel);
-		
-		artikel.setId(KEINE_ID);
-		//artikel.setBezeichnung(artikel.getBezeichnung());
-		
-		//kunde = (Privatkunde) ks.createKunde(kunde, locale);
-		artikel = as.createArtikel(artikel);
-		LOGGER.tracef("Artikel: %s", artikel);
-		
-		return Response.created(getUriArtikel(artikel, uriInfo)).build(); 
-		 
+		 * kunde.setId(KEINE_ID); kunde.setBestellungenUri(null);
+		 * 
+		 * kunde.setPasswordWdh(kunde.getPassword());
+		 * 
+		 * final Adresse adresse = kunde.getAdresse(); if (adresse != null) {
+		 * adresse.setKunde(kunde); }
+		 * 
+		 * 
+		 * kunde = ks.createKunde(kunde); LOGGER.tracef("Kunde: %s", kunde);
+		 * 
+		 * return Response.created(getUriKunde(kunde, uriInfo)).build();
+		 */
+		/*
+		 * LOGGER.trace("In Artikel Post"); LOGGER.tracef("Prob Artikel: %s",
+		 * artikel);
+		 * 
+		 * artikel.setId(KEINE_ID);
+		 * //artikel.setBezeichnung(artikel.getBezeichnung());
+		 * 
+		 * //kunde = (Privatkunde) ks.createKunde(kunde, locale); artikel =
+		 * as.createArtikel(artikel); LOGGER.tracef("Artikel: %s", artikel);
+		 * 
+		 * return Response.created(getUriArtikel(artikel, uriInfo)).build();
 		 */
 	}
 
@@ -475,13 +458,36 @@ public class KundeResource {
 	 * @param kundeId
 	 *            des zu l&ouml;schenden Kunden
 	 */
-	@Path("{id:[1-9][0-9]*}")
-	@DELETE
-	@Produces
-	public void deleteKunde(@PathParam("id") Long kundeId) {
+	@GET
+	@Path("{id:[1-9][0-9]*}/loeschen")
+	@Produces({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
+	@Transactional
+	public Response deleteKunde(@PathParam("id") Long kundeId) {
+		// Vorhandenen Kunden ermitteln
 		// final Locale locale = localeHelper.getLocale(headers);
-		final Kunde kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE);
-		ks.deleteKunde(kunde);
+		final Kunde origKunde = ks.findKundeById(kundeId,
+				FetchType.NUR_KUNDE);
+		if (origKunde == null) {
+			final String msg = "Kein Kunde gefunden mit der ID "
+					+ kundeId;
+			throw new NotFoundException(msg);
+		}
+		LOGGER.tracef("Kunde vorher: %s", origKunde);
+
+		Kunde kunde = ks.findKundeById(kundeId,
+				FetchType.NUR_KUNDE);
+		kunde.setAktiv(false);
+		
+		// Daten des vorhandenen Kunden ueberschreiben
+		origKunde.setValues(kunde);
+		LOGGER.tracef("Kunde nachher: %s", origKunde);
+
+		// Update durchfuehren
+		kunde = ks.updateKunde(origKunde, false);
+		setStructuralLinks(kunde, uriInfo);
+
+		return Response.ok(kunde).links(getTransitionalLinks(kunde, uriInfo))
+				.build();
 	}
 
 	@Path("{id:[1-9][0-9]*}/file")
