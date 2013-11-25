@@ -39,8 +39,10 @@ public final class TestConstants {
 	// Username und Password
 	public static final String USERNAME = "102";
 	public static final String PASSWORD = "102";
-	public static final String USERNAME_ADMIN = "101";
-	public static final String PASSWORD_ADMIN = "101";
+	public static final String USERNAME_MITARBEITER = "101";
+	public static final String PASSWORD_MITARBEITER = "101";
+	public static final String USERNAME_ADMIN = "1";
+	public static final String PASSWORD_ADMIN = "1";
 	public static final String PASSWORD_FALSCH = "falsch";
 	
 	// Testklassen fuer Service- und Domain-Tests (nicht in Software Engineering)

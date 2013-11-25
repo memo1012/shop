@@ -3,8 +3,10 @@ package de.shop.kundenverwaltung.rest;
 import static de.shop.util.TestConstants.KUNDEN_ID_URI;
 import static de.shop.util.TestConstants.KUNDEN_URI;
 import static de.shop.util.TestConstants.PASSWORD;
+import static de.shop.util.TestConstants.PASSWORD_MITARBEITER;
 import static de.shop.util.TestConstants.PASSWORD_ADMIN;
 import static de.shop.util.TestConstants.USERNAME;
+import static de.shop.util.TestConstants.USERNAME_MITARBEITER;
 import static de.shop.util.TestConstants.USERNAME_ADMIN;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
@@ -44,11 +46,11 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 	
 	private static final long TIMEOUT = 5;
 
-	private static final Long KUNDE_ID_UPDATE = Long.valueOf(120);
+	private static final Long KUNDE_ID_UPDATE = Long.valueOf(102);
 	private static final String NEUER_NACHNAME = "Testname";
 	private static final String NEUER_NACHNAME_2 = "Neuername";
-	private static final Long KUNDE_ID_DELETE1 = Long.valueOf(122);
-	private static final Long KUNDE_ID_DELETE2 = Long.valueOf(124);
+	private static final Long KUNDE_ID_DELETE1 = Long.valueOf(107);
+	private static final Long KUNDE_ID_DELETE2 = Long.valueOf(106);
 
 	@Test
 	@InSequence(1)
@@ -77,7 +79,7 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
 			@Override
 			public Integer call() {
 				final Response response = new HttpsConcurrencyHelper()
-				                          .getHttpsClient(USERNAME, PASSWORD)
+				                          .getHttpsClient(USERNAME_MITARBEITER, PASSWORD_MITARBEITER)
                                           .target(KUNDEN_URI)
                                           .request()
                                           .accept(APPLICATION_JSON)
@@ -95,7 +97,7 @@ public class KundeResourceConcurrencyTest extends AbstractResourceTest {
     	// Fehlschlagendes Update
 		// Aus den gelesenen JSON-Werten ein neues JSON-Objekt mit neuem Nachnamen bauen
 		kunde.setNachname(neuerNachname);
-		response = getHttpsClient(USERNAME, PASSWORD).target(KUNDEN_URI)
+		response = getHttpsClient(USERNAME_MITARBEITER, PASSWORD_MITARBEITER).target(KUNDEN_URI)
                                                       .request()
                                                       .accept(APPLICATION_JSON)
                                                       .put(json(kunde));
