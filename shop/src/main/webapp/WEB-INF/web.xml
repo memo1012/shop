@@ -148,11 +148,12 @@
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Kunden loeschen</web-resource-name>
-      <url-pattern>/rest/kunden/*</url-pattern>
-      <http-method>DELETE</http-method>
+      <url-pattern>/rest/kunden/loeschen/*</url-pattern>
+      <http-method>GET</http-method>
     </web-resource-collection>
     <auth-constraint>
       <role-name>admin</role-name>
+      <role-name>mitarbeiter</role-name>
     </auth-constraint>
 	<user-data-constraint>
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
@@ -163,9 +164,10 @@
   
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>Bestellungen erzeugen</web-resource-name>
+      <web-resource-name>Bestellungen erzeugen und modifizieren</web-resource-name>
       <url-pattern>/rest/bestellungen</url-pattern>
       <http-method>POST</http-method>
+      <http-method>PUT</http-method>
     </web-resource-collection>
     <auth-constraint>
       <role-name>admin</role-name>
@@ -177,7 +179,25 @@
     </user-data-constraint>
   </security-constraint>
   
-
+  
+  
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Artikel erzeugen und modifizieren</web-resource-name>
+      <url-pattern>/rest/artikel</url-pattern>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+      <role-name>mitarbeiter</role-name>
+    </auth-constraint>
+	<user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  
+  
   
   <login-config>
 	<auth-method>BASIC</auth-method>

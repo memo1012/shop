@@ -9,9 +9,11 @@ import static de.shop.util.TestConstants.KUNDEN_ID_FILE_URI;
 import static de.shop.util.TestConstants.KUNDEN_ID_URI;
 import static de.shop.util.TestConstants.KUNDEN_URI;
 import static de.shop.util.TestConstants.PASSWORD;
-import static de.shop.util.TestConstants.PASSWORD_ADMIN;
+import static de.shop.util.TestConstants.PASSWORD_MITARBEITER
+;import static de.shop.util.TestConstants.PASSWORD_ADMIN;
 import static de.shop.util.TestConstants.PASSWORD_FALSCH;
 import static de.shop.util.TestConstants.USERNAME;
+import static de.shop.util.TestConstants.USERNAME_MITARBEITER;
 import static de.shop.util.TestConstants.USERNAME_ADMIN;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_CONFLICT;
@@ -295,7 +297,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 		kunde.setPasswordWdh(neuesPassword);
 		kunde.addRollen(Arrays.asList(RolleType.KUNDE, RolleType.MITARBEITER));
 
-		Response response = getHttpsClient(USERNAME, PASSWORD)
+		Response response = getHttpsClient(USERNAME_MITARBEITER, PASSWORD_MITARBEITER)
 				.target(KUNDEN_URI).request().post(json(kunde));
 
 		// Then
@@ -358,7 +360,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 		kunde.setAdresse(adresse);
 
 		// When
-		final Response response = getHttpsClient(USERNAME, PASSWORD)
+		final Response response = getHttpsClient(USERNAME_MITARBEITER, PASSWORD_MITARBEITER)
 				.target(KUNDEN_URI).request().accept(APPLICATION_JSON)
 				// engl. Fehlermeldungen ohne Umlaute ;-)
 				.acceptLanguage(ENGLISH).post(json(kunde));
@@ -455,7 +457,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 		// Nachnamen bauen
 		kunde.setNachname(neuerNachname);
 
-		response = getHttpsClient(USERNAME, PASSWORD).target(KUNDEN_URI)
+		response = getHttpsClient(USERNAME_MITARBEITER, PASSWORD_MITARBEITER).target(KUNDEN_URI)
 				.request().accept(APPLICATION_JSON).put(json(kunde));
 		// Then
 		assertThat(response.getStatus()).isEqualTo(HTTP_OK);
@@ -463,7 +465,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 		assertThat(kunde.getVersion()).isGreaterThan(origVersion);
 
 		// Erneutes Update funktioniert, da die Versionsnr. aktualisiert ist
-		response = getHttpsClient(USERNAME, PASSWORD).target(KUNDEN_URI)
+		response = getHttpsClient(USERNAME_MITARBEITER, PASSWORD_MITARBEITER).target(KUNDEN_URI)
 				.request().put(json(kunde));
 		assertThat(response.getStatus()).isEqualTo(HTTP_OK);
 		response.close();
@@ -485,9 +487,9 @@ public class KundeResourceTest extends AbstractResourceTest {
 				.request().accept(APPLICATION_JSON).get();
 		assertThat(response.getStatus()).isEqualTo(HTTP_OK);
 		response.close();
-		LOGGER.finer(KUNDEN_URI + "/" + kundeId + "/loeschen");
+		
 		response = getHttpsClient(USERNAME_ADMIN, PASSWORD_ADMIN)
-				.target(KUNDEN_URI + "/" + kundeId + "/loeschen").request()
+				.target(KUNDEN_URI + "/loeschen/" + kundeId).request()
 				.accept(APPLICATION_JSON).get();
 
 		// Then
@@ -508,10 +510,9 @@ public class KundeResourceTest extends AbstractResourceTest {
 		final Long kundeId = KUNDE_ID_DELETE_FORBIDDEN;
 
 		// When
-		final Response response = getHttpsClient(USERNAME, PASSWORD)
-				.target(KUNDEN_ID_URI)
-				.resolveTemplate(KundeResource.KUNDEN_ID_PATH_PARAM, kundeId)
-				.request().delete();
+		Response response = getHttpsClient(USERNAME, PASSWORD)
+				.target(KUNDEN_URI + "/loeschen/" + kundeId).request()
+				.accept(APPLICATION_JSON).get();
 
 		// Then
 		assertThat(response.getStatus()).isIn(HTTP_FORBIDDEN, HTTP_NOT_FOUND);

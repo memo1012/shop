@@ -459,25 +459,22 @@ public class KundeResource {
 	 *            des zu l&ouml;schenden Kunden
 	 */
 	@GET
-	@Path("{id:[1-9][0-9]*}/loeschen")
+	@Path("loeschen/{id:[1-9][0-9]*}")
 	@Produces({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
 	@Transactional
 	public Response deleteKunde(@PathParam("id") Long kundeId) {
 		// Vorhandenen Kunden ermitteln
 		// final Locale locale = localeHelper.getLocale(headers);
-		final Kunde origKunde = ks.findKundeById(kundeId,
-				FetchType.NUR_KUNDE);
+		final Kunde origKunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE);
 		if (origKunde == null) {
-			final String msg = "Kein Kunde gefunden mit der ID "
-					+ kundeId;
+			final String msg = "Kein Kunde gefunden mit der ID " + kundeId;
 			throw new NotFoundException(msg);
 		}
 		LOGGER.tracef("Kunde vorher: %s", origKunde);
 
-		Kunde kunde = ks.findKundeById(kundeId,
-				FetchType.NUR_KUNDE);
+		Kunde kunde = ks.findKundeById(kundeId, FetchType.NUR_KUNDE);
 		kunde.setAktiv(false);
-		
+
 		// Daten des vorhandenen Kunden ueberschreiben
 		origKunde.setValues(kunde);
 		LOGGER.tracef("Kunde nachher: %s", origKunde);
@@ -488,6 +485,7 @@ public class KundeResource {
 
 		return Response.ok(kunde).links(getTransitionalLinks(kunde, uriInfo))
 				.build();
+
 	}
 
 	@Path("{id:[1-9][0-9]*}/file")

@@ -37,10 +37,10 @@ public final class TestConstants {
 	public static final String ARTIKEL_BEZEICHNUNG_URI = ARTIKEL_URI + "/bezeichnung/{" + ArtikelResource.PARAM_BEZEICHNUNG + "}";
 	
 	// Username und Password
-	public static final String USERNAME = "102";
-	public static final String PASSWORD = "102";
-	public static final String USERNAME_MITARBEITER = "101";
-	public static final String PASSWORD_MITARBEITER = "101";
+	public static final String USERNAME = "105";
+	public static final String PASSWORD = "105";
+	public static final String USERNAME_MITARBEITER = "102";
+	public static final String PASSWORD_MITARBEITER = "102";
 	public static final String USERNAME_ADMIN = "1";
 	public static final String PASSWORD_ADMIN = "1";
 	public static final String PASSWORD_FALSCH = "falsch";
