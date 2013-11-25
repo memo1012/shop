@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -58,6 +59,7 @@ public class BestellungResource {
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	private static final String NOT_FOUND_USERNAME = "bestellung.notFound.username";
 	private static final String NOT_FOUND_ID_ARTIKEL = "artikel.notFound.id";
+	private static final String NOT_FOUND_ID_BESTELLUNG = "bestellung.notFound.id";
 
 	@Context
 	private UriInfo uriInfo;
@@ -304,5 +306,35 @@ public class BestellungResource {
 				       .build();
 	}
 	
-	
+	/*
+	 * Bestellung Updaten --> d.h. Flag Status auf Verschickt setzen 
+	 * und Lieferung auslösen
+	 */
+	@PUT
+	@Consumes({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
+	@Produces({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
+	@Transactional
+	public Response updateBestellung(@Valid Bestellung bestellung) {
+		//Vorhandene Bestellung ermitteln
+		final Bestellung orgBestellung = bs.findBestellungById(bestellung.getId(), FetchType.NUR_BESTELLUNG);
+		if (orgBestellung == null) {
+			throw new NotFoundException(NOT_FOUND_ID_BESTELLUNG, bestellung.getId());
+		}
+		LOGGER.tracef("Bestellung vorher = %s", orgBestellung);
+		
+		//Daten der vorhandenen Bestellung überschreiben
+		orgBestellung.setValues(bestellung);
+		LOGGER.tracef("Bestellung nachher %s", orgBestellung);
+		
+		//Update durchführen
+		bestellung = bs.updateBestellung(orgBestellung);
+		
+		
+		setStructuralLinks(bestellung, uriInfo);
+		
+		return Response.ok(bestellung)
+					   .links(getTransitionalLinks(bestellung, uriInfo))
+					   .build();
+		
+	}
 }

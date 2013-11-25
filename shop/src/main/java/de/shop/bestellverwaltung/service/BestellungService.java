@@ -70,5 +70,8 @@ public interface BestellungService {
 	 * @return Die neue Lieferung einschliesslich generierter ID
 	 */
 	Lieferung createLieferung(Lieferung lieferung);
+	
+	Bestellung updateBestellung(Bestellung bestellung);
+
 }
 

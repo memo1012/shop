@@ -55,7 +55,7 @@ import org.jboss.logging.Logger;
 import de.shop.kundenverwaltung.domain.Kunde;
 
 @Entity
-@Table(name = "bestellung", indexes = { @Index(columnList = "kunde_fk")})
+@Table(name = "bestellung", indexes = { @Index(columnList = "kunde_fk") })
 @Inheritance
 @NamedQueries({
 		@NamedQuery(name = Bestellung.FIND_BESTELLUNGEN_BY_KUNDEID, query = "SELECT b"
@@ -110,6 +110,9 @@ public class Bestellung implements Serializable {
 	@Version
 	@Basic(optional = false)
 	private int version = ERSTE_VERSION;
+
+	@Column(name = "status", length = 1)
+	private StatusType status;
 
 	@OneToMany(fetch = EAGER, cascade = { PERSIST, REMOVE })
 	@JoinColumn(name = "bestellung_fk", nullable = false)
@@ -261,6 +264,16 @@ public class Bestellung implements Serializable {
 				lieferungen);
 	}
 
+	public void setValues(Bestellung b) {
+		id = b.id;
+		kunde = b.kunde;
+		kundeUri = b.kundeUri;
+		version = b.version;
+		bestellpositionen = b.bestellpositionen;
+		lieferungen = b.lieferungen;
+		status = b.status;
+	}
+
 	public Date getErzeugt() {
 		return erzeugt == null ? null : (Date) erzeugt.clone();
 	}
@@ -284,11 +297,19 @@ public class Bestellung implements Serializable {
 				.clone();
 	}
 
+	public StatusType getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusType status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
-		return "Bestellung [id=" + id + ", version=" + version + ", kundeUri="
-				+ kundeUri + ", erzeugt=" + erzeugt + ", aktualisiert="
-				+ aktualisiert + ']';
+		return "Bestellung [id=" + id + ", status=" + status + ", version="
+				+ version + ", kundeUri=" + kundeUri + ", erzeugt=" + erzeugt
+				+ ", aktualisiert=" + aktualisiert + ']';
 	}
 
 	@Override

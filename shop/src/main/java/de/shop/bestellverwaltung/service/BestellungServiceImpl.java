@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.Collections;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.event.Event;
@@ -13,7 +14,10 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import de.shop.bestellverwaltung.domain.StatusType;
+
 import org.jboss.logging.Logger;
+
 import javax.enterprise.context.Dependent;
 
 import de.shop.bestellverwaltung.domain.Bestellposition;
@@ -170,7 +174,36 @@ public class BestellungServiceImpl implements Serializable, BestellungService {
 		return bestellung;
 	}
 	
-	
+	@Override
+	public Bestellung updateBestellung(Bestellung bestellung) {
+		if (bestellung == null) {
+			return null;
+		}
+		//Bestellung vom EntityManager trennen
+		
+		em.detach(bestellung);
+		
+		
+		/*	Prüfen ob Lieferung schon existiert 
+		 * Wenn das der Fall ist prüfen ob StatusFlag noch InBearbeitung, dann auf Verschickt setzen
+		 * auf jeden Fall eine Exception werfen, da nach Versenden
+		 * keine Bearbeitung an der Bestellung mehr möglich !
+		 *  
+		 */
+		if (bestellung.getLieferungen() != null) 	{
+					
+			throw new BestellungVerschicktException(bestellung.getId());
+		}
+		
+		bestellung.setStatus(StatusType.VERSCHICKT); 
+		
+		
+		bestellung = em.merge(bestellung);
+		
+		return bestellung;
+		
+		
+	}
 
 	/*
 	 * private void validateBestellung(Bestellung bestellung, Locale locale,
