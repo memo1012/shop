@@ -97,14 +97,14 @@ public class BestellungServiceImpl implements Serializable, BestellungService {
 		if (kunde == null) {
 			return Collections.emptyList();
 		}
-
+		
 		List<Bestellung> bestellungen;
 		switch (fetch) {
 		case NUR_BESTELLUNG:
 			bestellungen = em
-					.createNamedQuery(Bestellung.FIND_BESTELLUNGEN_BY_KUNDEID,
+					.createNamedQuery(Bestellung.FIND_BESTELLUNGEN_BY_KUNDE,
 							Bestellung.class)
-					.setParameter(Bestellung.PARAM_KUNDEID, kunde.getId())
+					.setParameter(Bestellung.PARAM_KUNDE, kunde)
 					.getResultList();
 			break;
 		case MIT_LIEFERUNGEN:

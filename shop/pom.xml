@@ -55,9 +55,9 @@
 	
 	<!-- scm = source code management = Versionsmanagement -->
 	<scm>
-		<connection>scm:git:https://github.com/juergenzimmermann/shop.git</connection>
-		<url>https://github.com/juergenzimmermann/shop.git</url>
-		<developerConnection>scm:git:https://github.com/juergenzimmermann/shop.git</developerConnection>
+		<connection>scm:git:https://github.com/memo1012/shop.git</connection>
+		<url>https://github.com/memo1012/shop.git</url>
+		<developerConnection>scm:git:https://github.com/memo1012/shop.git</developerConnection>
 	</scm>
 	
 	<licenses>

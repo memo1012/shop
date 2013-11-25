@@ -38,7 +38,8 @@ public class Adresse implements Serializable {
 	private static final long serialVersionUID = -5108148468525006134L;
 	private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 	
-	private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]";
+	
+	private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]+";
 	public static final int PLZ_LENGTH_MAX = 5;
 	public static final int ORT_LENGTH_MIN = 2;
 	public static final int ORT_LENGTH_MAX = 32;
@@ -46,18 +47,12 @@ public class Adresse implements Serializable {
 	public static final int STRASSE_LENGTH_MAX = 32;
 	public static final int HAUSNR_LENGTH_MAX = 4;
 
+
 	@Id
 	@GeneratedValue
 	@Column(nullable = false, updatable = false)
 	private Long id = KEINE_ID;
 	
-	/*
-	@Id
-	@GeneratedValue
-	@Column(nullable = false, updatable = false)
-	private Long id = KEINE_ID;
-	*/
-
 	@Column(length = PLZ_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{kundenverwaltung.adresse.plz.notNull}")
 	@Pattern(regexp = "\\d{5}", message = "{kundenverwaltung.adresse.plz}")
@@ -66,13 +61,13 @@ public class Adresse implements Serializable {
 	@Column(length = ORT_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{kundenverwaltung.adresse.ort.notNull}")
 	@Size(min = ORT_LENGTH_MIN, max = ORT_LENGTH_MAX, message = "{kundenverwaltung.adresse.ort.length}")
-	//@Pattern(regexp = NAME_PATTERN, message = "{kundenverwaltung.kunde.ort.pattern}")
+	@Pattern(regexp = NAME_PATTERN, message = "{kundenverwaltung.kunde.ort.pattern}")
 	private String ort;
 
 	@Column(length = STRASSE_LENGTH_MAX, nullable = false)
 	@NotNull(message = "{kundenverwaltung.adresse.strasse.notNull}")
 	@Size(min = STRASSE_LENGTH_MIN, max = STRASSE_LENGTH_MAX, message = "{kundenverwaltung.adresse.strasse.length}")
-	//@Pattern(regexp = NAME_PATTERN, message = "{kundenverwaltung.kunde.strasse.pattern}")
+	@Pattern(regexp = NAME_PATTERN, message = "{kundenverwaltung.kunde.strasse.pattern}")
 	private String strasse;
 	
 	@Version
@@ -86,7 +81,7 @@ public class Adresse implements Serializable {
 
 	@OneToOne
 	@JoinColumn(name = "kunde_fk", nullable = false, unique = true)
-	@NotNull(message = "{kundenverwaltung.adresse.kunde.notNull}")
+	//@NotNull(message = "{kundenverwaltung.adresse.kunde.notNull}")
 	@XmlTransient //@JsonIgnore
 	private Kunde kunde;
 

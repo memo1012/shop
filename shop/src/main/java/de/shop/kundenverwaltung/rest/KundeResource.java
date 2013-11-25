@@ -299,17 +299,17 @@ public class KundeResource {
 			throw new NotFoundException("Kein Kunde mit der ID " + kundeId
 					+ " gefunden.");
 		}
-
+		
 		final List<Bestellung> bestellungen = bs.findBestellungenByKunde(kunde,
 				BestellungService.FetchType.NUR_BESTELLUNG);
-
+		
 		// URIs innerhalb der gefundenen Bestellungen anpassen
 		if (bestellungen != null) {
 			for (Bestellung bestellung : bestellungen) {
 				bestellungResource.setStructuralLinks(bestellung, uriInfo);
 			}
 		}
-
+		
 		// URLs innerhalb der gefundenen Bestellungen anpassen
 		// for (Bestellung bestellung : bestellungen) {
 		// uriHelperBestellung.updateUriBestellung(bestellung, uriInfo);

@@ -62,6 +62,10 @@ import de.shop.kundenverwaltung.domain.Kunde;
 				+ " FROM   Bestellung b"
 				+ " WHERE  b.kunde = :"
 				+ Bestellung.PARAM_KUNDEID),
+		@NamedQuery(name = Bestellung.FIND_BESTELLUNGEN_BY_KUNDE, query = "SELECT b"
+				+ " FROM   Bestellung b"
+				+ " WHERE  b.kunde = :"
+				+ Bestellung.PARAM_KUNDE),
 		@NamedQuery(name = Bestellung.FIND_BESTELLUNG_BY_ID_FETCH_LIEFERUNGEN, query = "SELECT DISTINCT b"
 				+ " FROM   Bestellung b LEFT JOIN FETCH b.lieferungen"
 				+ " WHERE  b.id = :" + Bestellung.PARAM_ID),
@@ -82,6 +86,8 @@ public class Bestellung implements Serializable {
 	private static final String PREFIX = "Bestellung.";
 	public static final String FIND_BESTELLUNGEN_BY_KUNDEID = PREFIX
 			+ "findBestellungenByKundeId";
+	public static final String FIND_BESTELLUNGEN_BY_KUNDE = PREFIX
+			+ "findBestellungenByKunde";
 	public static final String FIND_BESTELLUNG_BY_ID_FETCH_LIEFERUNGEN = PREFIX
 			+ "findBestellungenByIdFetchLieferungen";
 	public static final String FIND_KUNDE_BY_ID = PREFIX
@@ -90,6 +96,7 @@ public class Bestellung implements Serializable {
 	public static final String FIND_BESTELLUNGEN_BY_KUNDEID_FETCH_LIEFERUNGEN = PREFIX
 			+ "findBestellungenByKundeIdFetchLieferungen";
 	public static final String PARAM_KUNDEID = "kundeId";
+	public static final String PARAM_KUNDE = "kunde";
 	public static final String PARAM_ID = "id";
 
 	@Id

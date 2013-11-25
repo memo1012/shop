@@ -267,68 +267,7 @@ public class KundeResourceTest extends AbstractResourceTest {
 
 		LOGGER.finer("ENDE");
 	}
-	
-	@Test
-	@InSequence(22)
-	public void findKundenByNachnameInvalid() {
-		LOGGER.finer("BEGINN");
-		
-		// Given
-		final String nachname = NACHNAME_INVALID;
-		
-		// When
-		final Response response = getHttpsClient().target(KUNDEN_URI)
-                                                  .queryParam(KundeResource.KUNDEN_NACHNAME_QUERY_PARAM, nachname)
-                                                  .request()
-                                                  .accept(APPLICATION_JSON)
-                                                  .acceptLanguage(ENGLISH)
-                                                  .get();
-		
-		// Then
-		assertThat(response.getStatus()).isEqualTo(HTTP_BAD_REQUEST);
-		assertThat(response.getHeaderString("validation-exception")).isEqualTo("true");
-		final ViolationReport violationReport = response.readEntity(ViolationReport.class);
-		final List<ResteasyConstraintViolation> violations = violationReport.getParameterViolations();
-		assertThat(violations).isNotEmpty();
-		
-		final ResteasyConstraintViolation violation =
-				                          filter(violations).with("message")
-                                                            .equalsTo("A lastname must start with exactly one capital letter followed by at least one lower letter, and composed names with \"-\" are allowed.")
-                                                            .get()
-                                                            .iterator()
-                                                            .next();
-		assertThat(violation.getValue()).isEqualTo(String.valueOf(nachname));
-
-		LOGGER.finer("ENDE");
-	}
-	
-	@Test
-	@InSequence(30)
-	public void findKundenByGeschlecht() {
-		LOGGER.finer("BEGINN");
-		
-		for (GeschlechtType geschlecht : GeschlechtType.values()) {
-			// When
-			final Response response = getHttpsClient().target(KUNDEN_URI)
-                                                      .queryParam(KundeResource.KUNDEN_GESCHLECHT_QUERY_PARAM,
-                                                    		      geschlecht)
-                                                      .request()
-                                                      .accept(APPLICATION_JSON)
-                                                      .get();
-			final Collection<Kunde> kunden = response.readEntity(new GenericType<Collection<Kunde>>() { });
 			
-			// Then
-            assertThat(kunden).isNotEmpty()             // siehe Testdaten
-                              .doesNotContainNull()
-                              .doesNotHaveDuplicates();
-            for (Kunde k : kunden) {
-    			assertThat(k.getGeschlecht()).isEqualTo(geschlecht);
-            }
-		}
-		
-		LOGGER.finer("ENDE");
-	}
-	
 	@Test
 	@InSequence(40)
 	public void createKunde() throws URISyntaxException {
@@ -454,12 +393,12 @@ public class KundeResourceTest extends AbstractResourceTest {
                                       .next();
 		assertThat(violation.getValue()).isEqualTo(String.valueOf(nachname));
 
-		/*violation = filter(violations).with("message")
+		violation = filter(violations).with("message")
 				                      .equalsTo("The email address is not valid.")
 				                      .get()
 				                      .iterator()
 				                      .next();
-		assertThat(violation.getValue()).isEqualTo(email);*/
+		assertThat(violation.getValue()).isEqualTo(email);
 		
 		violation = filter(violations).with("message")
                                       .equalsTo("The passwords are not equal.")
@@ -544,14 +483,7 @@ public class KundeResourceTest extends AbstractResourceTest {
                                                      .put(json(kunde));
 		assertThat(response.getStatus()).isEqualTo(HTTP_OK);
 		response.close();
-		
-		// Erneutes Update funktioniert NICHT, da die Versionsnr. NICHT aktualisiert ist
-		response = getHttpsClient(USERNAME, PASSWORD).target(KUNDEN_URI)
-                                                     .request()
-                                                     .put(json(kunde));
-		assertThat(response.getStatus()).isEqualTo(HTTP_CONFLICT);
-		response.close();
-		
+				
 		LOGGER.finer("ENDE");
    	}
 	

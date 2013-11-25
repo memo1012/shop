@@ -326,7 +326,7 @@ public class Kunde implements Serializable, Cloneable {
 
 	//Validation from Post kunde gibt hier problem
 	@OneToOne(cascade = { PERSIST, REMOVE }, mappedBy = "kunde")
-	//@Valid
+	@Valid
 	@NotNull(message = "{kundenverwaltung.kunde.adresse.notNull}")
 	private Adresse adresse;
 
