@@ -51,7 +51,7 @@ import de.shop.util.persistence.File;
 import de.shop.util.rest.NotFoundException;
 import de.shop.util.rest.UriHelper;
 
-@Path("/kunden")
+@Path("/kunden/")
 @Produces({ APPLICATION_JSON, APPLICATION_XML + ";qs=0.75",
 		TEXT_XML + ";qs=0.5" })
 @Consumes
