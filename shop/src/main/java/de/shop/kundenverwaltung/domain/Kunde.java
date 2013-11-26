@@ -120,9 +120,11 @@ import de.shop.auth.domain.RolleType;
 				+ " FROM  Kunde k") })
 
 
-@NamedEntityGraphs({ @NamedEntityGraph(name = Kunde.GRAPH_BESTELLUNGEN, attributeNodes = @NamedAttributeNode("bestellungen")) })
-@ScriptAssert(lang = "javascript", script = "(_this.password == null && _this.passwordWdh == null)"
-		+ "|| (_this.password != null && _this.password.equals(_this.passwordWdh))", message = "{kundenverwaltung.kunde.password.notEqual}", 
+		@NamedEntityGraphs({ @NamedEntityGraph(name = Kunde.GRAPH_BESTELLUNGEN, 
+		attributeNodes = @NamedAttributeNode("bestellungen")) })
+		@ScriptAssert(lang = "javascript", script = "(_this.password == null && _this.passwordWdh == null)"
+		+ "|| (_this.password != null && _this.password.equals(_this.passwordWdh))",
+		message = "{kundenverwaltung.kunde.password.notEqual}", 
 		groups = PasswordGroup.class)
 @XmlRootElement
 @Formatted
@@ -269,7 +271,7 @@ public class Kunde implements Serializable, Cloneable {
 	@XmlTransient
 	private File file;
 
-	@Column()
+	@Column(nullable = false)
 	private Boolean aktiv = true;
 
 	@Column(length = PASSWORD_LENGTH_MAX)

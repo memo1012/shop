@@ -37,7 +37,7 @@ public class FileHelper implements Serializable {
 
 	// Zulaessige Extensionen fuer Upload mit einer Webseite
 	private String extensionen;
-
+	private static long TIME = 1000 ;
 	// Verzeichnis fuer hochgeladene Dateien
 	private transient Path path;
 
@@ -147,7 +147,7 @@ public class FileHelper implements Serializable {
 			// fertig war.
 			// Als Zeitunterschied bzw. Toleranz sollten 1000 Millisekunden
 			// ausreichend sein.
-			if (creationTime + 1000 > file.getAktualisiert().getTime()) {
+			if (creationTime + TIME > file.getAktualisiert().getTime()) {
 				LOGGER.tracef("Die Datei %s existiert bereits", filename);
 				return;
 			}

@@ -169,7 +169,7 @@ public class KundeResource {
 		final Link self = Link.fromUri(getUriKunde(kunde, uriInfo))
 				.rel(SELF_LINK).build();
 
-		return new Link[] { self };
+		return new Link[] {self};
 	}
 
 	public Link[] getTransitionalLinksKunde(List<? extends Kunde> kunde,
