@@ -57,3 +57,4 @@ public class JaxRsLogFilter implements ContainerRequestFilter,
 		LOGGER.debugf("Location: %s", responseCtx.getLocation());
 	}
 }
+

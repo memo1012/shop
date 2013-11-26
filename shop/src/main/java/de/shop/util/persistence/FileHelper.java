@@ -37,10 +37,13 @@ public class FileHelper implements Serializable {
 
 	// Zulaessige Extensionen fuer Upload mit einer Webseite
 	private String extensionen;
-	private static long ZEIT = 1000;
+	
+	//Eine Zeit
+	private static final Integer ZEIT = 1000;
+
+	
 	// Verzeichnis fuer hochgeladene Dateien
 	private transient Path path;
-
 	@PostConstruct
 	private void postConstruct() {
 		// Bei .flv wird der Mime-Type weder bei RichFaces noch bei RESTEasy

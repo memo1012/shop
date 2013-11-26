@@ -73,3 +73,4 @@ public class UserAgentProcessor implements Serializable {
 		return isPhone() || isTablet();
 	}
 }
+
