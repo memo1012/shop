@@ -12,18 +12,18 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import de.shop.kundenverwaltung.domain.Kunde;
-import de.shop.kundenverwaltung.service.KundeValidationException;
+import de.shop.kundenverwaltung.service.AbstractKundeValidationException;
 import de.shop.util.interceptor.Log;
 
 
 @Provider
 @ApplicationScoped
 @Log
-public class KundeValidationExceptionMapper implements ExceptionMapper<KundeValidationException> {
+public class KundeValidationExceptionMapper implements ExceptionMapper<AbstractKundeValidationException> {
 	private static final String NEWLINE = System.getProperty("line.separator");
 	
 	@Override
-	public Response toResponse(KundeValidationException e) {
+	public Response toResponse(AbstractKundeValidationException e) {
 		final Collection<ConstraintViolation<Kunde>> violations = e.getViolations();
 		final StringBuilder sb = new StringBuilder();
 		for (ConstraintViolation<Kunde> v : violations) {

@@ -15,9 +15,6 @@ import de.shop.util.interceptor.Log;
 import de.shop.util.rest.Messages;
 
 
-/**
- * @author <a href="mailto:Juergen.Zimmermann@HS-Karlsruhe.de">J&uuml;rgen Zimmermann</a>
- */
 @Provider
 @Log
 public class EmailExistsExceptionMapper implements ExceptionMapper<EmailExistsException> {
