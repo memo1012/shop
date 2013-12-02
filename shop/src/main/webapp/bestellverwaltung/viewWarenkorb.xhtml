@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:cc="http://java.sun.com/jsf/composite/components"
+	  xmlns:r="http://richfaces.org/rich">
+
+	<body>
+		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+			<ui:param name="pageTitle" value="#{msgBv['viewWarenkorb.title']}"/>
+		
+			<ui:define name="content">
+				<h1><h:outputText id="heading"
+				                  value="#{msgBv['viewWarenkorb.heading']}"
+				                  rendered="#{not empty warenkorb.positionen}"/></h1>
+				
+				<h:form id="warenkorbForm"
+				        rendered="#{not empty warenkorb.positionen}">
+					<r:dataTable id="warenkorbTabelle"
+					             value="#{warenkorb.positionen}"
+					             var="position"
+					             rowClasses="odd-row, even-row"
+					             styleClass="tabelleMitZebrastil">
+						<r:column id="artikelIdSpalte">
+							<f:facet name="header">
+								#{msgBv['viewWarenkorb.artikel.id']}
+							</f:facet>
+							#{position.artikel.id}
+						</r:column>
+						
+						<r:column id="bezeichnungSpalte">
+							<f:facet name="header">
+								#{msgBv['viewWarenkorb.artikel.bezeichnung']}
+							</f:facet>
+							#{position.artikel.bezeichnung}
+						</r:column>
+			
+						<r:column id="anzahlSpalte">
+							<f:facet name="header">
+								#{msgBv['viewWarenkorb.anzahl']}
+							</f:facet>
+							<r:inputNumberSpinner id="anzahl"
+						                          value="#{position.anzahl}"
+						                          minValue="0"
+						                          maxValue="99"
+						                          inputSize="2"/>
+						</r:column>
+						
+						<r:column id="deleteButton">
+							<h:commandLink id="deleteLink"
+									       action="#{warenkorb.remove(position)}"
+									       alt="#{msgBv['viewWarenkorb.deleteButtonAlt']}"
+									       onclick="return confirm('#{msgBv['viewWarenkorb.deletePositionBestaetigung']}')">
+								<h:graphicImage id="deleteIcon"
+			    	                            name="delete.gif"
+			        	                        library="images"/>
+			        	    </h:commandLink>
+						</r:column>
+						
+						<f:facet name="footer">
+		    				<h:panelGroup id="buttons">
+								<h:commandButton id="updateButton"
+								                 action="/artikelverwaltung/listArtikel"
+										         value="#{msgBv['viewWarenkorb.update']}">
+									<f:param id="initParam" name="init" value="true"/>
+								</h:commandButton>
+								#{' '}
+								<h:commandButton type="reset" value="#{msgBv['viewWarenkorb.reset']}"/>
+								#{' '}
+								<h:commandButton id="bestellButton"
+												 action="/bestellverwaltung/confirmBestellung"
+										         value="#{msgBv['viewWarenkorb.bestellen']}"/>
+								<r:message id="bestellButtonFehlermeldung" for="bestellButton" rendered="#{authModel.loggedIn}"/>
+							</h:panelGroup>
+						</f:facet>
+						
+					</r:dataTable>
+					
+					<cc:zebrastil id="zebrastil"/>
+				</h:form>
+				
+			</ui:define>
+		</ui:composition>
+	</body>
+</html>

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:r="http://richfaces.org/rich"
+	  xmlns:s="http://hs-karlsruhe.de/shop">
+
+	<body>
+
+		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+			<ui:define name="metadata">
+				<f:event type="preRenderView" listener="#{artikelModel.loadLadenhueter}"/>
+				<!-- JSF 2.2:
+				<f:viewAction action="#{artikelModel.loadLadenhueter}">
+				-->
+			</ui:define>
+			
+			<ui:param name="pageTitle" value="#{msg['index.title']}"/>
+		
+			<ui:define name="content">
+				<h1 id="heading">#{msg['index.welcome']}</h1>
+				
+				<r:dataTable id="ladenhueterTabelle"
+				             var="artikel"
+				             value="#{artikelModel.ladenhueter}"
+				             rendered="#{not empty artikelModel.ladenhueter}">
+				             
+				    <f:facet name="header">
+				    	#{msg['index.ladenhueter']}
+					</f:facet>
+						 
+					<r:column id="idSpalte">
+						<f:facet name="header">
+							#{msg['index.artikelId']}
+						</f:facet>
+						#{artikel.id}
+					</r:column>
+							
+					<r:column id="bezeichnungSpalte">
+						<f:facet name="header">
+							#{msg['index.artikelBezeichnung']}
+						</f:facet>
+						#{artikel.bezeichnung}
+					</r:column>
+				</r:dataTable>
+				
+				<p id="datum">
+					#{msg['index.heute']}
+					<h:outputText id="aktuellesDatum" value="#{s:aktuellesDatum()}">
+						<f:convertDateTime type="date" dateStyle="full"/>
+					</h:outputText>
+				</p>
+			</ui:define>
+		</ui:composition>
+	</body>
+</html>

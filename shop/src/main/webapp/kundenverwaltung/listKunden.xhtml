@@ -1,0 +1,232 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	  xmlns:cc="http://java.sun.com/jsf/composite/components"
+	  xmlns:r="http://richfaces.org/rich">
+
+	<body>
+		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+			<ui:param name="pageTitle" value="#{msgKv['listKunden.title']}"/>
+		
+			<ui:define name="content">
+				<h:form id="form">
+					<r:panel id="suchePanel" header="#{msgKv['listKunden.sucheNeu']}">
+						<h:panelGrid id="sucheGrid" columns="4">
+							<h:outputLabel id="nachnameLabel"
+							               value="#{msgKv['listKunden.nachname']}"
+							               for="nachname"/>
+							             
+							<r:autocomplete id="nachname"
+							                value="#{kundeModel.nachname}"
+							                mode="ajax"
+							                minChars="1"
+							                autocompleteMethod="#{kundeModel.findNachnamenByPrefix}"> 
+								<!-- Validierung durch Javascript mit RichFaces -->
+								<r:validator/>
+							</r:autocomplete>
+			
+							<r:commandButton id="sucheButton"
+							                 action="#{kundeModel.findKundenByNachname}"
+											 value="#{msgKv['listKunden.submit']}"
+											 render="kundenPanel fehlermeldungNachname"/>
+							
+							<cc:bitteWarten id="inBearbeitung" msg="#{msgKv['listKunden.inBearbeitung']}"/>
+						</h:panelGrid>
+		
+						<r:messages id="fehlermeldungNachname" for="nachname"/>
+						<r:jQuery id="focus" selector="#nachname" query="focus()"/>
+					</r:panel>
+		
+					<p id="abstandZuMeldungen">
+						<r:messages id="globaleFehlermeldungen" globalOnly="true"/>
+					</p>
+				
+					<r:outputPanel id="kundenPanel">
+						<r:dataTable id="kundenTabelle"
+						             value="#{kundeModel.kunden}"
+						             var="kunde"
+						             rows="5"
+						             noDataLabel="#{msgKv['listKunden.keineDaten']}"
+						             rowClasses="odd-row, even-row"
+						             styleClass="tabelleMitZebrastil"
+						             cellspacing="10"
+						             rendered="#{not empty kundeModel.kunden or param.init ne 'true'}">
+							
+							<r:column id="idSpalte">
+								<f:facet name="header">
+					                 #{msgKv['listKunden.kundenr']}
+								</f:facet>
+								#{kunde.id}
+							</r:column>
+							
+							<r:column id="nachnameSpalte">
+								<f:facet name="header">
+									#{msgKv['listKunden.nachname']}
+								</f:facet>
+								<h:commandLink id="nachnamePopup" value="#{kunde.nachname}">
+									<r:componentControl target="popup" operation="show"/>
+								</h:commandLink>
+			
+								<r:popupPanel id="popup" modal="false" autosized="true" resizeable="false">
+									<f:facet name="header">
+										<h:outputFormat id="popupTitle" value="#{msgKv['viewKundePopup.title']}">
+											<f:param id="popupTitleId" value="#{kunde.id}"/>
+										</h:outputFormat>
+									</f:facet>
+									<f:facet name="controls">
+										<h:link id="hideControl"
+										        onclick="#{r:component('popup')}.hide(); return false;">
+											<h:graphicImage id="hideIcon"
+											                name="close.png"
+											                library="images"
+											                style="cursor:pointer"
+											                alt="#{msgKv['viewKundePopup.hide.button']}"/>
+										</h:link>
+									</f:facet>
+									<ui:include src="viewKundePopup.xhtml"/>
+									
+									<h:link id="closeLink"
+									        onclick="#{r:component('popup')}.hide(); return false;">
+										#{msgKv['viewKundePopup.hide.button']}
+									</h:link>
+								</r:popupPanel>
+		
+								<r:contextMenu id="ctxmenu"
+								               attachTo="nachnamePopup"
+								               hideDelay="600"
+								               jointPoint="bottomLeft"
+								               direction="autoRight"
+								               mode="server">
+									<r:menuItem id="detailsContext"
+										        label="#{msgKv['listKunden.detailsButtonAlt']}"
+										        icon="#{resource['images:details.gif']}"
+										        action="#{kundeModel.details(kunde)}"/>
+									<r:menuItem id="updateContext"
+										        label="#{msgKv['listKunden.editButtonAlt']}"
+										        icon="#{resource['images:edit.gif']}"
+										        action="#{kundeModel.selectForUpdate(kunde)}"/>
+									<r:menuSeparator id="menuSeparatorDelete"
+									                 rendered="#{r:isUserInRole('admin')}"/>
+									<r:menuItem id="deleteContext"
+										        label="#{msgKv['listKunden.deleteButtonAlt']}"
+										        icon="#{resource['images:delete.gif']}"
+										        action="#{kundeModel.delete(kunde)}"
+										        rendered="#{r:isUserInRole('admin')}"/>
+								</r:contextMenu>
+		
+							</r:column>
+							
+							<r:column id="vornameSpalte"
+							             sortBy="#{kunde.vorname}"
+							             sortOrder="#{kundeModel.vornameSortOrder}"
+							             sortMode="single"
+							             filterValue="#{kundeModel.vornameFilter}"
+							             filterExpression="#{fn:containsIgnoreCase(kunde.vorname,kundeModel.vornameFilter)}">
+								<f:facet name="header">
+									<h:panelGroup id="vornameHeader">
+										<h:panelGroup id="vornameHeaderNotEmpty" rendered="#{not empty kundeModel.kunden}">
+											<r:commandLink id="vornameLink"
+											               value="#{msgKv['listKunden.vorname']}"
+											               render="kundenTabelle"
+											               action="#{kundeModel.sortByVorname}"/>
+											<br/>
+											<h:inputText id="vornameFilter"
+											             value="#{kundeModel.vornameFilter}"
+											             size="3"
+											             maxlength="4">
+												<r:ajax event="keyup" render="kundenTabelle"/>
+											</h:inputText>
+										</h:panelGroup>
+										<h:outputText id="vornameHeaderEmpty" value="#{msgKv['listKunden.vorname']}" rendered="#{empty kundeModel.kunden}"/>
+									</h:panelGroup>
+								</f:facet>
+								#{kunde.vorname}
+							</r:column>
+			
+							<r:column id="detailsSpalte" rendered="#{not empty kundeModel.kunden}">
+								<h:commandLink id="detailsButton"
+									           action="#{kundeModel.details(kunde)}"
+											   alt="#{msgKv['listKunden.detailsButtonAlt']}">
+									<h:graphicImage id="detailsIcon"
+				    	                            name="details.gif"
+				        	                        library="images"/>
+				        	    </h:commandLink>
+							</r:column>
+			
+							<r:column id="getSpalte" rendered="#{not empty kundeModel.kunden}">
+								<h:link id="detailsGET"
+								        outcome="/kundenverwaltung/viewKundeGET"
+										alt="#{msgKv['listKunden.detailsButtonGETAlt']}">
+									<f:param id="idParam" name="kundeId" value="#{kunde.id}"/>
+									<h:graphicImage id="detailsIconGET"
+				    	                            name="details2.gif"
+				        	                        library="images"/>
+								</h:link>
+							</r:column>
+											
+							<r:column id="editSpalte" rendered="#{not empty kundeModel.kunden}">
+								<h:commandLink id="editButton"
+											   action="#{kundeModel.selectForUpdate(kunde)}"
+										       alt="#{msgKv['listKunden.editButtonAlt']}">
+									<h:graphicImage id="editIcon"
+				    	                            name="edit.gif"
+				        	                        library="images"/>
+				        	    </h:commandLink>
+							</r:column>
+							
+							<r:column id="deleteSpalte" rendered="#{not empty kundeModel.kunden and r:isUserInRole('admin')}">
+								<r:commandLink id="deleteButton"
+											   action="#{kundeModel.delete(kunde)}"
+										       alt="#{msgKv['listKunden.deleteButtonAlt']}"
+										       onclick="return confirm('#{msgKc['listKunden.deleteKundeBestaetigung']}')"
+										       render="@form :globaleFehlermeldungen">
+									<h:graphicImage id="deleteIcon"
+				    	                            name="delete.gif"
+				        	                        library="images"/>
+				        	    </r:commandLink>
+							</r:column>
+						</r:dataTable>
+						
+						<cc:zebrastilMitDatascroller id="zebrastil" for="kundenTabelle" maxPages="10" rendered="#{not empty kundeModel.kunden}"/>
+						<!--
+						<p id="abstandZuScroller">
+							<h:panelGroup id="scrollerGroup" rendered="#{not empty kundeModel.kunden}">
+								<r:dataScroller id="dataScroller"
+								                for="kundenTabelle"
+								                maxPages="10"
+								                rendered="#{kundeModel.kunden.size() > 5}"/>
+								
+								<r:outputPanel id="outputPanelZebra" ajaxRendered="true">
+									<r:jQuery id="odd"
+									          selector=".tabelleMitZebrastil tr:odd"
+									          query="addClass('odd-row')"
+									          timing="domready"/>
+									<r:jQuery id="even"
+									          selector=".tabelleMitZebrastil tr:even"
+									          query="addClass('even-row')"
+									          timing="domready"/>
+									<r:jQuery id="mouseover"
+									          selector=".tabelleMitZebrastil tr"
+									          event="mouseover"
+									          query="jQuery(this).addClass('active-row')"
+									          timing="domready"/>
+									<r:jQuery id="mouseout"
+									          selector=".tabelleMitZebrastil tr"
+									          event="mouseout"
+									          query="jQuery(this).removeClass('active-row')"
+									          timing="domready"/>
+								</r:outputPanel>
+							</h:panelGroup>
+						</p>
+						-->
+					</r:outputPanel>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</body>
+</html>

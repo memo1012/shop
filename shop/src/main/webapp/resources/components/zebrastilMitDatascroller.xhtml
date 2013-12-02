@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:r="http://richfaces.org/rich">
+		
+	<h:body>
+		<cc:interface>
+			<cc:attribute name="for" required="true"/>
+			<cc:attribute name="maxPages" required="true"/>
+			<cc:attribute name="rendered" required="true"/>
+		</cc:interface>
+		
+		<cc:implementation>
+			<p id="abstandZuScroller">
+				<h:panelGroup id="scrollerGroup" rendered="#{cc.attrs.rendered}">
+					<r:dataScroller id="dataScroller"
+					                for="#{cc.attrs.for}"
+					                maxPages="#{cc.attrs.maxPages}"/>
+					
+					<r:outputPanel id="outputPanelZebra" ajaxRendered="true">
+						<r:jQuery id="odd"
+						          selector=".tabelleMitZebrastil tr:odd"
+						          query="addClass('odd-row')"
+						          timing="domready"/>
+						<r:jQuery id="even"
+						          selector=".tabelleMitZebrastil tr:even"
+						          query="addClass('even-row')"
+						          timing="domready"/>
+						<r:jQuery id="mouseover"
+						          selector=".tabelleMitZebrastil tr"
+						          event="mouseover"
+						          query="jQuery(this).addClass('active-row')"
+						          timing="domready"/>
+						<r:jQuery id="mouseout"
+						          selector=".tabelleMitZebrastil tr"
+						          event="mouseout"
+						          query="jQuery(this).removeClass('active-row')"
+						          timing="domready"/>
+					</r:outputPanel>
+				</h:panelGroup>
+			</p>
+		</cc:implementation>
+	</h:body>
+</html>

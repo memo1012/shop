@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:cc="http://java.sun.com/jsf/composite/components"
+	  xmlns:r="http://richfaces.org/rich">
+
+	<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+		<ui:param name="pageTitle" value="#{msgAv['listArtikel.title']}"/>
+	
+		<ui:define name="content">
+			<h:form id="form">
+				<r:focus id="sucheFocus"/>
+				
+				<r:panel id="suchePanel" header="#{msgAv['listArtikel.sucheNeu']}">
+					<h:panelGrid id="sucheGrid" columns="4">
+						<h:outputLabel id="bezeichnungLabel"
+						               value="#{msgAv['listArtikel.bezeichnung']}"
+						               for="bezeichnung"/>
+
+						<!-- Kein Placeholder wegen <r:focus> -->
+						<h:inputText id="bezeichnung" value="#{artikelModel.bezeichnung}"/>
+		
+						<r:commandButton id="findButton"
+						                 action="#{artikelModel.findArtikelByBezeichnung}"
+								         value="#{msgAv['listArtikel.submit']}"
+								         render="artikelPanel sucheForm:fehlermeldungBezeichnung"/>
+						
+						<cc:bitteWarten id="inBearbeitung" msg="#{msgAv['listArtikel.inBearbeitung']}"/>
+					</h:panelGrid>
+				</r:panel>
+			
+				<p id="abstand1"/>
+			
+				<r:outputPanel id="artikelPanel">
+					<c:if test="#{not empty flash.artikel or param.init ne 'true'}">
+						<c:set var="artikel" value="#{flash.artikel}" scope="view"/>
+						<c:set target="#{flash}" property="artikel" value="#{artikel}"/>
+						
+						<r:dataTable id="artikelTabelle"
+						             value="#{artikel}"
+						             var="art"
+						             rows="5"
+						             noDataLabel="#{msgAv['listArtikel.keineDaten']}"
+						             rowClasses="odd-row, even-row"
+						             styleClass="tabelleMitZebrastil"
+						             cellspacing="10"
+						             rendered="#{not empty artikel or param.init ne 'true'}">
+							<r:column id="idSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.id']}
+								</f:facet>
+								#{art.id}
+							</r:column>
+							
+							<r:column id="bezeichnungSpalte">
+								<f:facet name="header">
+									#{msgAv['listArtikel.bezeichnung']}
+								</f:facet>
+								#{art.bezeichnung}
+							</r:column>
+							
+							<r:column id="buttonSpalte"
+							          rendered="#{not empty artikel}">
+								<h:commandLink id="warenkorbButton"
+											   action="#{warenkorb.add(art)}"
+										       alt="#{msgAv['listArtikel.alt.warenkorb']}">
+									<h:graphicImage id="warenkorbIcon"
+		    	                                    name="warenkorb.gif"
+		        	                                library="images"/>
+		        	            </h:commandLink>
+							</r:column>
+						</r:dataTable>
+						
+						<cc:zebrastilMitDatascroller id="zebrastilMitDatascroller" for="artikelTabelle" maxPages="10" rendered="#{not empty artikel}"/>
+					</c:if>
+				</r:outputPanel>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:r="http://richfaces.org/rich">
+		
+	<h:body>
+		<cc:interface>
+			<cc:attribute name="msg" required="true"/>
+		</cc:interface>
+		
+		<cc:implementation>
+			<r:status id="statusWaiting">
+				<f:facet name="start">
+					<h:panelGroup id="waitingGroup">
+						<h:graphicImage id="waitingGif"
+						                name="waiting.gif"
+						                library="images"/>
+						#{cc.attrs.msg}
+					</h:panelGroup>
+				</f:facet>
+			</r:status>
+		</cc:implementation>
+	</h:body>
+</html>

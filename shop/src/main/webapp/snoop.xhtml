@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:r="http://richfaces.org/rich">
+
+	<body>
+		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+			<ui:param name="pageTitle" value="Snoop JSF"/>
+		
+			<ui:define name="content">
+				<h2>Request information</h2>
+				<h:panelGrid id="requestInformation" columns="2" frame="border" rules="all">
+					<h:outputText id="lblURL" value="Requested URL:"/>
+					<h:outputText id="valURL" value="#{request.requestURL}"/>
+	
+					<h:outputText id="lblMethod" value="Request method:"/>
+					<h:outputText id="valMethod" value="#{request.method}"/>
+					
+					<h:outputText id="lblURI" value="Request URI:"/>
+					<h:outputText id="valURI" value="#{request.requestURI}"/>
+					
+					<h:outputText id="lblProtocol" value="Request protocol:"/>
+					<h:outputText id="valProtocol" value="#{request.protocol}"/>
+					
+					<h:outputText id="lblServletPath" value="Servlet path:"/>
+					<h:outputText id="valServletPath" value="#{request.servletPath}"/>
+					
+					<h:outputText id="lblPathInfo" value="Path info:"/>
+					<h:outputText id="valPathInfo" value="#{request.pathInfo}"/>
+					
+					<h:outputText id="lblPathTranslated" value="Path translated:"/>
+					<h:outputText id="valPathTranslated" value="#{request.pathTranslated}"/>
+					
+					<h:outputText id="lblContentLength" value="Content length:"/>
+					<h:outputText id="valContentLength" value="#{request.contentLength}"/>
+					
+					<h:outputText id="lblContentType" value="Content type:"/>
+					<h:outputText id="valContentType" value="#{request.contentType}"/>
+					
+					<h:outputText id="lblServerName" value="Server name:"/>
+					<h:outputText id="valServerName" value="#{request.serverName}"/>
+					
+					<h:outputText id="lblServerPort" value="Server port:"/>
+					<h:outputText id="valServerPort" value="#{request.serverPort}"/>
+					
+					<h:outputText id="lblRemoteUser" value="Remote user:"/>
+					<h:outputText id="valRemoteUser" value="#{request.remoteUser}"/>
+					
+					<h:outputText id="lblRemoteAddr" value="Remote address:"/>
+					<h:outputText id="valRemoteAddr" value="#{request.remoteAddr}"/>
+					
+					<h:outputText id="lblRemoteHost" value="Remote host:"/>
+					<h:outputText id="valRemoteHost" value="#{request.remoteHost}"/>
+					
+					<h:outputText id="lblAuthType" value="Authorization scheme:"/>
+					<h:outputText id="valAuthType" value="#{request.authType}"/>
+				</h:panelGrid>
+				
+				<p/>
+				
+<!-- Funktioniert bei WildFly nicht mit Mojarra 2.1.x, sondern nur mit 2.2.x
+				<r:dataTable id="tblRequestHeader"
+				             var="headerName"
+				             value="#{snoopModel.headerNames}"
+				             rendered="#{not empty snoopModel.headerNames}">
+				    <f:facet name="header">
+				    	Request headers
+					</f:facet>
+	
+					<r:column id="headerName">
+						<f:facet name="header">
+							Name
+						</f:facet>
+						#{headerName}
+					</r:column>
+	
+					<r:column id="headerValue">
+						<f:facet name="header">
+							Value
+						</f:facet>
+							#{request.getHeader(headerName)}
+					</r:column>
+				</r:dataTable>
+	
+				<p/>
+				
+				<r:dataTable id="tblRequestParameter"
+				             var="parameterName"
+				             value="#{snoopModel.parameterNames}"
+				             rendered="#{not empty snoopModel.parameterNames}">
+				    <f:facet name="header">
+				    	Request parameters
+					</f:facet>
+	
+					<r:column id="parameterName">
+						<f:facet name="header">
+							Name
+						</f:facet>
+						#{parameterName}
+					</r:column>
+	
+					<r:column id="parameterValue">
+						<f:facet name="header">
+							Value
+						</f:facet>
+						#{request.getParameter(parameterName)}
+					</r:column>
+	
+					<r:column id="parameterMultipleValues">
+						<f:facet name="header">
+							Multiple values
+						</f:facet>
+						<c:forEach items="#{request.getParameterValues(parameterName)}" var="value">
+							#{value}<br/>
+						</c:forEach>					
+					</r:column>
+				</r:dataTable>
+				
+				<p/>
+				
+				<r:dataTable id="tblRequestAttributes"
+				             var="attributeName"
+				             value="#{snoopModel.attributeNames}"
+				             rendered="#{not empty snoopModel.attributeNames}">
+				    <f:facet name="header">
+				    	Request attributes
+					</f:facet>
+	
+					<r:column id="attributeName">
+						<f:facet name="header">
+							Name
+						</f:facet>
+						#{attributeName}
+					</r:column>
+	
+					<r:column id="attributeValue">
+						<f:facet name="header">
+							Value
+						</f:facet>
+						#{request.getAttribute(attributeName)}
+					</r:column>
+				</r:dataTable>
+				
+				<p/>
+				
+				<r:dataTable id="tblInitParameters"
+				             var="initParameterName"
+				             value="#{snoopModel.initParameterNames}"
+				             rendered="#{not empty snoopModel.initParameterNames}">
+				    <f:facet name="header">
+				    	Init Parameters
+					</f:facet>
+	
+					<r:column id="initParameterName">
+						<f:facet name="header">
+							Name
+						</f:facet>
+						#{initParameterName}
+					</r:column>
+	
+					<r:column id="initParameterValue">
+						<f:facet name="header">
+							Value
+						</f:facet>
+						#{application.getInitParameter(initParameterName)}
+					</r:column>
+				</r:dataTable>
+-->
+			</ui:define>
+		</ui:composition>
+	</body>
+</html>

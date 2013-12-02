@@ -5,6 +5,10 @@
          version="3.1">
   <display-name>shop</display-name>
   <context-param>
+   <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+   <param-value>/WEB-INF/shop.taglib.xml</param-value>
+  </context-param>
+  <context-param>
     <description>In Produktion: Javascript komprimieren, d.h. auf true setzen</description>
     <param-name>com.sun.faces.compressJavaScript</param-name>
     <param-value>false</param-value>
@@ -65,6 +69,11 @@
    <param-value>mojarra-2.1</param-value>
   </context-param>
   <context-param>
+    <description>RichFaces Push initialisieren</description>
+    <param-name>org.richfaces.push.initializeOnStartup</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
     <description>Dateien mit Javascript und CSS in wenigen, optimierten Dateien fuer mobile Web-Anwendungen. http://rik-ansikter.blogspot.com/2012/02/optimizing-resource-loading-with.html</description>
     <param-name>org.richfaces.resourceOptimization.enabled</param-name>
     <param-value>true</param-value>
@@ -74,23 +83,47 @@
     <param-value>Production</param-value>
   </context-param>
   <context-param>
+    <description>org.richfaces.fileUpload.tempFilesDirectory, um das Verzeichnis zu setzen. Default in Windows 7 und VISTA: %TEMP%, d.h. C:\Users\MYACCOUNT\AppData\Local\Temp  </description>
+    <param-name>org.richfaces.fileUpload.createTempFiles</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <description>Maximum: 2147483647 = 2 GB - 1. Siehe https://jira.jboss.org/jira/browse/RF-6590</description>
+    <param-name>org.richfaces.fileUpload.maxRequestSize</param-name>
+    <param-value>10000000</param-value>
+  </context-param>
+  <context-param>
     <description>Alternativen: blueSky, classic, deepMarine, emeraldTown, japanCherry, ruby, wine</description>
     <param-name>org.richfaces.skin</param-name>
     <param-value>blueSky</param-value>
+  </context-param>
+  <context-param>
+    <param-name>org.atmosphere.useBlocking</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <description>https://github.com/Atmosphere/atmosphere/wiki/Understanding-BroadcasterCache</description>
+    <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
+    <param-value>org.atmosphere.cache.HeaderBroadcasterCache</param-value>
+  </context-param>
+  <context-param>
+    <description>https://github.com/Atmosphere/atmosphere/wiki/Understanding-AtmosphereInterceptor</description>
+    <param-name>org.atmosphere.cpr.AtmosphereInterceptor</param-name>
+    <param-value>org.atmosphere.client.TrackMessageSizeInterceptor</param-value>
   </context-param>
   <context-param>
     <description>Mapping fuer accept in einem Webbrowser</description>
     <param-name>resteasy.media.type.mappings</param-name>
     <param-value>json : application/json, xml : application/xml, image : image/*, text : text/plain</param-value>
   </context-param>
-  <context-param>
+   <context-param>
   	<param-name>org.richfaces.push.jms.enabled</param-name>
   	<param-value>true</param-value>
   </context-param>
   <env-entry>
     <env-entry-name>absenderMail</env-entry-name>
     <env-entry-type>java.lang.String</env-entry-type>
-    <env-entry-value>pfro1011@hs-karlsruhe.de</env-entry-value>
+    <env-entry-value>abcd0011@hs-karlsruhe.de</env-entry-value>
   </env-entry>
   <env-entry>
     <env-entry-name>absenderName</env-entry-name>
@@ -100,7 +133,7 @@
   <env-entry>
     <env-entry-name>empfaengerMail</env-entry-name>
     <env-entry-type>java.lang.String</env-entry-type>
-    <env-entry-value>memo1012@hs-karlsruhe.de</env-entry-value>
+    <env-entry-value>abcd0011@hs-karlsruhe.de</env-entry-value>
   </env-entry>
   <env-entry>
     <env-entry-name>empfaengerName</env-entry-name>
@@ -124,9 +157,53 @@
     <extension>ecss</extension>
     <mime-type>text/css</mime-type>
   </mime-mapping>
-  
-  
-  
+  <error-page>
+    <location>/error/defaultError.jsf</location>
+  </error-page>
+  <error-page>
+    <error-code>403</error-code>
+    <location>/error/accessDenied.jsf</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error/pageNotFound.jsf</location>
+  </error-page>
+  <error-page>
+    <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+    <location>/error/timeout.jsf</location>
+  </error-page>
+  <error-page>
+    <exception-type>org.jboss.weld.context.NonexistentConversationException</exception-type>
+    <location>/error/conversationTimeout.xhtml?nocid=true</location>
+  </error-page>
+  <error-page>
+    <exception-type>com.sun.faces.context.FacesFileNotFoundException</exception-type>
+    <location>/error/pageNotFound.jsf</location>
+  </error-page>
+  <error-page>
+    <exception-type>java.io.FileNotFoundException</exception-type>
+    <location>/error/pageNotFound.jsf</location>
+  </error-page>
+  <error-page>
+    <exception-type>javax.ejb.EJBAccessException</exception-type>
+    <location>/error/accessDenied.jsf</location>
+  </error-page>
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>Webshop</realm-name>
+  </login-config>
+  <!--
+  	FORM-based Authentifizierung funktioniert nicht mit RichFaces 5
+  -->
+  <!--
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/auth/login.jsf</form-login-page>
+      <form-error-page>/auth/login.jsf?error=true</form-error-page>
+    </form-login-config>
+  </login-config>
+  -->
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Kunden erzeugen und modifizieren</web-resource-name>
@@ -138,13 +215,10 @@
       <role-name>admin</role-name>
       <role-name>mitarbeiter</role-name>
     </auth-constraint>
-	<user-data-constraint>
+    <user-data-constraint>
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
-  
-  
-  
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Kunden loeschen</web-resource-name>
@@ -159,9 +233,6 @@
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
-  
- 
-  
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Bestellungen erzeugen und modifizieren</web-resource-name>
@@ -196,13 +267,55 @@
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
-  
-  
-  
-  <login-config>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>shopKundeTaetigkeiten</web-resource-name>
+      <url-pattern>/bestellverwaltung/confirmBestellung.jsf</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>*</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>shopMitarbeiterTaetigkeiten</web-resource-name>
+      <url-pattern>/kundenverwaltung/createPrivatkunde.jsf</url-pattern>
+      <url-pattern>/kundenverwaltung/updatePrivatkunde.jsf</url-pattern>
+      <url-pattern>/kundenverwaltung/updateFirmenkunde.jsf</url-pattern>
+      <http-method>POST</http-method>
+      <http-method>GET</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+      <role-name>mitarbeiter</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>shopAdminTaetigkeiten</web-resource-name>
+      <url-pattern>/auth/updateRollen.jsf</url-pattern>
+      <http-method>POST</http-method>
+      <http-method>GET</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+ <!-- <login-config>
 	<auth-method>BASIC</auth-method>
 	<realm-name>Webshop</realm-name>
-  </login-config>
+  </login-config>-->
   <security-role>
     <role-name>admin</role-name>
   </security-role>

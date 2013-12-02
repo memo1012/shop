@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:r="http://richfaces.org/rich">
+
+	<body>
+		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+			<ui:param name="pageTitle" value="#{msgKv['updateFirmenkunde.title']}"/>
+		
+			<ui:define name="content">
+				<c:set var="kunde" value="#{kundeModel.kunde}" scope="view"/>
+			
+				<h1>
+					<h:outputFormat id="headingFirmenkunde" value="#{msgKv['updateFirmenkunde.heading']}" rendered="#{not empty kunde}">
+						<f:param id="idWert" value="#{kunde.id}"/>
+					</h:outputFormat>
+				</h1>
+				
+				<h:outputText id="fehlerKeinKunde"
+				              value="#{msgKv['updateFirmenkunde.keinKunde']}"
+				              class="rf-msg-err"
+				              rendered="#{empty kunde}"/>
+				              
+				<r:push id="updateEvent" address="updateKunde"
+			              ondataavailable="if (event.rf.data == '#{kunde.id}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgKv['updateFirmenkunde.concurrentUpdate']}&lt;/span&gt;') }"/>
+				<span id="updateMessage"></span>
+				
+				<r:messages id="fehlermeldungGobal" globalOnly="true"/>
+				<r:notifyMessages id="notifyMessages" stayTime="2000" nonblocking="true"/>
+				
+				<h:form id="updateKundeForm" rendered="#{not empty kunde}">
+					<r:jQuery id="nachnameFocus" selector="#nachname" query="focus()"/>
+					<!--
+					<r:focus id="formFocus"/>
+					-->
+					
+					<h:panelGrid id="updateKundeTabelle"
+					             columns="3">
+						<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['updateFirmenkunde.nachname']}"/>
+						<h:inputText id="nachname"
+						             value="#{kunde.nachname}"
+						             valueChangeListener="#{kundeModel.geaendert}">
+							<r:validator oninvalid="$(#{r:element('nachname')}).addClass('invalid')"
+	                                     onvalid="$(#{r:element('nachname')}).removeClass('invalid')"/>
+						</h:inputText>
+						<r:messages id="fehlermeldungenNachname" for="nachname"/>
+			
+						<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['updateFirmenkunde.vorname']}"/>
+						<h:inputText id="vorname" value="#{kunde.vorname}" valueChangeListener="#{kundeModel.geaendert}"/>
+						<f:verbatim/>
+						
+						<h:outputLabel id="kategorieLabel" value="#{msgKv['updateFirmenkunde.kategorie']}" for="kategorie"/>
+						<r:inputNumberSpinner id="kategorie"
+						                      value="#{kunde.kategorie}"
+						                      minValue="0" maxValue="5"
+						                      inputSize="1"
+						                      valueChangeListener="#{kundeModel.geaendert}"/>
+						<f:verbatim/>
+						
+						<h:outputLabel id="seitLabel"
+						               for="seit"
+						               value="#{msgKv['updateFirmenkunde.seit']}"
+						               escape="false"/>
+						<r:calendar id="seit"
+						            datePattern="#{msgKv['updateFirmenkunde.calendar.pattern']}"
+						            value="#{kunde.seit}"
+						            timezone="CET">
+							<!--
+							<r:validator/>
+							-->
+						</r:calendar>
+						<r:messages id="fehlermeldungSeit" for="seit"/>
+						
+						<h:outputLabel id="umsatzLabel" for="umsatz" value="#{msgKv['updateFirmenkunde.umsatz']}"/>
+						<h:inputText id="umsatz"
+						             value="#{kunde.umsatz}"
+						             converterMessage="#{msgKv['updateFirmenkunde.umsatz.convert']}"
+						             valueChangeListener="#{kundeModel.geaendert}">
+						    <!--
+							<f:convertNumber type="currency"
+							                 currencyCode="EUR"
+							                 maxFractionDigits="2"/>
+							-->
+							<f:ajax event="blur" render="updateKundeForm:fehlermeldungenUmsatz"/>
+						</h:inputText>
+						<r:messages id="fehlermeldungenUmsatz" for="umsatz"/>
+		
+						<h:outputLabel id="rabattLabel" for="rabatt" value="#{msgKv['updateFirmenkunde.rabatt']}"/>
+						<h:inputText id="rabatt"
+						             value="#{kunde.rabatt}"
+						             converterMessage="#{msgKv['updateFirmenkunde.rabatt.convert']}"
+						             valueChangeListener="#{kundeModel.geaendert}">
+							<f:convertNumber type="percent"
+		                                     maxFractionDigits="2"
+		                                     maxIntegerDigits="2"/>
+							<f:ajax event="blur" render="updateKundeForm:fehlermeldungenRabatt"/>
+						</h:inputText>
+						<r:messages id="fehlermeldungenRabatt" for="rabatt"/>
+		
+						<h:outputLabel id="emailLabel" for="email" value="#{msgKv['updateFirmenkunde.email']}"/>
+						<h:inputText id="email" value="#{kunde.email}" valueChangeListener="#{kundeModel.geaendert}">
+							<r:validator oninvalid="$(#{r:element('email')}).addClass('invalid')"
+	                                     onvalid="$(#{r:element('email')}).removeClass('invalid')"/>
+						</h:inputText>
+						<r:messages id="fehlermeldungenEmail" for="email"/>
+						
+						<h:outputLabel id="newsletterLabel" value="#{msgKv['updateFirmenkunde.newsletter']}"/>
+						<h:selectBooleanCheckbox id="newsletter" value="#{kunde.newsletter}" valueChangeListener="#{kundeModel.geaendert}"/>
+						<f:verbatim/>
+					</h:panelGrid>
+					
+					<h:panelGrid id="bemerkungenGrid">
+						<h:outputLabel id="bemerkungenLabel" value="#{msgKv['updateFirmenkunde.bemerkungen']}"
+						               for="bemerkungen"
+						               class="kundendetailsBezeichner"/>
+						<r:messages id="fehlermeldungBemerkungen" for="bemerkungen"/>
+						<r:editor id="bemerkungen"
+						             value="#{kunde.bemerkungen}"
+						             valueChangeListener="#{kundeModel.geaendert}"
+							         toolbar="full"
+							         width="870"
+							         height="80"/>
+					</h:panelGrid>
+		
+					<p id="buttons">
+						<h:commandButton id="button" action="#{kundeModel.update}" value="#{msgKv['updateFirmenkunde.submit']}"/>
+						#{' '}
+						<h:commandButton type="reset" value="#{msgKv['updateFirmenkunde.reset']}"/>
+					</p>
+					
+					<p id="hinweisPflichtfelder">
+						#{msgKv['updateFirmenkunde.required']}
+					</p>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</body>
+</html>

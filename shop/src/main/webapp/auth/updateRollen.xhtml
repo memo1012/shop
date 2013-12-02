@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:cc="http://java.sun.com/jsf/composite/components"
+	  xmlns:r="http://richfaces.org/rich">
+	<body>
+		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+			<ui:param name="pageTitle" value="#{msgAuth['updateRollen.title']}"/>
+		
+			<ui:define name="content">
+				<h:form id="rollenForm">
+					<r:focus id="rollenFormFocus"/>
+					
+					<r:panel id="suchePanel" header="#{msgAuth['updateRollen.headingUsername']}">
+						<h:panelGrid id="suchePanelGrid" columns="4">
+							<h:outputLabel id="usernameInputLabel"
+							               value="#{msgAuth['updateRollen.username']}"
+							               for="usernameInput"/>
+	
+							<r:autocomplete id="usernameInput"
+							                value="#{authModel.usernameUpdateRollen}"
+							                mode="ajax"
+							                minChars="1"
+							                autocompleteMethod="#{authModel.findUsernameListByUsernamePrefix}"/> 
+		
+							<r:commandButton id="findButton"
+							                 action="#{authModel.findRollenByUsername}"
+							                 value="#{msgAuth['updateRollen.submit']}"
+							                 render="rollenPickListPanel fehlermeldungUsername"/>
+							
+							<cc:bitteWarten id="inBearbeitung" msg="#{msgAuth['updateRollen.inBearbeitung']}"/>
+						</h:panelGrid>
+						
+						<r:messages id="fehlermeldungUsername" for="usernameInput"/>
+					</r:panel>
+	
+					<r:outputPanel id="rollenPickListPanel">
+						<r:pickList id="rollenPickList"
+						            value="#{authModel.ausgewaehlteRollen}"
+						            var="rolle"
+						            sourceCaption="#{msgAuth['updateRollen.verfuegbareRollen']}"
+						            targetCaption="#{msgAuth['updateRollen.ausgewaehlteRollen']}"
+						            addAllText="#{msgAuth['updateRollen.addAllText']}"
+						            addText="#{msgAuth['updateRollen.addText']}"
+						            removeAllText="#{msgAuth['updateRollen.removeAllText']}"
+						            removeText="#{msgAuth['updateRollen.removeText']}"
+						            listHeight="100"
+						            rendered="#{not empty authModel.ausgewaehlteRollen}">
+							<f:selectItems id="selectItems"
+							               value="#{authModel.verfuegbareRollen}"/>
+							<r:column id="rollenSpalte">
+								<f:facet name="header">#{msgAuth['updateRollen.rolle']}</f:facet>
+								#{rolle.internal}
+							</r:column>
+						</r:pickList>
+						
+						<p/>
+						
+						<h:commandButton id="updateButton"
+						                 action="#{authModel.updateRollen}"
+							             value="#{msgAuth['updateRollen.submit']}"
+							             rendered="#{not empty authModel.ausgewaehlteRollen}"/>
+					</r:outputPanel>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</body>
+</html>

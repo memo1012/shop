@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+<facelet-taglib xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibary_2_2.xsd"
+	version="2.2">
+-->
+<facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibary_2_0.xsd"
+                version="2.0">
+
+	<namespace>http://hs-karlsruhe.de/shop</namespace>
+	
+	<function>
+		<function-name>aktuellesDatum</function-name>
+		<function-class>de.shop.util.web.Functions</function-class>
+		<function-signature>
+			java.util.Date aktuellesDatum()
+		</function-signature>
+	</function>
+</facelet-taglib>

@@ -1,0 +1,154 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:cc="http://java.sun.com/jsf/composite/components"
+                xmlns:r="http://richfaces.org/rich">
+
+	<r:toolbar id="headerToolbar" height="65px">
+    	<h:link id="homeLink" outcome="/index">
+			<h:graphicImage id="hsLogoImage"
+		    	            name="hs-logo.gif"
+		        	        library="images"
+		            	    alt="#{msg['header.logo.alt']}"/>
+		</h:link>
+
+		<h:form id="schnellsucheForm">
+			<r:dropDownMenu id="schnellsucheMenu">
+				<f:facet name="label">
+					#{msg['header.schnellsuche']}
+				</f:facet>
+
+				<r:menuItem id="schnellsucheItem">
+					<h:panelGrid id="schnellsucheGrid" columns="3">
+						<h:outputLabel id="artikelBezLabel"
+						               value="#{msg['header.schnellsuche.artikelBezeichnung']}"
+						               for="artikelBezeichnung"/>
+						<h:inputText id="artikelBezeichnung" value="#{artikelModel.bezeichnung}"/>
+						<h:commandButton id="artikelButton" action="#{artikelModel.findArtikelByBezeichnung}" value="#{msg['header.schnellsuche.button']}"/>
+
+						<h:outputLabel id="kundeIdLabel"
+						               value="#{msg['header.schnellsuche.kundeid']}"
+						               for="kundeId"/>
+						<h:inputText id="kundeId" value="#{kundeModel.kundeId}"/>
+						<h:commandButton id="kundeButton" action="#{kundeModel.findKundeById}" value="#{msg['header.schnellsuche.button']}"/>
+					</h:panelGrid>
+				</r:menuItem>
+			</r:dropDownMenu>
+		</h:form>
+				
+		<r:toolbarGroup id="rightGroup" location="right">
+			<h:form id="loginFormHeader" rendered="#{not authModel.loggedIn}">
+				<h:panelGrid id="loginGrid" columns="3">
+					<h:outputLabel id="usernameLabel"
+					               value="#{msg['login.kundeId']}"
+					               for="username"/>
+					<h:inputText id="username" value="#{authModel.username}"/>
+					<f:verbatim/>
+							
+					<h:outputLabel id="passwordLabel"
+					               value="#{msg['login.password']}"
+					               for="password"/>
+					<h:inputSecret id="password" value="#{authModel.password}"/>
+					<h:commandButton id="loginButton" action="#{authModel.login}" value="#{msg['login.submit']}"/>
+				</h:panelGrid>
+				<r:message id="fehlermeldungLogin" for="username"/>
+			</h:form>
+
+			<h:form id="spracheForm">
+				<r:dropDownMenu id="sprache">
+					<f:facet name="label">
+						#{msg['header.sprache']}
+					</f:facet>
+					
+					<r:menuItem id="englisch"
+					            label="#{msg['header.sprache.englisch']}"
+					            actionListener="#{spracheModel.change('en')}"/>
+					<r:menuItem id="deutsch"
+					            label="#{msg['header.sprache.deutsch']}"
+					            actionListener="#{spracheModel.change('de')}"/>
+				</r:dropDownMenu>
+			</h:form>
+
+			<h:form id="warenkorbFormHeader">
+				<r:dropDownMenu id="warenkorb">
+					<f:facet name="label">
+						<h:graphicImage id="warenkorbImage"
+			    	                    name="warenkorb.gif"
+			        	                library="images"
+			            	            alt="#{msg['header.warenkorb.alt']}"/>
+					</f:facet>
+					
+					<r:menuItem id="warenkorbItemEmpty" label="#{msg['header.warenkorb.empty']}" rendered="#{empty warenkorb.positionen}"/>
+					
+					<r:menuItem id="warenkorbItem" rendered="#{not empty warenkorb.positionen}">
+						<r:dataTable id="warenkorbTabelle"
+						             value="#{warenkorb.positionen}"
+						             var="position"
+						             rowClasses="odd-row, even-row"
+						             styleClass="tabelleMitZebrastil">
+							<r:column id="artikelIdSpalte">
+								<f:facet name="header">
+									#{msgBv['viewWarenkorb.artikel.id']}
+								</f:facet>
+								#{position.artikel.id}
+							</r:column>
+								
+							<r:column id="bezeichnungSpalte">
+								<f:facet name="header">
+									#{msgBv['viewWarenkorb.artikel.bezeichnung']}
+								</f:facet>
+								#{position.artikel.bezeichnung}
+							</r:column>
+					
+							<r:column id="anzahlSpalte">
+								<f:facet name="header">
+									#{msgBv['viewWarenkorb.anzahl']}
+								</f:facet>
+								
+								<r:inputNumberSpinner id="anzahl"
+				                                      value="#{position.anzahl}"
+				                                      minValue="0"
+				                                      maxValue="99"
+				                                      inputSize="2"/>
+							</r:column>
+							
+							<r:column id="deleteSpalte">
+								<h:commandLink id="deleteLink"
+										       action="#{warenkorb.remove(position)}"
+										       alt="#{msgBv['viewWarenkorb.deleteButtonAlt']}">
+									<h:graphicImage id="deleteIcon"
+				    	                            name="delete.gif"
+				        	                        library="images"/>
+								</h:commandLink>
+							</r:column>
+						</r:dataTable>
+						
+						<cc:zebrastil id="zebrastil"/>
+						
+						<p id="buttonsWarenkorb">
+							<h:commandButton id="updateButton"
+				                             action="#"
+				                             value="#{msgBv['viewWarenkorb.update']}"/>
+							<h:commandButton type="reset" value="#{msgBv['viewWarenkorb.reset']}"/>
+							#{' '}
+							<h:commandButton id="bestellButton"
+											 action="#{bestellungModel.bestellen}"
+									         value="#{msgBv['viewWarenkorb.bestellen']}"
+									         rendered="#{authModel.loggedIn}"/>
+							<r:message id="bestellButtonFehlermeldung"
+							           for="bestellButton"/>
+						</p>
+					</r:menuItem>
+				</r:dropDownMenu>
+			</h:form>
+
+			<h:form id="logoutForm">
+				<h:commandLink id="logout" action="#{authModel.logout}" rendered="#{authModel.loggedIn}">
+					#{msg['header.logout']}
+				</h:commandLink>
+			</h:form>
+		</r:toolbarGroup>
+		
+	</r:toolbar>
+</ui:composition>
