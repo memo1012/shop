@@ -75,7 +75,7 @@ public class Warenkorb implements Serializable {
 	 * @return Pfad zur Anzeige des aktuellen Warenkorbs
 	 */
 	@Log
-	public String add(Artikel artikel) {
+	public void add(Artikel artikel) {
 		beginConversation();
 		
 		for (Bestellposition bp : positionen) {
@@ -83,13 +83,12 @@ public class Warenkorb implements Serializable {
 				// bereits im Warenkorb
 				final short vorhandeneAnzahl = bp.getAnzahl();
 				bp.setAnzahl((short) (vorhandeneAnzahl + 1));
-				return JSF_VIEW_WARENKORB;
+				return;
 			}
 		}
 		
 		final Bestellposition neu = new Bestellposition(artikel);
 		positionen.add(neu);
-		return JSF_VIEW_WARENKORB;
 	}
 	
 	/**
@@ -97,15 +96,10 @@ public class Warenkorb implements Serializable {
 	 * @return Pfad zur Anzeige des aktuellen Warenkorbs
 	 */
 	@Log
-	public String add() {
+	public void add() {
 		final Artikel artikel = as.findArtikelById(artikelId);
-		if (artikel == null) {
-			return null;
-		}
-		
-		final String outcome = add(artikel);
-		artikelId = null;
-		return outcome;
+		if (artikel != null)
+			 add(artikel);
 	}
 	
 	@Log

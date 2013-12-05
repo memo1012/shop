@@ -68,12 +68,9 @@
 									<f:param id="initParam" name="init" value="true"/>
 								</h:commandButton>
 								#{' '}
-								<h:commandButton type="reset" value="#{msgBv['viewWarenkorb.reset']}"/>
-								#{' '}
 								<h:commandButton id="bestellButton"
 												 action="/bestellverwaltung/confirmBestellung"
 										         value="#{msgBv['viewWarenkorb.bestellen']}"/>
-								<r:message id="bestellButtonFehlermeldung" for="bestellButton" rendered="#{authModel.loggedIn}"/>
 							</h:panelGroup>
 						</f:facet>
 						

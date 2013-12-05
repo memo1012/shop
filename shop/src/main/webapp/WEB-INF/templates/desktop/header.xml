@@ -105,41 +105,19 @@
 								<f:facet name="header">
 									#{msgBv['viewWarenkorb.anzahl']}
 								</f:facet>
-								
-								<r:inputNumberSpinner id="anzahl"
-				                                      value="#{position.anzahl}"
-				                                      minValue="0"
-				                                      maxValue="99"
-				                                      inputSize="2"/>
+								#{position.anzahl}
 							</r:column>
 							
-						<r:column id="deleteButton">
-							<h:commandLink id="deleteLink"
-									       action="#{warenkorb.remove(position)}"
-									       alt="#{msgBv['viewWarenkorb.deleteButtonAlt']}"
-									       onclick="return confirm('#{msgBv['viewWarenkorb.deletePositionBestaetigung']}')">
-								<h:graphicImage id="deleteIcon"
-			    	                            name="delete.gif"
-			        	                        library="images"/>
-			        	    </h:commandLink>
-						</r:column>
 						</r:dataTable>
 						
 						<cc:zebrastil id="zebrastil"/>
 						
-						<p id="buttonsWarenkorb">
-							<h:commandButton id="updateButton"
-				                             action="#"
-				                             value="#{msgBv['viewWarenkorb.update']}"/>
-							<h:commandButton type="reset" value="#{msgBv['viewWarenkorb.reset']}"/>
-							#{' '}
-							<h:commandButton id="bestellButton"
-											 action="#{bestellungModel.bestellen}"
-									         value="#{msgBv['viewWarenkorb.bestellen']}"
-									         rendered="#{authModel.loggedIn}"/>
-							<r:message id="bestellButtonFehlermeldung"
-							           for="bestellButton"/>
-						</p>
+						<h:panelGroup id="buttonsWarenkorb">
+							<h:commandButton id="oeffnenButton"
+				                             action="/bestellverwaltung/viewWarenkorb"
+				                             value="#{msgBv['viewWarenkorb.oeffnen']}">
+				        	</h:commandButton>
+						</h:panelGroup>
 					</r:menuItem>
 				</r:dropDownMenu>
 			</h:form>
