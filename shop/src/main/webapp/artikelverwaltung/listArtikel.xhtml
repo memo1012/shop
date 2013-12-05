@@ -63,7 +63,13 @@
 								</f:facet>
 								#{art.bezeichnung}
 							</r:column>
-							
+								<r:column id="preisSpalte">
+								<f:facet name="header">
+								[${""?left_pad(5, "-")}]
+									#{msgAv['listArtikel.preis']}
+								</f:facet>
+								#{art.preis}
+							</r:column>						
 							<r:column id="buttonSpalte"
 							          rendered="#{not empty artikel}">
 								<h:commandLink id="warenkorbButton"
