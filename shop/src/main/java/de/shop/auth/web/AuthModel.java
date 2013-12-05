@@ -49,7 +49,7 @@ public class AuthModel implements Serializable {
 	
 	private static final String MSG_KEY_LOGIN_ERROR = "auth.login.error";
 	private static final String CLIENT_ID_USERNAME = "loginFormHeader:username";
-	private static final String MSG_KEY_UPDATE_ROLLEN_KEIN_USER = "kunde.notFound.username";
+	private static final String MSG_KEY_UPDATE_ROLLEN_KEIN_USER = "kunde.notFound.id";
 	private static final String CLIENT_ID_USERNAME_INPUT = "rollenForm:usernameInput";
 	
 	private String username;
