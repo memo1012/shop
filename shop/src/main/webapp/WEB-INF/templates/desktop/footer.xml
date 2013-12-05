@@ -16,6 +16,6 @@
 	</h:panelGroup>
 
 	<h:panelGroup id="copyright">
-		<b>&#169; J&#252;rgen Zimmermann</b>
+		<b>&#169; Gruppe 12</b>
 	</h:panelGroup>
 </ui:composition>
