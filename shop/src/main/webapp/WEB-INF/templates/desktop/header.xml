@@ -113,15 +113,16 @@
 				                                      inputSize="2"/>
 							</r:column>
 							
-							<r:column id="deleteSpalte">
-								<h:commandLink id="deleteLink"
-										       action="#{warenkorb.remove(position)}"
-										       alt="#{msgBv['viewWarenkorb.deleteButtonAlt']}">
-									<h:graphicImage id="deleteIcon"
-				    	                            name="delete.gif"
-				        	                        library="images"/>
-								</h:commandLink>
-							</r:column>
+						<r:column id="deleteButton">
+							<h:commandLink id="deleteLink"
+									       action="#{warenkorb.remove(position)}"
+									       alt="#{msgBv['viewWarenkorb.deleteButtonAlt']}"
+									       onclick="return confirm('#{msgBv['viewWarenkorb.deletePositionBestaetigung']}')">
+								<h:graphicImage id="deleteIcon"
+			    	                            name="delete.gif"
+			        	                        library="images"/>
+			        	    </h:commandLink>
+						</r:column>
 						</r:dataTable>
 						
 						<cc:zebrastil id="zebrastil"/>
