@@ -29,9 +29,13 @@
 
 						<h:outputLabel id="kundeIdLabel"
 						               value="#{msg['header.schnellsuche.kundeid']}"
-						               for="kundeId"/>
-						<h:inputText id="kundeId" value="#{kundeModel.kundeId}"/>
-						<h:commandButton id="kundeButton" action="#{kundeModel.findKundeById}" value="#{msg['header.schnellsuche.button']}"/>
+						               for="kundeId"
+						                rendered="#{r:isUserInRole('admin, mitarbeiter')}"/>
+						<h:inputText id="kundeId" value="#{kundeModel.kundeId}"
+						 rendered="#{r:isUserInRole('admin, mitarbeiter')}"/>
+						<h:commandButton id="kundeButton" action="#{kundeModel.findKundeById}" value="#{msg['header.schnellsuche.button']}"
+						 rendered="#{r:isUserInRole('admin, mitarbeiter')}"/>
+						               
 					</h:panelGrid>
 				</r:menuItem>
 			</r:dropDownMenu>

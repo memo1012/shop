@@ -12,7 +12,8 @@
 		             itemLeftIcon="grid">
 			<r:panelMenuGroup id="kundenverwaltung"
 			                  label="#{msg['nav.kundenverwaltung']}"
-			                  expanded="true">
+			                  expanded="true"
+			                    rendered="#{r:isUserInRole('admin, mitarbeiter')}">
 				<r:panelMenuItem id="kundenverwaltungViewKundeItem">
 				    <h:link id="kundenverwaltungViewKunde"
 							outcome="/kundenverwaltung/viewKunde"
@@ -32,7 +33,7 @@
 						</c:if>
 					</h:link>
 				</r:panelMenuItem>
-				<r:panelMenuItem id="kundenverwaltungCreatePrivatkundeItem" rendered="#{r:isUserInRole('admin')}">
+				<r:panelMenuItem id="kundenverwaltungCreatePrivatkundeItem">
 					<h:link id="kundenverwaltungCreatePrivatkunde"
 					        outcome="/kundenverwaltung/createPrivatkunde"
 						    value="#{msg['nav.kundenverwaltung.createPrivatkunde']}">
@@ -41,7 +42,7 @@
 						</c:if>
 					</h:link>
 				</r:panelMenuItem>
-				<r:panelMenuItem id="kundenverwaltungUploadItem" rendered="#{r:isUserInRole('admin')}">
+				<r:panelMenuItem id="kundenverwaltungUploadItem" >
 					<h:link id="kundenverwaltungUpload"
 					        outcome="/kundenverwaltung/upload"
 					        value="#{msg['nav.kundenverwaltung.upload']}"
