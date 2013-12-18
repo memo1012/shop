@@ -109,22 +109,6 @@
 						</h:inputText>
 						<r:messages id="fehlermeldungenEmail" for="email"/>
 						
-						<h:outputLabel id="newsletterLabel" value="#{msgKv['updateFirmenkunde.newsletter']}"/>
-						<h:selectBooleanCheckbox id="newsletter" value="#{kunde.newsletter}" valueChangeListener="#{kundeModel.geaendert}"/>
-						<f:verbatim/>
-					</h:panelGrid>
-					
-					<h:panelGrid id="bemerkungenGrid">
-						<h:outputLabel id="bemerkungenLabel" value="#{msgKv['updateFirmenkunde.bemerkungen']}"
-						               for="bemerkungen"
-						               class="kundendetailsBezeichner"/>
-						<r:messages id="fehlermeldungBemerkungen" for="bemerkungen"/>
-						<r:editor id="bemerkungen"
-						             value="#{kunde.bemerkungen}"
-						             valueChangeListener="#{kundeModel.geaendert}"
-							         toolbar="full"
-							         width="870"
-							         height="80"/>
 					</h:panelGrid>
 		
 					<p id="buttons">

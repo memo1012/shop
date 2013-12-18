@@ -82,8 +82,6 @@
 					<h:outputText id="maennlichLabel" value="#{msgKv['viewKundeGET.geschlecht']}" rendered="#{privatkunde and kunde.geschlecht eq 'MAENNLICH'}"/>
 					<h:outputText id="maennlich" value="#{msgKv['viewKundeGET.geschlecht.maennlich']}" rendered="#{privatkunde and kunde.geschlecht eq 'MAENNLICH'}"/>
 		
-					<h:outputText id="newsletterLabel" value="#{msgKv['viewKundeGET.newsletter']}"/>
-					<h:selectBooleanCheckbox id="newsletter" value="#{kundeModel.kunde.newsletter}" disabled="true" readonly="true"/>
 				</h:panelGrid>
 							
 				<h:form id="buttons" rendered="#{not empty kundeModel.kunde}">

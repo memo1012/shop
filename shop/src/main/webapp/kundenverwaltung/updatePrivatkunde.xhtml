@@ -118,10 +118,6 @@
 						</r:select>
 						<f:verbatim/>
 		
-						<h:outputLabel id="newsletterLabel" value="#{msgKv['updatePrivatkunde.newsletter']}"/>
-						<h:selectBooleanCheckbox id="newsletter" value="#{kunde.newsletter}" valueChangeListener="#{kundeModel.geaendert}"/>
-						<f:verbatim/>
-		
 						<h:outputText id="hobbiesLabel" value="#{msgKv['updatePrivatkunde.hobbies']}"/>
 						<h:selectManyCheckbox value="#{kundeModel.hobbies}"
 						                      layout="pageDirection"
@@ -142,20 +138,7 @@
 						</h:inputText>
 						<r:messages id="fehlermeldungenEmail" for="email"/>
 					</h:panelGrid>
-					
-					<h:panelGrid id="bemerkungenGrid">
-						<h:outputLabel id="bemerkungenLabel" value="#{msgKv['updatePrivatkunde.bemerkungen']}"
-						               for="bemerkungen"
-						               class="kundendetailsBezeichner"/>
-						<r:messages id="fehlermeldungBemerkungen" for="bemerkungen"/>
-						<r:editor id="bemerkungen"
-						             value="#{kunde.bemerkungen}"
-						             valueChangeListener="#{kundeModel.geaendert}"
-							         toolbar="full"
-							         width="870"
-							         height="80"/>
-					</h:panelGrid>
-		
+							
 					<p id="buttons">
 						<h:commandButton id="button" action="#{kundeModel.update}" value="#{msgKv['updatePrivatkunde.submit']}"/>
 						#{' '}
