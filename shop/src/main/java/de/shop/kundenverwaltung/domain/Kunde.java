@@ -116,8 +116,10 @@ import de.shop.auth.domain.RolleType;
 		@NamedQuery(name = Kunde.FIND_KUNDEN_BY_DATE, query = "SELECT k"
 				+ " FROM  Kunde k" + " WHERE k.seit = :"
 				+ Kunde.PARAM_KUNDE_SEIT),
-		@NamedQuery(name = Kunde.FIND_KUNDEN, query = "SELECT k"
-				+ " FROM  Kunde k") })
+		@NamedQuery(name = Kunde.FIND_KUNDEN_BY_ID_PREFIX, query = "SELECT k"
+				+ " FROM  Kunde k"
+				+ " WHERE CONCAT('', k.id) LIKE :"
+				+ Kunde.PARAM_KUNDE_ID_PREFIX) })
 
 
 		@NamedEntityGraphs({ @NamedEntityGraph(name = Kunde.GRAPH_BESTELLUNGEN, 
