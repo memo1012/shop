@@ -59,8 +59,8 @@ import javax.persistence.PreUpdate;
 				+ Artikel.PARAM_ID + " ORDER BY a.id ASC"),
 		@NamedQuery(name = Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG, query = "SELECT      a"
 				+ " FROM     Artikel a"
-				+ " WHERE    a.bezeichnung LIKE :"
-				+ Artikel.PARAM_ARTIKEL_BEZEICHNUNG),
+				+ " WHERE UPPER(a.bezeichnung) LIKE UPPER(:"
+				+ Artikel.PARAM_BEZEICHNUNG+")"),
 		@NamedQuery(name = Artikel.FIND_BEZEICHNUNG_BY_PREFIX, query = "SELECT   DISTINCT a.bezeichnung"
 				+ " FROM  Artikel a "
 				+ " WHERE UPPER(a.bezeichnung) LIKE UPPER(:"
@@ -89,7 +89,6 @@ public class Artikel implements Serializable {
 			+ "findArtikelByBezeichnung";
 
 	public static final String PARAM_BEZEICHNUNG = "bezeichnung";
-	public static final String PARAM_ARTIKEL_BEZEICHNUNG = "bezeichnung";
 	public static final String PARAM_PREIS = "preis";
 	public static final String PARAM_ID = "id";
 

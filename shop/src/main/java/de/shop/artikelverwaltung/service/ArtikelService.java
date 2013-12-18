@@ -60,7 +60,7 @@ public class ArtikelService implements Serializable {
 			LOGGER.trace("Prufung der Bezeichnung");
 			em.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG,
 					Artikel.class)
-					.setParameter(Artikel.PARAM_ARTIKEL_BEZEICHNUNG,
+					.setParameter(Artikel.PARAM_BEZEICHNUNG,
 							artikel.getBezeichnung()).getSingleResult();
 			throw new BezeichnungExistsException(artikel.getBezeichnung());
 		} catch (NoResultException e) {
@@ -145,7 +145,7 @@ public class ArtikelService implements Serializable {
 		}
 
 		return em
-				.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZ, Artikel.class)
+				.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG, Artikel.class)
 				.setParameter(Artikel.PARAM_BEZEICHNUNG,
 						"%" + bezeichnung + "%").getResultList();
 	}
