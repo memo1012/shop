@@ -78,7 +78,7 @@ public class ArtikelModel implements Serializable {
 
 	@Log
 	public String findArtikelByBezeichnung() {
-		final Collection<Artikel> artikel = as.findArtikelByBezeichnung(bezeichnung);
+		final List<Artikel> artikel = as.findArtikelByBezeichnung(bezeichnung);
 		flash.put(FLASH_ARTIKEL, artikel);
 
 		return JSF_LIST_ARTIKEL;

@@ -9,6 +9,7 @@ import static de.shop.util.Constants.KEINE_ID;
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -95,10 +96,10 @@ public class ArtikelResource {
 
 	@GET
 	@Path("/bezeichnung/{bezeichnung}")
-	public Collection<String> findArtikelByBezeichnung(
+	public List<String> findArtikelByBezeichnung(
 			@PathParam("bezeichnung") String bezeichnung,
 			@Context UriInfo uriInfo) {
-		final Collection<String> artikel = as.findArtikelByPrefix(bezeichnung);
+		final List<String> artikel = as.findArtikelByPrefix(bezeichnung);
 		return artikel;
 	}
 

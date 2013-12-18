@@ -139,7 +139,7 @@ public class ArtikelService implements Serializable {
 	 *            Die Bezeichnung der gesuchten Artikel suchen
 	 * @return Liste der gefundenen Artikel suchen
 	 */
-	public Collection<Artikel> findArtikelByBezeichnung(String bezeichnung) {
+	public List<Artikel> findArtikelByBezeichnung(String bezeichnung) {
 		if (Strings.isNullOrEmpty(bezeichnung)) {
 			return findVerfuegbareArtikel();
 		}
