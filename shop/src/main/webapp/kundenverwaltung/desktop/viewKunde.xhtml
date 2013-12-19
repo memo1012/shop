@@ -136,19 +136,6 @@
 										<h:outputText id="maennlichLabel" value="#{msgKv['viewKunde.geschlecht']}" rendered="#{privatkunde and kunde.geschlecht eq 'MAENNLICH'}"/>
 										<h:outputText id="maennlich" value="#{msgKv['viewKunde.geschlecht.maennlich']}" rendered="#{privatkunde and kunde.geschlecht eq 'MAENNLICH'}"/>
 						
-										<h:outputText id="hobbiesLabel" value="#{msgKv['viewKunde.hobbies']}" rendered="#{privatkunde}"/>
-										<h:selectManyCheckbox value="#{kunde.hobbies}"
-										                      layout="pageDirection"
-										                      disabled="true"
-										                      readonly="true"
-										                      rendered="#{privatkunde}">
-											<f:selectItem itemValue="SPORT"
-														  itemLabel="#{msgKv['viewKunde.sport']}"/>
-											<f:selectItem itemValue="LESEN" 
-														  itemLabel="#{msgKv['viewKunde.lesen']}"/>
-											<f:selectItem itemValue="REISEN" 
-														  itemLabel="#{msgKv['viewKunde.reisen']}"/>
-										</h:selectManyCheckbox>
 									</h:panelGrid>
 								</r:panel>
 							</r:tab>

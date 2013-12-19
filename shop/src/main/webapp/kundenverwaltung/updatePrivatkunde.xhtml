@@ -9,9 +9,6 @@
 	  xmlns:r="http://richfaces.org/rich">
 	<body>
 		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
-			<ui:define name="metadata">
-				<f:event type="preRenderView" listener="#{kundeModel.hobbyTypeToString}"/>
-			</ui:define>
 			
 			<ui:param name="pageTitle" value="#{msgKv['updatePrivatkunde.title']}"/>
 		
@@ -118,18 +115,6 @@
 						</r:select>
 						<f:verbatim/>
 		
-						<h:outputText id="hobbiesLabel" value="#{msgKv['updatePrivatkunde.hobbies']}"/>
-						<h:selectManyCheckbox value="#{kundeModel.hobbies}"
-						                      layout="pageDirection"
-						                      valueChangeListener="#{kundeModel.geaendert}">
-							<f:selectItem itemValue="SPORT"
-										  itemLabel="#{msgKv['updatePrivatkunde.sport']}"/>
-							<f:selectItem itemValue="LESEN" 
-										  itemLabel="#{msgKv['updatePrivatkunde.lesen']}"/>
-							<f:selectItem itemValue="REISEN" 
-										  itemLabel="#{msgKv['updatePrivatkunde.reisen']}"/>
-						</h:selectManyCheckbox>
-						<f:verbatim/>
 						
 						<h:outputLabel id="emailLabel" for="email" value="#{msgKv['updatePrivatkunde.email']}"/>
 						<h:inputText id="email" value="#{kunde.email}" valueChangeListener="#{kundeModel.geaendert}">

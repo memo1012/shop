@@ -115,17 +115,6 @@
 							</h:selectOneRadio>
 							<f:verbatim/>
 							
-							<h:outputText id="hobbiesLabel" value="#{msgKv['createPrivatkunde.hobbies']}"/>
-							<h:selectManyCheckbox id="hobbies" value="#{kundeModel.hobbies}"
-							                      layout="pageDirection">
-								<f:selectItem id="sport" itemValue="SPORT"
-											  itemLabel="#{msgKv['createPrivatkunde.sport']}"/>
-								<f:selectItem id="lesen" itemValue="LESEN" 
-											  itemLabel="#{msgKv['createPrivatkunde.lesen']}"/>
-								<f:selectItem id="reisen" itemValue="REISEN" 
-											  itemLabel="#{msgKv['createPrivatkunde.reisen']}"/>
-							</h:selectManyCheckbox>
-							<f:verbatim/>
 											
 							<h:outputLabel id="emailLabel" for="email" value="#{msgKv['createPrivatkunde.email']}"/>
 							<h:inputText id="email" value="#{kunde.email}">

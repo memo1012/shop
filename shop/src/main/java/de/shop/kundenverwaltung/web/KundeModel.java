@@ -123,7 +123,6 @@ public class KundeModel implements Serializable {
 	private Long kundeId;
 	
 	private Kunde kunde;
-	private List<String> hobbies;
 	
 	@Pattern(regexp = Kunde.NACHNAME_PATTERN, message = "{kunde.nachname.pattern}")
 	private String nachname;
@@ -184,14 +183,6 @@ public class KundeModel implements Serializable {
 
 	public Kunde getKunde() {
 		return kunde;
-	}
-
-	public List<String> getHobbies() {
-		return hobbies;
-	}
-	
-	public void setHobbies(List<String> hobbies) {
-		this.hobbies = hobbies;
 	}
 
 	public String getNachname() {
@@ -381,7 +372,6 @@ public class KundeModel implements Serializable {
 		kundeId = neuerKunde.getId();
 		kunde = neuerKunde;
 		neuerKunde = null;  // zuruecksetzen
-		hobbies = null;
 		
 		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
 	}
