@@ -64,18 +64,6 @@
 						<f:convertNumber type="percent" maxFractionDigits="2"/>
 					</h:outputText>
 								
-					<h:outputText id="familienstandLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{privatkunde and kunde.familienstand eq 'LEDIG'}"/>
-					<h:outputText id="familienstand" value="#{msgKv['viewKundeGET.familienstand.ledig']}" rendered="#{privatkunde and kunde.familienstand eq 'LEDIG'}"/>
-					
-					<h:outputText id="verheiratetLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{privatkunde and kunde.familienstand eq 'VERHEIRATET'}"/>
-					<h:outputText id="verheiratet" value="#{msgKv['viewKundeGET.familienstand.verheiratet']}" rendered="#{privatkunde and kunde.familienstand eq 'VERHEIRATET'}"/>
-					
-					<h:outputText id="geschiedenLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{privatkunde and kunde.familienstand eq 'GESCHIEDEN'}"/>
-					<h:outputText id="geschieden" value="#{msgKv['viewKundeGET.familienstand.geschieden']}" rendered="#{privatkunde and kunde.familienstand eq 'GESCHIEDEN'}"/>
-					
-					<h:outputText id="verwitwetLabel" value="#{msgKv['viewKundeGET.familienstand']}" rendered="#{privatkunde and kunde.familienstand eq 'VERWITWET'}"/>
-					<h:outputText id="verwitwet" value="#{msgKv['viewKundeGET.familienstand.verwitwet']}" rendered="#{privatkunde and kunde.familienstand eq 'VERWITWET'}"/>
-					
 					<h:outputText id="weiblichLabel" value="#{msgKv['viewKundeGET.geschlecht']}" rendered="#{privatkunde and kunde.geschlecht eq 'WEIBLICH'}"/>
 					<h:outputText id="weiblich" value="#{msgKv['viewKundeGET.geschlecht.weiblich']}" rendered="#{privatkunde and kunde.geschlecht eq 'WEIBLICH'}"/>
 				

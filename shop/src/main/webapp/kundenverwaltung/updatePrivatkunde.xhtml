@@ -102,18 +102,6 @@
 						</h:inputText>
 						<r:messages id="fehlermeldungenRabatt" for="rabatt"/>
 			
-						<h:outputLabel id="familienstandLabel" for="familienstandMenu" value="#{msgKv['updatePrivatkunde.familienstand']}"/>
-						<r:select id="familienstandMenu"
-						          enableManualInput="true"
-						          defaultLabel="#{msgKv['updatePrivatkunde.familienstand']}"
-						          value="#{kunde.familienstand}"
-						          valueChangeListener="#{kundeModel.geaendert}">
-							<f:selectItem id="ledig" itemValue="LEDIG" itemLabel="#{msgKv['updatePrivatkunde.familienstand.ledig']}"/>
-							<f:selectItem id="verheiratet" itemValue="VERHEIRATET" itemLabel="#{msgKv['updatePrivatkunde.familienstand.verheiratet']}"/>
-							<f:selectItem id="geschieden" itemValue="GESCHIEDEN" itemLabel="#{msgKv['updatePrivatkunde.familienstand.geschieden']}"/>
-							<f:selectItem id="verwitwet" itemValue="VERWITWET" itemLabel="#{msgKv['updatePrivatkunde.familienstand.verwitwet']}"/>
-						</r:select>
-						<f:verbatim/>
 		
 						
 						<h:outputLabel id="emailLabel" for="email" value="#{msgKv['updatePrivatkunde.email']}"/>

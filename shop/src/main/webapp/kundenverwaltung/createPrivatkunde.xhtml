@@ -96,18 +96,6 @@
 							</h:inputText>
 							<r:messages id="fehlermeldungenUmsatz" for="umsatz"/>
 				
-							<h:outputLabel id="familienstandLabel" for="familienstand" value="#{msgKv['createPrivatkunde.familienstand']}"/>
-							<r:select id="familienstand"
-							          enableManualInput="true"
-							          defaultLabel="#{msgKv['createPrivatkunde.familienstand']}"
-							          value="#{kunde.familienstand}">
-								<f:selectItem id="ledig" itemValue="LEDIG" itemLabel="#{msgKv['createPrivatkunde.familienstand.ledig']}"/>
-								<f:selectItem id="verheiratet" itemValue="VERHEIRATET" itemLabel="#{msgKv['createPrivatkunde.familienstand.verheiratet']}"/>
-								<f:selectItem id="geschieden" itemValue="GESCHIEDEN" itemLabel="#{msgKv['createPrivatkunde.familienstand.geschieden']}"/>
-								<f:selectItem id="verwitwet" itemValue="VERWITWET" itemLabel="#{msgKv['createPrivatkunde.familienstand.verwitwet']}"/>
-							</r:select>
-							<f:verbatim/>
-							
 							<h:outputText id="geschlechtLabel" value="#{msgKv['createPrivatkunde.geschlecht']}"/>
 							<h:selectOneRadio id="geschlecht" value="#{kunde.geschlecht}">
 								<f:selectItem id="weiblich" itemValue="WEIBLICH" itemLabel="#{msgKv['createPrivatkunde.geschlecht.weiblich']}"/>
