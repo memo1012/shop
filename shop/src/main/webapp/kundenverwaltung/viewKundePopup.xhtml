@@ -41,19 +41,19 @@
 					<h:outputText id="emailLabel" value="#{msgKv['viewKundePopup.email']}"/>
 					<h:outputText id="email" value="#{kunde.email}"/>
 		
-					<h:outputText id="privatkundeLabel" value="#{msgKv['viewKundePopup.kundenart']}" rendered="#{kunde.class.simpleName eq 'Privatkunde'}"/>
-					<h:outputText id="privatkunde" value="#{msgKv['viewKundePopup.privatkunde']}" rendered="#{kunde.class.simpleName eq 'Privatkunde'}"/>
+					<!-- <h:outputText id="privatkundeLabel" value="#{msgKv['viewKundePopup.kundenart']}" rendered="#{kunde.class.simpleName eq 'Privatkunde'}"/>-->
+					<h:outputText id="kunde" value="#{msgKv['viewKundePopup.kunde']}" rendered="#{kunde.class.simpleName eq 'Kunde'}"/>
 					
 					<h:outputText id="rabattLabel" value="#{msgKv['viewKundePopup.rabatt']}"/>
 					<h:outputText id="rabatt" value="#{kunde.rabatt}">
 						<f:convertNumber type="percent" maxFractionDigits="2"/>
 					</h:outputText>
 					
-					<h:outputText id="weiblichLabel" value="#{msgKv['viewKundePopup.geschlecht']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'WEIBLICH'}"/>
-					<h:outputText id="weiblich" value="#{msgKv['viewKundePopup.geschlecht.weiblich']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'WEIBLICH'}"/>
+					<h:outputText id="weiblichLabel" value="#{msgKv['viewKundePopup.geschlecht']}" rendered="#{kunde.geschlecht eq 'WEIBLICH'}"/>
+					<h:outputText id="weiblich" value="#{msgKv['viewKundePopup.geschlecht.weiblich']}" rendered="#{kunde.geschlecht eq 'WEIBLICH'}"/>
 		
-					<h:outputText id="maennlichLabel" value="#{msgKv['viewKundePopup.geschlecht']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'MAENNLICH'}"/>
-					<h:outputText id="maennlich" value="#{msgKv['viewKundePopup.geschlecht.maennlich']}" rendered="#{kunde.class.simpleName eq 'Privatkunde' and kunde.geschlecht eq 'MAENNLICH'}"/>
+					<h:outputText id="maennlichLabel" value="#{msgKv['viewKundePopup.geschlecht']}" rendered="#{kunde.geschlecht eq 'MAENNLICH'}"/>
+					<h:outputText id="maennlich" value="#{msgKv['viewKundePopup.geschlecht.maennlich']}" rendered="#{kunde.geschlecht eq 'MAENNLICH'}"/>
 	
 				</h:panelGrid>
 			</r:panel>

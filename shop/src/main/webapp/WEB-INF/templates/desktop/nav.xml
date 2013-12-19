@@ -33,12 +33,12 @@
 						</c:if>
 					</h:link>
 				</r:panelMenuItem>
-				<r:panelMenuItem id="kundenverwaltungCreatePrivatkundeItem">
-					<h:link id="kundenverwaltungCreatePrivatkunde"
-					        outcome="/kundenverwaltung/createPrivatkunde"
-						    value="#{msg['nav.kundenverwaltung.createPrivatkunde']}">
+				<r:panelMenuItem id="kundenverwaltungCreateKundeItem">
+					<h:link id="kundenverwaltungCreateKunde"
+					        outcome="/kundenverwaltung/createKunde"
+						    value="#{msg['nav.kundenverwaltung.createKunde']}">
 						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
-							<f:param id="createPrivatkundeCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+							<f:param id="createKundeCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
 					</h:link>
 				</r:panelMenuItem>

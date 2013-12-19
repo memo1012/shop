@@ -10,24 +10,24 @@
 	<body>
 		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 			
-			<ui:param name="pageTitle" value="#{msgKv['updatePrivatkunde.title']}"/>
+			<ui:param name="pageTitle" value="#{msgKv['updateKunde.title']}"/>
 		
 			<ui:define name="content">
 				<c:set var="kunde" value="#{kundeModel.kunde}" scope="view"/>
 				
 				<h1>
-					<h:outputFormat id="headingPrivatkunde" value="#{msgKv['updatePrivatkunde.heading']}" rendered="#{not empty kunde}">
+					<h:outputFormat id="headingKunde" value="#{msgKv['updateKunde.heading']}" rendered="#{not empty kunde}">
 						<f:param id="idWert" value="#{kunde.id}"/>
 					</h:outputFormat>
 				</h1>
 				
 				<h:outputText id="fehlerKeinKunde"
-				              value="#{msgKv['updatePrivatkunde.keinKunde']}"
+				              value="#{msgKv['updateKunde.keinKunde']}"
 				              class="rf-msg-err"
 				              rendered="#{empty kunde}"/>
 	
 				<r:push id="updateEvent" address="updateKunde"
-			            ondataavailable="if (event.rf.data == '#{kunde.id}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgKv['updatePrivatkunde.concurrentUpdate']}&lt;/span&gt;') }"/>
+			            ondataavailable="if (event.rf.data == '#{kunde.id}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgKv['updateKunde.concurrentUpdate']}&lt;/span&gt;') }"/>
 				<span id="updateMessage"></span>
 				
 				<r:notifyMessages id="notifyMessages" stayTime="2000" nonblocking="true"/>
@@ -41,7 +41,7 @@
 					
 					<h:panelGrid id="updateKundeTabelle"
 					             columns="3">
-						<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['updatePrivatkunde.nachname']}"/>
+						<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['updateKunde.nachname']}"/>
 						<h:inputText id="nachname"
 						             value="#{kunde.nachname}"
 						             valueChangeListener="#{kundeModel.geaendert}">
@@ -50,24 +50,17 @@
 						</h:inputText>
 						<r:messages id="fehlermeldungenNachname" for="nachname"/>
 			
-						<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['updatePrivatkunde.vorname']}"/>
+						<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['updateKunde.vorname']}"/>
 						<h:inputText id="vorname" value="#{kunde.vorname}" valueChangeListener="#{kundeModel.geaendert}"/>
 						<f:verbatim/>
 						
-						<h:outputLabel id="kategorieLabel" value="#{msgKv['updatePrivatkunde.kategorie']}" for="kategorie"/>
-						<r:inputNumberSpinner id="kategorie"
-						                      value="#{kunde.kategorie}"
-						                      minValue="0" maxValue="5"
-						                      inputSize="1"
-						                      valueChangeListener="#{kundeModel.geaendert}"/>
-						<f:verbatim/>
-						
+
 						<h:outputLabel id="seitLabel"
 						               for="seit"
-						               value="#{msgKv['updatePrivatkunde.seit']}"
+						               value="#{msgKv['updateKunde.seit']}"
 						               escape="false"/>
 						<r:calendar id="seit"
-						            datePattern="#{msgKv['updatePrivatkunde.calendar.pattern']}"
+						            datePattern="#{msgKv['updateKunde.calendar.pattern']}"
 						            value="#{kunde.seit}"
 						            timezone="CET">
 							<!--
@@ -76,10 +69,10 @@
 						</r:calendar>
 						<r:messages id="fehlermeldungSeit" for="seit"/>
 						
-						<h:outputLabel id="umsatzLabel" for="umsatz" value="#{msgKv['updatePrivatkunde.umsatz']}"/>
+						<h:outputLabel id="umsatzLabel" for="umsatz" value="#{msgKv['updateKunde.umsatz']}"/>
 						<h:inputText id="umsatz"
 						             value="#{kunde.umsatz}"
-						             converterMessage="#{msgKv['updatePrivatkunde.umsatz.convert']}"
+						             converterMessage="#{msgKv['updateKunde.umsatz.convert']}"
 						             valueChangeListener="#{kundeModel.geaendert}">
 						    <!--
 							<f:convertNumber type="currency"
@@ -90,10 +83,10 @@
 						</h:inputText>
 						<r:messages id="fehlermeldungenUmsatz" for="umsatz"/>
 						
-						<h:outputLabel id="rabattLabel" for="rabatt" value="#{msgKv['updatePrivatkunde.rabatt']}"/>
+						<h:outputLabel id="rabattLabel" for="rabatt" value="#{msgKv['updateKunde.rabatt']}"/>
 						<h:inputText id="rabatt"
 						             value="#{kunde.rabatt}"
-						             converterMessage="#{msgKv['updatePrivatkunde.rabatt.convert']}"
+						             converterMessage="#{msgKv['updateKunde.rabatt.convert']}"
 						             valueChangeListener="#{kundeModel.geaendert}">
 							<f:convertNumber type="percent"
 		                                     maxFractionDigits="2"
@@ -104,7 +97,7 @@
 			
 		
 						
-						<h:outputLabel id="emailLabel" for="email" value="#{msgKv['updatePrivatkunde.email']}"/>
+						<h:outputLabel id="emailLabel" for="email" value="#{msgKv['updateKunde.email']}"/>
 						<h:inputText id="email" value="#{kunde.email}" valueChangeListener="#{kundeModel.geaendert}">
 							<r:validator oninvalid="$(#{r:element('email')}).addClass('invalid')"
 	                                     onvalid="$(#{r:element('email')}).removeClass('invalid')"/>
@@ -113,13 +106,13 @@
 					</h:panelGrid>
 							
 					<p id="buttons">
-						<h:commandButton id="button" action="#{kundeModel.update}" value="#{msgKv['updatePrivatkunde.submit']}"/>
+						<h:commandButton id="button" action="#{kundeModel.update}" value="#{msgKv['updateKunde.submit']}"/>
 						#{' '}
-						<h:commandButton type="reset" value="#{msgKv['updatePrivatkunde.reset']}"/>
+						<h:commandButton type="reset" value="#{msgKv['updateKunde.reset']}"/>
 					</p>
 					
 					<p id="hinweisPflichtfelder">
-						#{msgKv['updatePrivatkunde.required']}
+						#{msgKv['updateKunde.required']}
 					</p>
 				</h:form>
 			</ui:define>

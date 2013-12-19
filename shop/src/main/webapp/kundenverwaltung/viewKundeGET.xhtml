@@ -24,7 +24,7 @@
 				</h:outputFormat>
 				
 				<c:set var="kunde" value="#{kundeModel.kunde}" scope="view"/>
-				<c:set var="privatkunde" value="#{kundeModel.kunde.class.simpleName eq 'Privatkunde'}" scope="view"/>
+				<c:set var="kunde" value="#{kundeModel.kunde.class.simpleName eq 'Kunde'}" scope="view"/>
 			
 				<h:panelGrid id="ausgewaehlterKunde"
 				             columns="2"
@@ -53,27 +53,26 @@
 					<h:outputText id="email" value="#{kundeModel.kunde.email}"/>
 				
 				
-					<h:outputText id="privatkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{privatkunde}"/>
-					<h:outputText id="privatkunde" value="#{msgKv['viewKundeGET.privatkunde']}" rendered="#{privatkunde}"/>
+					<!--<h:outputText id="privatkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{privatkunde}"/>-->
+					<h:outputText id="kunde" value="#{msgKv['viewKundeGET.kunde']}"/>
 								
 					<h:outputText id="rabattLabel" value="#{msgKv['viewKundeGET.rabatt']}"/>
 					<h:outputText id="rabatt" value="#{kundeModel.kunde.rabatt}"/>
 						<f:convertNumber type="percent" maxFractionDigits="2"/>
 					</h:outputText>
 								
-					<h:outputText id="weiblichLabel" value="#{msgKv['viewKundeGET.geschlecht']}" rendered="#{privatkunde and kunde.geschlecht eq 'WEIBLICH'}"/>
-					<h:outputText id="weiblich" value="#{msgKv['viewKundeGET.geschlecht.weiblich']}" rendered="#{privatkunde and kunde.geschlecht eq 'WEIBLICH'}"/>
+					<h:outputText id="weiblichLabel" value="#{msgKv['viewKundeGET.geschlecht']}" rendered="#{kunde.geschlecht eq 'WEIBLICH'}"/>
+					<h:outputText id="weiblich" value="#{msgKv['viewKundeGET.geschlecht.weiblich']}" rendered="#{kunde.geschlecht eq 'WEIBLICH'}"/>
 				
-					<h:outputText id="maennlichLabel" value="#{msgKv['viewKundeGET.geschlecht']}" rendered="#{privatkunde and kunde.geschlecht eq 'MAENNLICH'}"/>
-					<h:outputText id="maennlich" value="#{msgKv['viewKundeGET.geschlecht.maennlich']}" rendered="#{privatkunde and kunde.geschlecht eq 'MAENNLICH'}"/>
+					<h:outputText id="maennlichLabel" value="#{msgKv['viewKundeGET.geschlecht']}" rendered="#{kunde.geschlecht eq 'MAENNLICH'}"/>
+					<h:outputText id="maennlich" value="#{msgKv['viewKundeGET.geschlecht.maennlich']}" rendered="#{kunde.geschlecht eq 'MAENNLICH'}"/>
 		
 				</h:panelGrid>
 							
 				<h:form id="buttons" rendered="#{not empty kundeModel.kunde}">
-					<h:commandLink id="updateButtonPrivatkunde"
-					               action="/kundenverwaltung/updatePrivatkunde"
-					               alt="#{msgKv['viewKundeGET.update.alt']}"
-					               rendered="#{privatkunde}">
+					<h:commandLink id="updateButtonKunde"
+					               action="/kundenverwaltung/updateKunde"
+					               alt="#{msgKv['viewKundeGET.update.alt']}">
 						<h:graphicImage id="editIconPrivat"
 			    	                    name="edit.gif"
 			        	                library="images"/>

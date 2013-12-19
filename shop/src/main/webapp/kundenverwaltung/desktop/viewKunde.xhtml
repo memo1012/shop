@@ -62,7 +62,7 @@
 		
 					<r:outputPanel id="gesuchterKundePanel">
 						<c:set var="kunde" value="#{kundeModel.kunde}" scope="view"/>
-						<c:set var="privatkunde" value="#{kunde.class.simpleName eq 'Privatkunde'}" scope="view"/>
+						<c:set var="kunde" value="#{kunde.class.simpleName eq 'Kunde'}" scope="view"/>
 
 						
 						<r:tabPanel id="tabPanel" switchType="client" rendered="#{not empty kunde}">
@@ -103,12 +103,12 @@
 										<h:outputText id="email" value="#{kunde.email}"/>
 						
 					
-										<h:outputText id="privatkundeLabel" value="#{msgKv['viewKunde.kundenart']}" rendered="#{privatkunde}"/>
-										<h:outputText id="privatkunde" value="#{msgKv['viewKunde.privatkunde']}" rendered="#{privatkunde}"/>
+										<!--<h:outputText id="kundeLabel" value="#{msgKv['viewKunde.kundenart']}" />-->
+										<h:outputText id="kunde" value="#{msgKv['viewKunde.kunde']}"/>
 										
 										<!-- EL 3.0
-										<h:outputText id="kundenart" value="#{msgKv['viewKunde.kundenart']}"/>
-										<h:outputText id="firmenkunde" value="#{firmenkunde ? msgKv['viewKunde.firmenkunde' : msgKv['viewKunde.privatkunde']}"/>
+										! <h:outputText id="kundenart" value="#{msgKv['viewKunde.kundenart']}"/>
+										! <h:outputText id="firmenkunde" value="#{firmenkunde ? msgKv['viewKunde.firmenkunde' : msgKv['viewKunde.privatkunde']}"/>
 										-->
 										
 										<h:outputText id="rabattLabel" value="#{msgKv['viewKunde.rabatt']}"/>
@@ -116,11 +116,11 @@
 											<f:convertNumber type="percent" maxFractionDigits="2"/>
 										</h:outputText>
 										
-										<h:outputText id="weiblichLabel" value="#{msgKv['viewKunde.geschlecht']}" rendered="#{privatkunde and kunde.geschlecht eq 'WEIBLICH'}"/>
-										<h:outputText id="weiblich" value="#{msgKv['viewKunde.geschlecht.weiblich']}" rendered="#{privatkunde and kunde.geschlecht eq 'WEIBLICH'}"/>
+										<h:outputText id="weiblichLabel" value="#{msgKv['viewKunde.geschlecht']}" rendered="#{kunde.geschlecht eq 'WEIBLICH'}"/>
+										<h:outputText id="weiblich" value="#{msgKv['viewKunde.geschlecht.weiblich']}" rendered="#{kunde.geschlecht eq 'WEIBLICH'}"/>
 							
-										<h:outputText id="maennlichLabel" value="#{msgKv['viewKunde.geschlecht']}" rendered="#{privatkunde and kunde.geschlecht eq 'MAENNLICH'}"/>
-										<h:outputText id="maennlich" value="#{msgKv['viewKunde.geschlecht.maennlich']}" rendered="#{privatkunde and kunde.geschlecht eq 'MAENNLICH'}"/>
+										<h:outputText id="maennlichLabel" value="#{msgKv['viewKunde.geschlecht']}" rendered="#{kunde.geschlecht eq 'MAENNLICH'}"/>
+										<h:outputText id="maennlich" value="#{msgKv['viewKunde.geschlecht.maennlich']}" rendered="#{kunde.geschlecht eq 'MAENNLICH'}"/>
 						
 									</h:panelGrid>
 								</r:panel>
@@ -243,15 +243,14 @@
 					
 						<p id="buttons">
 							<h:panelGroup id="buttonsGroup" rendered="#{not empty kunde}">
-								<h:commandLink id="updateButtonPrivatkunde"
-								               action="/kundenverwaltung/updatePrivatkunde"
-								               alt="#{msgKv['viewKunde.update.alt']}"
-								               rendered="#{privatkunde}">
+								<h:commandLink id="updateButtonKunde"
+								               action="/kundenverwaltung/updateKunde"
+								               alt="#{msgKv['viewKunde.update.alt']}">
 									<h:graphicImage id="editIconPrivat"
 			    	                                name="edit.gif"
 			        	                            library="images"/>
 									<c:if test="#{not empty javax.enterprise.context.conversation.id}">
-										<f:param id="updatePrivatkundeCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+										<f:param id="updateKundeCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 									</c:if>
 								</h:commandLink>
 

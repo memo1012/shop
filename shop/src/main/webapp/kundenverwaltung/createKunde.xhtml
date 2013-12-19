@@ -10,14 +10,14 @@
 	<body>
 		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
 			<ui:define name="metadata">
-				<f:event type="preRenderView" listener="#{kundeModel.createEmptyPrivatkunde}"/>
+				<f:event type="preRenderView" listener="#{kundeModel.createEmptyKunde}"/>
 			</ui:define>
 			
-			<ui:param name="pageTitle" value="#{msgKv['createPrivatkunde.title']}"/>
+			<ui:param name="pageTitle" value="#{msgKv['createKunde.title']}"/>
 		
 			<ui:define name="content">
 				<h1>
-					#{msgKv['createPrivatkunde.heading']}
+					#{msgKv['createKunde.heading']}
 				</h1>
 		
 				<r:messages id="fehlermeldungGobal" globalOnly="true"/>
@@ -29,7 +29,7 @@
 					<r:focus id="createKundeFormFocus"/>
 					-->
 					
-					<c:set var="kunde" value="#{kundeModel.neuerPrivatkunde}" scope="view"/>
+					<c:set var="kunde" value="#{kundeModel.neuerKunde}" scope="view"/>
 					<c:set var="adresse" value="#{kunde.adresse}" scope="view"/>
 					<!--
 						https://issues.jboss.org/browse/AS7-1348
@@ -41,7 +41,7 @@
 					
 						<h:panelGrid id="createKundeTabelle" columns="3">
 				
-							<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['createPrivatkunde.nachname']}"/>
+							<h:outputLabel id="nachnameLabel" for="nachname" value="#{msgKv['createKunde.nachname']}"/>
 							<h:inputText id="nachname" value="#{kunde.nachname}">
 								<!-- Validierung durch Ajax mit JSF -->
 								<!--
@@ -53,37 +53,28 @@
 							</h:inputText>
 							<r:messages id="fehlermeldungenNachname" for="nachname"/>
 				
-							<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['createPrivatkunde.vorname']}"/>
+							<h:outputLabel id="vornameLabel" for="vorname" value="#{msgKv['createKunde.vorname']}"/>
 							<h:inputText id="vorname" value="#{kunde.vorname}"/>
 							<f:verbatim/>
-							
-							<h:outputLabel id="kategorieLabel" value="#{msgKv['createPrivatkunde.kategorie']}" for="kategorie"/>
-							<r:inputNumberSlider id="kategorie"
-							                     value="#{kunde.kategorie}"
-							                     minValue="0"
-							                     maxValue="5"
-							                     inputSize="1"
-							                     width="100"/>
-							<f:verbatim/>
-							
+								
 							<h:outputLabel id="seitLabel"
 							               for="seit"
-							               value="#{msgKv['createPrivatkunde.seit']}"/>
+							               value="#{msgKv['createKunde.seit']}"/>
 							<r:calendar id="seit"
-							            datePattern="#{msgKv['createPrivatkunde.calendar.pattern']}"
+							            datePattern="#{msgKv['createKunde.calendar.pattern']}"
 							            value="#{kunde.seit}"
 							            timezone="CET">
 							    <!-- https://issues.jboss.org/browse/RF-10224
 								<r:validator/>
 								-->
-								<r:placeholder id="seitPlaceholder" value="#{msgKv['createPrivatkunde.seit.placeholder']}" />
+								<r:placeholder id="seitPlaceholder" value="#{msgKv['createKunde.seit.placeholder']}" />
 							</r:calendar>
 							<r:messages id="fehlermeldungenSeit" for="seit"/>
 							
-							<h:outputLabel id="umsatzLabel" for="umsatz" value="#{msgKv['createPrivatkunde.umsatz']}"/>
+							<h:outputLabel id="umsatzLabel" for="umsatz" value="#{msgKv['createKunde.umsatz']}"/>
 							<h:inputText id="umsatz"
 							             value="#{kunde.umsatz}"
-							             converterMessage="#{msgKv['createPrivatkunde.umsatz.convert']}">
+							             converterMessage="#{msgKv['createKunde.umsatz.convert']}">
 							    <!--
 							    <f:convertNumber type="currency"
 								                 currencyCode="EUR"
@@ -96,15 +87,15 @@
 							</h:inputText>
 							<r:messages id="fehlermeldungenUmsatz" for="umsatz"/>
 				
-							<h:outputText id="geschlechtLabel" value="#{msgKv['createPrivatkunde.geschlecht']}"/>
+							<h:outputText id="geschlechtLabel" value="#{msgKv['createKunde.geschlecht']}"/>
 							<h:selectOneRadio id="geschlecht" value="#{kunde.geschlecht}">
-								<f:selectItem id="weiblich" itemValue="WEIBLICH" itemLabel="#{msgKv['createPrivatkunde.geschlecht.weiblich']}"/>
-								<f:selectItem id="maennlich" itemValue="MAENNLICH" itemLabel="#{msgKv['createPrivatkunde.geschlecht.maennlich']}"/>
+								<f:selectItem id="weiblich" itemValue="WEIBLICH" itemLabel="#{msgKv['createKunde.geschlecht.weiblich']}"/>
+								<f:selectItem id="maennlich" itemValue="MAENNLICH" itemLabel="#{msgKv['createKunde.geschlecht.maennlich']}"/>
 							</h:selectOneRadio>
 							<f:verbatim/>
 							
 											
-							<h:outputLabel id="emailLabel" for="email" value="#{msgKv['createPrivatkunde.email']}"/>
+							<h:outputLabel id="emailLabel" for="email" value="#{msgKv['createKunde.email']}"/>
 							<h:inputText id="email" value="#{kunde.email}">
 								<r:validator oninvalid="$(#{r:element('email')}).addClass('invalid')"
 	                                         onvalid="$(#{r:element('email')}).removeClass('invalid')"/>
@@ -113,7 +104,7 @@
 			
 							<h:outputLabel id="passwordLabel"
 							               for="password"
-							               value="#{msgKv['createPrivatkunde.password']}"/>
+							               value="#{msgKv['createKunde.password']}"/>
 							<h:inputSecret id="password"
 							               value="#{kunde.password}"
 							               redisplay="true"/>
@@ -121,13 +112,13 @@
 							
 							<h:outputLabel id="passwordWdhLabel"
 							               for="passwordWdh"
-							               value="#{msgKv['createPrivatkunde.passwordWdh']}"/>
+							               value="#{msgKv['createKunde.passwordWdh']}"/>
 							<h:inputSecret id="passwordWdh"
 							               value="#{kunde.passwordWdh}"
 							               redisplay="true"/>
 							<f:verbatim/>
 			
-							<h:outputLabel id="plzLabel" for="plz" value="#{msgKv['createPrivatkunde.plz']}"/>
+							<h:outputLabel id="plzLabel" for="plz" value="#{msgKv['createKunde.plz']}"/>
 							<h:inputText id="plz"
 							             value="#{adresse.plz}">
 								<r:validator oninvalid="$(#{r:element('plz')}).addClass('invalid')"
@@ -135,7 +126,7 @@
 							</h:inputText>
 							<r:messages id="fehlermeldungPlz" for="plz"/>
 							
-							<h:outputLabel id="ortLabel" for="ort" value="#{msgKv['createPrivatkunde.ort']}"/>
+							<h:outputLabel id="ortLabel" for="ort" value="#{msgKv['createKunde.ort']}"/>
 							<h:inputText id="ort"
 							             value="#{adresse.ort}">
 								<r:validator oninvalid="$(#{r:element('ort')}).addClass('invalid')"
@@ -143,7 +134,7 @@
 							</h:inputText>
 							<r:messages id="fehlermeldungOrt" for="ort"/>
 							
-							<h:outputLabel id="strasseLabel" for="strasse" value="#{msgKv['createPrivatkunde.strasse']}"/>
+							<h:outputLabel id="strasseLabel" for="strasse" value="#{msgKv['createKunde.strasse']}"/>
 							<h:inputText id="strasse"
 							             value="#{adresse.strasse}">
 								<r:validator oninvalid="$(#{r:element('strasse')}).addClass('invalid')"
@@ -151,7 +142,7 @@
 							</h:inputText>
 							<r:messages id="fehlermeldungStrasse" for="strasse"/>
 							
-							<h:outputLabel id="hausnrLabel" for="hausnr" value="#{msgKv['createPrivatkunde.hausnr']}"/>
+							<h:outputLabel id="hausnrLabel" for="hausnr" value="#{msgKv['createKunde.hausnr']}"/>
 							<h:inputText id="hausnr" value="#{adresse.hausnr}"/>
 							<f:verbatim/>
 							
@@ -162,7 +153,7 @@
 							               createContent="#{captcha.paint}"
 							               mimeType="image/png"/>
 							<h:panelGroup>
-								<h:outputLabel id="captchaLabel" for="captchaInput" value="#{msgKv['createPrivatkunde.captcha.label']}"/>
+								<h:outputLabel id="captchaLabel" for="captchaInput" value="#{msgKv['createKunde.captcha.label']}"/>
 								<br/>
 								<h:inputText id="captchaInput" value="#{kundeModel.captchaInput}"/>
 							</h:panelGroup>
@@ -171,15 +162,15 @@
 						</h:panelGrid>
 			
 						<p id="buttons">
-							<h:commandButton id="createSubmit" action="#{kundeModel.createPrivatkunde}" value="#{msgKv['createPrivatkunde.submit']}"/>
+							<h:commandButton id="createSubmit" action="#{kundeModel.createKunde}" value="#{msgKv['createKunde.submit']}"/>
 							#{' '}
-							<h:commandButton id="reset" type="reset" value="#{msgKv['createPrivatkunde.reset']}"/>
+							<h:commandButton id="reset" type="reset" value="#{msgKv['createKunde.reset']}"/>
 						</p>
 					</r:graphValidator>
 				</h:form>
 				
 				<p id="hinweisPflichtfelder">
-					#{msgKv['createPrivatkunde.required']}
+					#{msgKv['createKunde.required']}
 				</p>
 			</ui:define>
 		</ui:composition>
