@@ -25,7 +25,6 @@
 				
 				<c:set var="kunde" value="#{kundeModel.kunde}" scope="view"/>
 				<c:set var="privatkunde" value="#{kundeModel.kunde.class.simpleName eq 'Privatkunde'}" scope="view"/>
-				<c:set var="firmenkunde" value="#{kundeModel.kunde.class.simpleName eq 'Firmenkunde'}" scope="view"/>			
 			
 				<h:panelGrid id="ausgewaehlterKunde"
 				             columns="2"
@@ -53,14 +52,12 @@
 					<h:outputText id="emailLabel" value="#{msgKv['viewKundeGET.email']}"/>
 					<h:outputText id="email" value="#{kundeModel.kunde.email}"/>
 				
-					<h:outputText id="firmenkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{firmenkunde}"/>
-					<h:outputText id="firmenkunde" value="#{msgKv['viewKundeGET.firmenkunde']}" rendered="#{firmenkunde}"/>
-					
+				
 					<h:outputText id="privatkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{privatkunde}"/>
 					<h:outputText id="privatkunde" value="#{msgKv['viewKundeGET.privatkunde']}" rendered="#{privatkunde}"/>
 								
-					<h:outputText id="rabattLabel" value="#{msgKv['viewKundeGET.rabatt']}" rendered="#{firmenkunde}"/>
-					<h:outputText id="rabatt" value="#{kundeModel.kunde.rabatt}" rendered="#{firmenkunde}">
+					<h:outputText id="rabattLabel" value="#{msgKv['viewKundeGET.rabatt']}"/>
+					<h:outputText id="rabatt" value="#{kundeModel.kunde.rabatt}"/>
 						<f:convertNumber type="percent" maxFractionDigits="2"/>
 					</h:outputText>
 								
@@ -81,14 +78,7 @@
 			    	                    name="edit.gif"
 			        	                library="images"/>
 			        </h:commandLink>
-					<h:commandLink id="updateButtonFirmenkunde"
-					               action="/kundenverwaltung/updateFirmenkunde"
-					               alt="#{msgKv['viewKundeGET.update.alt']}"
-					               rendered="#{firmenkunde}">
-						<h:graphicImage id="editIconFirmen"
-			    	                    name="edit.gif"
-			        	                library="images"/>
-			        </h:commandLink>
+	
 				</h:form>
 			</ui:define>
 		</ui:composition>

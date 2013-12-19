@@ -40,9 +40,6 @@
 		
 					<h:outputText id="emailLabel" value="#{msgKv['viewKundePopup.email']}"/>
 					<h:outputText id="email" value="#{kunde.email}"/>
-	
-					<h:outputText id="firmenkundeLabel" value="#{msgKv['viewKundePopup.kundenart']}" rendered="#{kunde.class.simpleName eq 'Firmenkunde'}"/>
-					<h:outputText id="firmenkunde" value="#{msgKv['viewKundePopup.firmenkunde']}" rendered="#{kunde.class.simpleName eq 'Firmenkunde'}"/>
 		
 					<h:outputText id="privatkundeLabel" value="#{msgKv['viewKundePopup.kundenart']}" rendered="#{kunde.class.simpleName eq 'Privatkunde'}"/>
 					<h:outputText id="privatkunde" value="#{msgKv['viewKundePopup.privatkunde']}" rendered="#{kunde.class.simpleName eq 'Privatkunde'}"/>

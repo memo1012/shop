@@ -299,7 +299,6 @@
       <web-resource-name>shopMitarbeiterTaetigkeiten</web-resource-name>
       <url-pattern>/kundenverwaltung/createPrivatkunde.jsf</url-pattern>
       <url-pattern>/kundenverwaltung/updatePrivatkunde.jsf</url-pattern>
-      <url-pattern>/kundenverwaltung/updateFirmenkunde.jsf</url-pattern>
       <http-method>POST</http-method>
       <http-method>GET</http-method>
     </web-resource-collection>

@@ -63,7 +63,7 @@
 					<r:outputPanel id="gesuchterKundePanel">
 						<c:set var="kunde" value="#{kundeModel.kunde}" scope="view"/>
 						<c:set var="privatkunde" value="#{kunde.class.simpleName eq 'Privatkunde'}" scope="view"/>
-						<c:set var="firmenkunde" value="#{kunde.class.simpleName eq 'Firmenkunde'}" scope="view"/>
+
 						
 						<r:tabPanel id="tabPanel" switchType="client" rendered="#{not empty kunde}">
 							<r:tab id="stammdatenTab">
@@ -102,9 +102,7 @@
 										<h:outputText id="emailLabel" value="#{msgKv['viewKunde.email']}"/>
 										<h:outputText id="email" value="#{kunde.email}"/>
 						
-										<h:outputText id="firmenkundeLabel" value="#{msgKv['viewKunde.kundenart']}" rendered="#{firmenkunde}"/>
-										<h:outputText id="firmenkunde" value="#{msgKv['viewKunde.firmenkunde']}" rendered="#{firmenkunde}"/>
-							
+					
 										<h:outputText id="privatkundeLabel" value="#{msgKv['viewKunde.kundenart']}" rendered="#{privatkunde}"/>
 										<h:outputText id="privatkunde" value="#{msgKv['viewKunde.privatkunde']}" rendered="#{privatkunde}"/>
 										
@@ -256,17 +254,7 @@
 										<f:param id="updatePrivatkundeCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 									</c:if>
 								</h:commandLink>
-								<h:commandLink id="updateButtonFirmenkunde"
-								               action="/kundenverwaltung/updateFirmenkunde"
-								               alt="#{msgKv['viewKunde.update.alt']}"
-								               rendered="#{firmenkunde}">
-									<h:graphicImage id="editIconFirmen"
-			    	                                name="edit.gif"
-			        	                            library="images"/>
-									<c:if test="#{not empty javax.enterprise.context.conversation.id}">
-										<f:param id="updateFirmenkundeCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
-									</c:if>
-								</h:commandLink>
+
 								#{' '}
 								<h:commandLink id="deleteButton"
 											   action="#{kundeModel.deleteAngezeigtenKunden}"

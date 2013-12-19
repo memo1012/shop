@@ -61,7 +61,7 @@ public class KundeModel implements Serializable {
 	private static final String JSF_VIEW_KUNDE = JSF_KUNDENVERWALTUNG + "viewKunde";
 	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "/kundenverwaltung/listKunden";
 	private static final String JSF_UPDATE_Kunde = JSF_KUNDENVERWALTUNG + "updateKunde";
-	private static final String JSF_UPDATE_FIRMENKUNDE = JSF_KUNDENVERWALTUNG + "updateFirmenkunde";
+	//private static final String JSF_UPDATE_FIRMENKUNDE = JSF_KUNDENVERWALTUNG + "updateFirmenkunde";
 	private static final String JSF_DELETE_OK = JSF_KUNDENVERWALTUNG + "okDelete";
 	
 	private static final String REQUEST_KUNDE_ID = "kundeId";
@@ -417,7 +417,7 @@ public class KundeModel implements Serializable {
 	}
 	
 	/**
-	 * Verwendung als ValueChangeListener bei updateKunde.xhtml und updateFirmenkunde.xhtml
+	 * Verwendung als ValueChangeListener bei updateKunde.xhtml
 	 * @param e Ereignis-Objekt mit der Aenderung in einem Eingabefeld, z.B. inputText
 	 */
 	public void geaendert(ValueChangeEvent e) {
@@ -490,7 +490,7 @@ public class KundeModel implements Serializable {
 		
 		return Kunde.class.equals(ausgewaehlterKunde.getClass())
 			   ? JSF_UPDATE_Kunde
-			   : JSF_UPDATE_FIRMENKUNDE;
+			   : "";//JSF_UPDATE_FIRMENKUNDE;
 	}
 	
 	/**
