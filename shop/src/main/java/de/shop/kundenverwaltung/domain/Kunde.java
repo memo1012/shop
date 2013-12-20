@@ -71,7 +71,7 @@ import de.shop.auth.domain.RolleType;
 		@Index(columnList = "file_fk") })
 @NamedQueries({
 		@NamedQuery(name = Kunde.FIND_KUNDEN, query = "SELECT k"
-				+ " FROM   Kunde k"),
+				+ " FROM   Kunde k"),				
 		@NamedQuery(name = Kunde.FIND_KUNDEN_ORDER_BY_ID, query = "SELECT   k"
 				+ " FROM  Kunde k" + " ORDER BY k.id"),
 		@NamedQuery(name = Kunde.FIND_IDS_BY_PREFIX, query = "SELECT   k.id"
@@ -98,29 +98,28 @@ import de.shop.auth.domain.RolleType;
 				+ Kunde.PARAM_KUNDE_NACHNAME + ")"),
 		@NamedQuery(name = Kunde.FIND_KUNDE_BY_ID_FETCH_BESTELLUNGEN, query = "SELECT DISTINCT k"
 				+ " FROM   Kunde k LEFT JOIN FETCH k.bestellungen"
-				+ " WHERE  k.id = :" + Kunde.PARAM_KUNDE_ID),
+				+ " WHERE  k.id = :" + Kunde.PARAM_KUNDE_ID ),
 		@NamedQuery(name = Kunde.FIND_KUNDE_BY_EMAIL, query = "SELECT DISTINCT k"
 				+ " FROM   Kunde k"
 				+ " WHERE  k.email = :"
 				+ Kunde.PARAM_KUNDE_EMAIL),
 		@NamedQuery(name = Kunde.FIND_KUNDEN_BY_PLZ, query = "SELECT k"
 				+ " FROM  Kunde k" + " WHERE k.adresse.plz = :"
-				+ Kunde.PARAM_KUNDE_ADRESSE_PLZ),
+				+ Kunde.PARAM_KUNDE_ADRESSE_PLZ ),
 		@NamedQuery(name = Kunde.FIND_KUNDE_BY_USERNAME, query = "SELECT   k"
 				+ " FROM  Kunde k" + " WHERE CONCAT('', k.id) = :"
 				+ Kunde.PARAM_KUNDE_USERNAME),
 		@NamedQuery(name = Kunde.FIND_USERNAME_BY_USERNAME_PREFIX, query = "SELECT   CONCAT('', k.id)"
 				+ " FROM  Kunde k"
 				+ " WHERE CONCAT('', k.id) LIKE :"
-				+ Kunde.PARAM_USERNAME_PREFIX),
+				+ Kunde.PARAM_USERNAME_PREFIX ),
 		@NamedQuery(name = Kunde.FIND_KUNDEN_BY_DATE, query = "SELECT k"
 				+ " FROM  Kunde k" + " WHERE k.seit = :"
-				+ Kunde.PARAM_KUNDE_SEIT),
+				+ Kunde.PARAM_KUNDE_SEIT ),
 		@NamedQuery(name = Kunde.FIND_KUNDEN_BY_ID_PREFIX, query = "SELECT k"
 				+ " FROM  Kunde k"
 				+ " WHERE CONCAT('', k.id) LIKE :"
-				+ Kunde.PARAM_KUNDE_ID_PREFIX) })
-
+				+ Kunde.PARAM_KUNDE_ID_PREFIX ) })
 
 		@NamedEntityGraphs({ @NamedEntityGraph(name = Kunde.GRAPH_BESTELLUNGEN, 
 		attributeNodes = @NamedAttributeNode("bestellungen")) })
