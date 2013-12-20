@@ -54,11 +54,17 @@
 					               value="#{msg['login.password']}"
 					               for="password"/>
 					<h:inputSecret id="password" value="#{authModel.password}"/>
-					<h:commandButton id="loginButton" action="#{authModel.login}" value="#{msg['login.submit']}"/>
+					<br></br>
+					<h:outputLabel value=""/>
+					
+					<h:panelGrid id="loginGridB" columns="2">
+						<h:commandButton id="loginButton" action="#{authModel.login}" value="#{msg['login.submit']}"/>
+						<h:commandButton id="registrierenButton" action="/kundenverwaltung/createKunde" value="#{msg['header.registrieren']}"/> 
+					</h:panelGrid>
 				</h:panelGrid>
 				<r:message id="fehlermeldungLogin" for="username"/>
 			</h:form>
-
+	
 			<h:form id="spracheForm">
 				<r:dropDownMenu id="sprache">
 					<f:facet name="label">

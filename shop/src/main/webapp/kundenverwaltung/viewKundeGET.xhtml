@@ -24,7 +24,6 @@
 				</h:outputFormat>
 				
 				<c:set var="kunde" value="#{kundeModel.kunde}" scope="view"/>
-				<c:set var="kunde" value="#{kundeModel.kunde.class.simpleName eq 'Kunde'}" scope="view"/>
 			
 				<h:panelGrid id="ausgewaehlterKunde"
 				             columns="2"
@@ -54,7 +53,7 @@
 				
 				
 					<!--<h:outputText id="privatkundeLabel" value="#{msgKv['viewKundeGET.kundenart']}" rendered="#{privatkunde}"/>-->
-					<h:outputText id="kunde" value="#{msgKv['viewKundeGET.kunde']}"/>
+					<!--  <h:outputText id="kunde" value="#{msgKv['viewKundeGET.kunde']}"/> -->
 								
 					<h:outputText id="rabattLabel" value="#{msgKv['viewKundeGET.rabatt']}"/>
 					<h:outputText id="rabatt" value="#{kundeModel.kunde.rabatt}"/>

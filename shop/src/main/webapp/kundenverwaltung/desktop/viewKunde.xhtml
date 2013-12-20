@@ -13,7 +13,7 @@
 			<ui:param name="pageTitle" value="#{msgKv['viewKunde.title']}"/>
 		
 			<ui:define name="content">
-				<h:form id="form">
+				<h:form id="form">  
 					<r:focus id="formFocus"/>
 					
 					<r:panel id="suchePanel" header="#{msgKv['viewKunde.sucheNeu']}">
@@ -62,8 +62,6 @@
 		
 					<r:outputPanel id="gesuchterKundePanel">
 						<c:set var="kunde" value="#{kundeModel.kunde}" scope="view"/>
-						<c:set var="kunde" value="#{kunde.class.simpleName eq 'Kunde'}" scope="view"/>
-
 						
 						<r:tabPanel id="tabPanel" switchType="client" rendered="#{not empty kunde}">
 							<r:tab id="stammdatenTab">
@@ -104,7 +102,7 @@
 						
 					
 										<!--<h:outputText id="kundeLabel" value="#{msgKv['viewKunde.kundenart']}" />-->
-										<h:outputText id="kunde" value="#{msgKv['viewKunde.kunde']}"/>
+										<!--  <h:outputText id="kunde" value="#{msgKv['viewKunde.kunde']}"/> -->
 										
 										<!-- EL 3.0
 										! <h:outputText id="kundenart" value="#{msgKv['viewKunde.kundenart']}"/>
@@ -268,8 +266,9 @@
 								<r:messages id="fehlermeldungDeleteButton" for="deleteButton"/>
 							</h:panelGroup>
 						</p>
-					</r:outputPanel>
-				</h:form>
+					</r:outputPanel> 
+					
+				</h:form> 
 				
 				<!--
 				<r:log id="log"/>

@@ -41,9 +41,6 @@
 					<h:outputText id="emailLabel" value="#{msgKv['viewKundePopup.email']}"/>
 					<h:outputText id="email" value="#{kunde.email}"/>
 		
-					<!-- <h:outputText id="privatkundeLabel" value="#{msgKv['viewKundePopup.kundenart']}" rendered="#{kunde.class.simpleName eq 'Privatkunde'}"/>-->
-					<h:outputText id="kunde" value="#{msgKv['viewKundePopup.kunde']}" rendered="#{kunde.class.simpleName eq 'Kunde'}"/>
-					
 					<h:outputText id="rabattLabel" value="#{msgKv['viewKundePopup.rabatt']}"/>
 					<h:outputText id="rabatt" value="#{kunde.rabatt}">
 						<f:convertNumber type="percent" maxFractionDigits="2"/>
