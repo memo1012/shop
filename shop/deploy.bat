@@ -1,3 +1,3 @@
 @ECHO OFF
-mvn -DskipTests package jboss-as:deploy
+mvn -DskipTests -o package jboss-as:deploy
 pause

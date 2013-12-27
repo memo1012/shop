@@ -360,28 +360,19 @@ public class KundeModel implements Serializable {
 	@TransactionAttribute
 	@Log
 	public String createKunde() {
-		System.out.println("!!!111");
 		if (!captcha.getValue().equals(captchaInput)) {
-			System.out.println("!!!222");
 			final String outcome = createKundeErrorMsg(null);
-			System.out.println("!!!333");
 			return outcome;
 		}
 		
 		// Push-Event fuer Webbrowser
-		System.out.println("!!!444");
-		System.out.println(neuerKunde.toString());
 		neuerKundeEvent.fire(String.valueOf(neuerKunde.getId()));
 		
 		// Aufbereitung fuer viewKunde.xhtml
-		System.out.println("!!!555");
 		kundeId = neuerKunde.getId();
-		System.out.println("!!!666");
 		kunde = neuerKunde;
-		System.out.println("!!!777");
 		neuerKunde = null;  // zuruecksetzen
 		
-		System.out.println("!!!888");
 		return JSF_VIEW_KUNDE + JSF_REDIRECT_SUFFIX;
 	}
 
@@ -466,7 +457,7 @@ public class KundeModel implements Serializable {
 		}
 
 		// Push-Event fuer Webbrowser
-		updateKundeEvent.fire(String.valueOf(kunde.getId()));
+		neuerKundeEvent.fire(String.valueOf(kunde.getId()));
 		return JSF_INDEX + JSF_REDIRECT_SUFFIX;
 	}
 	

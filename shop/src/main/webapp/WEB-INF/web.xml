@@ -116,10 +116,6 @@
     <param-name>resteasy.media.type.mappings</param-name>
     <param-value>json : application/json, xml : application/xml, image : image/*, text : text/plain</param-value>
   </context-param>
-   <context-param>
-  	<param-name>org.richfaces.push.jms.enabled</param-name>
-  	<param-value>true</param-value>
-  </context-param>
   <env-entry>
     <env-entry-name>absenderMail</env-entry-name>
     <env-entry-type>java.lang.String</env-entry-type>
