@@ -81,6 +81,9 @@ public class ArtikelResource {
 		return Response.ok(artikel)
 				.links(getTransitionalLinks(artikel, uriInfo)).build();
 	}
+	
+	
+	
 
 	private Link[] getTransitionalLinks(Artikel artikel, UriInfo uriInfo) {
 		final Link self = Link.fromUri(getUriArtikel(artikel, uriInfo))

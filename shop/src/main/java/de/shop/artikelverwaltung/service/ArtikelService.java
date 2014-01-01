@@ -23,6 +23,7 @@ import com.google.common.base.Strings;
 import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
+import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.util.interceptor.Log;
 
 import javax.persistence.NoResultException;
@@ -130,6 +131,16 @@ public class ArtikelService implements Serializable {
 
 		final List<Artikel> artikel = query.getResultList();
 		return artikel;
+	}
+	
+	public List<Artikel> findArtikelnByIdPrefix(Long id) {
+		if (id == null) {
+			return Collections.emptyList();
+		}
+
+		return em.createNamedQuery(Artikel.FIND_ARTIKELN_BY_ID_PREFIX, Artikel.class)
+				.setParameter(Artikel.PARAM_ARTIKEL_ID_PREFIX, id.toString() + '%')
+				.setMaxResults(MAX_AUTOCOMPLETE).getResultList();
 	}
 
 	/**
