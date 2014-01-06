@@ -82,7 +82,7 @@ public class ArtikelModel implements Serializable {
 	private static final String MSG_KEY_CONCURRENT_UPDATE = "persistence.concurrentUpdate";
 	private static final String MSG_KEY_CONCURRENT_DELETE = "persistence.concurrentDelete";	
 	private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
-	private static final String JSF_UPDATE_ARTIKEL = JSF_ARTIKELVERWALTUNG + "updateKunde";
+	private static final String JSF_UPDATE_ARTIKEL = JSF_ARTIKELVERWALTUNG + "updateArtikel";
 	private static final String MSG_KEY_DELETE_ARTIKEL = "artikel.delete";
 	private static final String REQUEST_ARTIKEL_ID = "artikelId";
 	private static final String JSF_DELETE_OK = JSF_ARTIKELVERWALTUNG + "okDelete";
@@ -112,7 +112,7 @@ public class ArtikelModel implements Serializable {
 	private transient Event<String> neuerArtikelEvent;
 	
 	@Inject
-	@Push(topic = "updateKunde")
+	@Push(topic = "updateArtikel")
 	private transient Event<String> updateArtikelEvent;
 	
 	private Long artikelId;
@@ -258,11 +258,12 @@ public class ArtikelModel implements Serializable {
 		@TransactionAttribute
 		@Log
 		public String createArtikel() {
+			/*
 			if (!captcha.getValue().equals(captchaInput)) {
 				final String outcome = createArtikelErrorMsg(null);
 				return outcome;
 			}
-			
+			*/
 			// Push-Event fuer Webbrowser
 			neuerArtikelEvent.fire(String.valueOf(neuerArtikel.getId()));
 			
@@ -395,7 +396,7 @@ public class ArtikelModel implements Serializable {
 			
 			artikel = ausgewaehlterArtikel;
 			
-			return Kunde.class.equals(ausgewaehlterArtikel.getClass())
+			return Artikel.class.equals(ausgewaehlterArtikel.getClass())
 				   ? JSF_UPDATE_ARTIKEL
 				   : "";//JSF_UPDATE_FIRMENKUNDE;
 		}

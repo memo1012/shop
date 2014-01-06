@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<body>
+		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+			<ui:define name="metadata">
+				<f:viewParam id="artikelIdMeta" name="artikelId"/>
+				<f:event type="preRenderView" listener="#{artikelModel.loadArtikelById}"/>
+			</ui:define>
+			
+			<ui:param name="pageTitle" value="#{msgAv['viewArtikelGET.title']}"/>
+		
+			<ui:define name="content">
+				<h:outputFormat id="fehlerArtikelId"
+				                value="#{msgAv['viewArtikelGET.notFound']}"
+				                class="rf-msg-err"
+				                rendered="#{empty artikelModel.artikel}">
+					<f:param id="idParam" value="#{param.artikelId}"/>
+				</h:outputFormat>
+				
+				<c:set var="artikel" value="#{artikelModel.artikel}" scope="view"/>
+			
+				<h:panelGrid id="ausgewaehlterArtikel"
+				             columns="2"
+				             rendered="#{not empty artikelModel.artikel}">
+					<h:outputText id="idLabel" value="#{msgAv['viewArtikelGET.artikelnr']}"/>
+					<h:outputText id="id" value="#{artikelModel.artikel.id}"/>
+					
+					<h:outputText id="bezeichnungLabel" value="#{msgAv['viewArtikelGET.bezeichnung']}"/>
+					<h:outputText id="bezeichnung" value="#{artikelModel.artikel.bezeichnung}"/>		
+
+								
+					<h:outputText id="erzeugtLabel" value="#{msgAv['viewArtikelGET.erzeugt']}"/>
+					<h:outputText id="erzeugt" value="#{artikelModel.artikel.erzeugt}">
+						<f:convertDateTime type="date" dateStyle="long"/>
+					</h:outputText>
+								
+					<h:outputText id="preisLabel" value="#{msgAv['viewArtikelGET.preis']}"/>
+					<h:outputText id="preis" value="#{artikelModel.artikel.preis}">
+						<f:convertNumber type="currency"
+						                 currencyCode="EUR"/>
+					</h:outputText>
+					
+
+				
+				
+					<!--<h:outputText id="privatartikelLabel" value="#{msgAv['viewArtikelGET.artikelnart']}" rendered="#{privatartikel}"/>-->
+					<!--  <h:outputText id="artikel" value="#{msgAv['viewArtikelGET.artikel']}"/> -->
+								
+					
+				</h:panelGrid>
+							
+				<h:form id="buttons" rendered="#{not empty artikelModel.artikel}">
+					<h:commandLink id="updateButtonArtikel"
+					               action="/artikelverwaltung/updateArtikel"
+					               alt="#{msgAv['viewArtikelGET.update.alt']}">
+						<h:graphicImage id="editIconPrivat"
+			    	                    name="edit.gif"
+			        	                library="images"/>
+			        </h:commandLink>
+	
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</body>
+</html>

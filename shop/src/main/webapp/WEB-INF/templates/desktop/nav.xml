@@ -61,6 +61,21 @@
 			<r:panelMenuGroup id="artikelverwaltung"
 			                  label="#{msg['nav.artikelverwaltung']}"
 			                  expanded="true">
+			                  
+			                  
+			                   <!--Suche mit ID -->			                   
+			    <r:panelMenuItem id="artikelverwaltungViewArtikelItem">
+				    <h:link id="artikelverwaltungViewArtikel"
+							outcome="/artikelverwaltung/viewArtikel"
+							value="#{msg['nav.artikelverwaltung.viewArtikel']}"
+							rendered="#{r:isUserInRole('admin, mitarbeiter')}">
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="viewArtikelCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:link>
+				</r:panelMenuItem>
+				              
+			                  <!--Suche mit Bezeichnung -->			                  
 				<r:panelMenuItem id="artikelverwaltungListArtikelItem">
 					<h:link id="artikelverwaltungListArtikel"
 					        outcome="/artikelverwaltung/listArtikel"
