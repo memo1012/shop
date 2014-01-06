@@ -24,6 +24,8 @@ import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.kundenverwaltung.domain.Kunde;
+import de.shop.kundenverwaltung.service.KundeDeleteBestellungException;
+import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.util.interceptor.Log;
 
 import javax.persistence.NoResultException;
@@ -201,5 +203,23 @@ public class ArtikelService implements Serializable {
 				.createNamedQuery(Artikel.FIND_ARTIKEL_MAX_PREIS, Artikel.class)
 				.setParameter(Artikel.PARAM_PREIS, preis).getResultList();
 		return artikel;
+	}
+	
+	public void deleteArtikel(Artikel artikel) {
+		if (artikel == null) {
+			return;
+		}
+
+		// Bestellungen laden, damit sie anschl. ueberprueft werden koennen
+		artikel = findArtikelById(artikel.getId());
+
+		if (artikel == null) {
+			return;
+		}
+		
+		//Wir loeschen nicht, sondern verandern wir die Verfugbarkeit 
+		artikel.setAusgesondert(true);
+		updateArtikel(artikel);
+		
 	}
 }

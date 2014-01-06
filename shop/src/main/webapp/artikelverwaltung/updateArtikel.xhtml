@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:r="http://richfaces.org/rich">
+	<body>
+		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+			
+			<ui:param name="pageTitle" value="#{msgAv['updateArtikel.title']}"/>
+		
+			<ui:define name="content">
+				<c:set var="artikel" value="#{artikelModel.artikel}" scope="view"/>
+				
+				<h1>
+					<h:outputFormat id="headingArtikel" value="#{msgAv['updateArtikel.heading']}" rendered="#{not empty artikel}">
+						<f:param id="idWert" value="#{artikel.id}"/>
+					</h:outputFormat>
+				</h1>
+				
+				<h:outputText id="fehlerKeinArtikel"
+				              value="#{msgAv['updateArtikel.keinArtikel']}"
+				              class="rf-msg-err"
+				              rendered="#{empty artikel}"/>
+	
+				<r:push id="updateEvent" address="updateArtikel"
+			            ondataavailable="if (event.rf.data == '#{artikel.id}') { $('#updateMessage').html('&lt;span class=rf-msg-err&gt;#{msgAv['updateArtikel.concurrentUpdate']}&lt;/span&gt;') }"/>
+				<span id="updateMessage"></span>
+				
+				<r:notifyMessages id="notifyMessages" stayTime="2000" nonblocking="true"/>
+				<r:messages id="fehlermeldungGobal" globalOnly="true"/>
+				
+				<h:form id="updateArtikelForm" rendered="#{not empty artikel}">
+					<r:focus id="formFocus"/>
+					<!--
+					<r:jQuery id="nachnameFocus" selector="#nachname" query="focus()"/>
+					-->
+					
+					<h:panelGrid id="updateArtikelTabelle"
+					             columns="3">
+						<h:outputLabel id="bezeichnungLabel" for="bezeichnung" value="#{msgAv['updateArtikel.bezeichnung']}"/>
+						<h:inputText id="bezeichnung"
+						             value="#{artikel.bezeichnung}"
+						             valueChangeListener="#{artikelModel.geaendert}">
+							<r:validator oninvalid="$(#{r:element('bezeichnung')}).addClass('invalid')"
+	                                     onvalid="$(#{r:element('bezeichnung')}).removeClass('invalid')"/>
+						</h:inputText>
+						<r:messages id="fehlermeldungenBezeichnung" for="bezeichnung"/>
+			
+						
+						
+
+						<h:outputLabel id="erzeugtLabel"
+						               for="erzeugt"
+						               value="#{msgAv['updateArtikel.erzeugt']}"
+						               escape="false"/>
+						<r:calendar id="erzeugt"
+						            datePattern="#{msgAv['updateArtikel.calendar.pattern']}"
+						            value="#{artikel.erzeugt}"
+						            timezone="CET">
+							<!--
+							<r:validator/>
+							-->
+						</r:calendar>
+						<r:messages id="fehlermeldungErzeugt" for="erzeugt"/>
+						
+						<h:outputLabel id="preisLabel" for="preis" value="#{msgAv['updateArtikel.preis']}"/>
+						<h:inputText id="preis"
+						             value="#{artikel.preis}"
+						             converterMessage="#{msgAv['updateArtikel.preis.convert']}"
+						             valueChangeListener="#{artikelModel.geaendert}">
+						    <!--
+							<f:convertNumber type="currency"
+							                 currencyCode="EUR"
+							                 maxFractionDigits="2"/>
+							-->
+							<f:ajax event="blur" render="updateArtikelForm:fehlermeldungenPreis"/>
+						</h:inputText>
+						<r:messages id="fehlermeldungenPreis" for="preis"/>
+
+					</h:panelGrid>
+							
+					<p id="buttons">
+						<h:commandButton id="button" action="#{artikelModel.update}" value="#{msgAv['updateArtikel.submit']}"/>
+						#{' '}
+						<h:commandButton type="reset" value="#{msgAv['updateArtikel.reset']}"/>
+					</p>
+					
+					<p id="hinweisPflichtfelder">
+						#{msgAv['updateArtikel.required']}
+					</p>
+				</h:form>
+			</ui:define>
+		</ui:composition>
+	</body>
+</html>

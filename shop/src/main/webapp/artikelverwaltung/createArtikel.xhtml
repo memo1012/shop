@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:r="http://richfaces.org/rich">
+	<body>
+		<ui:composition template="/WEB-INF/templates/desktop/main.xml">
+			<ui:define name="metadata">
+				<f:event type="preRenderView" listener="#{artikelModel.createEmptyArtikel}"/>
+			</ui:define>
+			
+			<ui:param name="pageTitle" value="#{msgAv['createArtikel.title']}"/>
+		
+			<ui:define name="content">
+				<h1>
+					#{msgAv['createArtikel.heading']}
+				</h1>
+		
+				<r:messages id="fehlermeldungGobal" globalOnly="true"/>
+				<r:notifyMessages id="notifyMessages" stayTime="2000" nonblocking="true"/>
+		
+				<h:form id="createArtikelForm">
+					<r:jQuery id="bezeichnungFocus" selector="#bezeichnung" query="focus()"/>
+					<!-- fokussiert auf id="kategorie" statt auf id="nachname" WARUM?
+					<r:focus id="createKundeFormFocus"/>
+					-->
+					
+					<c:set var="artikel" value="#{artikelModel.neuerArtikel}" scope="view"/>
+					<!-- <c:set var="adresse" value="#{kunde.adresse}" scope="view"/> -->
+					
+					<!--
+						https://issues.jboss.org/browse/AS7-1348
+						http://community.jboss.org/thread/169487 
+					-->
+					<r:graphValidator id="artikelValidator" value="#{artikel}"> <!--  groups="#{artikelModel.passwordGroup}" -->
+						<r:messages id="fehlermeldungArtikelValidator" for="artikeValidator"/>
+						<r:messages id="fehlermeldungGlobal" globalOnly="true"/>
+					
+						<h:panelGrid id="createArtikelTabelle" columns="3">
+				
+							<h:outputLabel id="bezeichnungLabel" for="bezeichnung" value="#{msgAv['createArtikel.bezeichnung']}"/>
+							<h:inputText id="bezeichnung" value="#{artikel.bezeichnung}">
+								<!-- Validierung durch Ajax mit JSF -->
+								<!--
+								<f:ajax event="blur" render="fehlermeldungenUmsatz"/>
+								-->
+								<!-- Validierung durch Javascript mit RichFaces -->
+								<!-- 
+								<r:validator oninvalid="$(#{r:element('bezeichnung')}).addClass('invalid')"
+	                                         onvalid="$(#{r:element('bezeichnung')}).removeClass('invalid')"/>
+	                                         -->
+							</h:inputText>
+							<r:messages id="fehlermeldungenBezeichnung" for="bezeichnung"/>
+				
+							<h:outputLabel id="preisLabel" for="preis" value="#{msgAv['createArtikel.preis']}"/>
+							<h:inputText id="preis"
+							             value="#{artikel.preis}"
+							             converterMessage="#{msgAv['createArtikel.preis.convert']}">
+							             <r:validator/>
+							    <!--
+							    <f:convertNumber type="currency"
+								                 currencyCode="EUR"
+								                 maxFractionDigits="2"/>
+								-->
+								<f:ajax event="blur" render="fehlermeldungenPreis"/>
+								<!-- https://issues.jboss.org/browse/RF-10224
+								<r:validator/>
+								-->
+							</h:inputText>
+							<r:messages id="fehlermeldungenPreis" for="preis"/>	
+															
+							
+				
+							<r:mediaOutput id="captcha"
+							               element="img"
+							               cacheable="false"
+							               session="false"
+							               createContent="#{captcha.paint}"
+							               mimeType="image/png"/>
+							<h:panelGroup>
+								<h:outputLabel id="captchaLabel" for="captchaInput" value="#{msgKv['createArtikel.captcha.label']}"/>
+								<br/>
+								<h:inputText id="captchaInput" value="#{artikelModel.captchaInput}"/>
+							</h:panelGroup>
+							<r:message id="fehlermeldungCaptcha" for="captchaInput"/>
+							
+							
+							
+						</h:panelGrid>
+			
+						<p id="buttons">
+							<h:commandButton id="createSubmit" action="#{artikelModel.createArtikel}" value="#{msgAv['createArtikel.submit']}"/>
+							#{' '}
+							<h:commandButton id="reset" type="reset" value="#{msgAv['createArtikel.reset']}"/>
+						</p>
+					</r:graphValidator>
+				</h:form>
+				
+				<p id="hinweisPflichtfelder">
+					#{msgAv['createArtikel.required']}
+				</p>
+			</ui:define>
+		</ui:composition>
+	</body>
+</html>

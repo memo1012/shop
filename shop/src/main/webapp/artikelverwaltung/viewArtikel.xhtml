@@ -27,21 +27,21 @@
 							                mode="ajax"
 							                minChars="1"
 							                autocompleteMethod="#{artikelModel.findArtikelByIdPrefix}"
-							                var="kunde"
-							                fetchValue="#{kunde.id}"
+							                var="artikel"
+							                fetchValue="#{artikel.id}"
 							                converter="javax.faces.Number"
-							                converterMessage="#{msgKv['viewKunde.kundenr.converterError']}"
+							                converterMessage="#{msgAv['viewArtikel.artikelnr.converterError']}"
 							                required="true"
-							                requiredMessage="#{msgKv['viewKunde.kundenr.required']}">
-								#{kunde.id} : #{kunde.nachname}, #{kunde.vorname}
+							                requiredMessage="#{msgAv['viewArtikel.artikelnr.required']}">
+								#{artikel.id} : #{artikel.bezeichnung}, #{artikel.preis}
 							</r:autocomplete> 
 		
 							<r:commandButton id="findButton"
-							                 action="#{kundeModel.findKundeById}"
-							                 value="#{msgKv['viewKunde.submit']}"
-							                 render="gesuchterKundePanel fehlermeldungKundeId"/>
+							                 action="#{artikelModel.findArtikelById}"
+							                 value="#{msgAv['viewArtikel.submit']}"
+							                 render="gesuchterArtikelPanel fehlermeldungArtikelId"/>
 							
-							<cc:bitteWarten id="inBearbeitung" msg="#{msgKv['viewKunde.inBearbeitung']}"/>
+							<cc:bitteWarten id="inBearbeitung" msg="#{msgAv['viewArtikel.inBearbeitung']}"/>
 							<!--
 							<r:status id="statusWaiting">
 								<f:facet name="start">
@@ -49,7 +49,7 @@
 										<h:graphicImage id="waitingGif"
 										                name="waiting.gif"
 										                library="images"/>
-										#{msgKv['viewKunde.inBearbeitung']}
+										#{msgAv['viewArtikel.inBearbeitung']}
 									</h:panelGroup>
 								</f:facet>
 							</r:status>
@@ -57,13 +57,13 @@
 							
 						</h:panelGrid>
 						
-						<r:messages id="fehlermeldungKundeId" for="kundeIdInput"/>
+						<r:messages id="fehlermeldungArtikelId" for="artikelIdInput"/>
 					</r:panel>
 		
-					<r:outputPanel id="gesuchterKundePanel">
-						<c:set var="kunde" value="#{kundeModel.kunde}" scope="view"/>
+					<r:outputPanel id="gesuchterArtikelPanel">
+						<c:set var="artikel" value="#{artikelModel.artikel}" scope="view"/>
 						
-						<r:tabPanel id="tabPanel" switchType="client" rendered="#{not empty kunde}">
+						<r:tabPanel id="tabPanel" switchType="client" rendered="#{not empty artikel}">
 							<r:tab id="stammdatenTab">
 								<f:facet name="header">
 									<h:panelGroup id="stammdatenLabel">
@@ -71,34 +71,29 @@
 										                name="stammdaten.gif"
 										                library="images"/>
 										#{' '}
-										#{msgKv['viewKunde.kunde.stammdaten']}
+										#{msgAv['viewArtikel.artikel.stammdaten']}
 									</h:panelGroup>
 								</f:facet>
 								
 								<r:panel id="stammdatenPanel">
 									<h:panelGrid id="stammdatenGrid" columns="2">
-										<h:outputText id="kundeIdLabel" value="#{msgKv['viewKunde.kundenr']}"/>
-										<h:outputText id="kundeId" value="#{kunde.id}"/>
+										<h:outputText id="artikelIdLabel" value="#{msgAv['viewArtikel.artikelnr']}"/>
+										<h:outputText id="artikelId" value="#{artikel.id}"/>
 								
-										<h:outputText id="nachnameLabel" value="#{msgKv['viewKunde.nachname']}"/>
-										<h:outputText id="nachname" value="#{kunde.nachname}"/>
-							
-										<h:outputText id="vornameLabel" value="#{msgKv['viewKunde.vorname']}"/>
-										<h:outputText id="vorname" value="#{kunde.vorname}"/>
+										<h:outputText id="bezeichnungLabel" value="#{msgAv['viewArtikel.bezeichnung']}"/>
+										<h:outputText id="bezeichnung" value="#{artikel.bezeichnung}"/>
+						
 										
-										<h:outputText id="seitLabel" value="#{msgKv['viewKunde.seit']}"/>
-										<h:outputText id="seit" value="#{kunde.seit}">
+										<h:outputText id="erzeugtLabel" value="#{msgAv['viewArtikel.erzeugt']}"/>
+										<h:outputText id="erzeugt" value="#{artikel.erzeugt}">
 											<f:convertDateTime type="date" dateStyle="long"/>
 										</h:outputText>
 										
-										<h:outputText id="umsatzLabel" value="#{msgKv['viewKunde.umsatz']}"/>
-										<h:outputText id="umsatz" value="#{kunde.umsatz}">
+										<h:outputText id="preisLabel" value="#{msgAv['viewArtikel.preis']}"/>
+										<h:outputText id="preis" value="#{artikel.preis}">
 											<f:convertNumber type="currency"
 											                 currencyCode="EUR"/>
 										</h:outputText>
-							
-										<h:outputText id="emailLabel" value="#{msgKv['viewKunde.email']}"/>
-										<h:outputText id="email" value="#{kunde.email}"/>
 						
 					
 										<!--<h:outputText id="kundeLabel" value="#{msgKv['viewKunde.kundenart']}" />-->
@@ -109,6 +104,9 @@
 										! <h:outputText id="firmenkunde" value="#{firmenkunde ? msgKv['viewKunde.firmenkunde' : msgKv['viewKunde.privatkunde']}"/>
 										-->
 										
+										
+										
+										<!--  Neon Auskommentiert
 										<h:outputText id="rabattLabel" value="#{msgKv['viewKunde.rabatt']}"/>
 										<h:outputText id="rabatt" value="#{kunde.rabatt}">
 											<f:convertNumber type="percent" maxFractionDigits="2"/>
@@ -119,144 +117,32 @@
 							
 										<h:outputText id="maennlichLabel" value="#{msgKv['viewKunde.geschlecht']}" rendered="#{kunde.geschlecht eq 'MAENNLICH'}"/>
 										<h:outputText id="maennlich" value="#{msgKv['viewKunde.geschlecht.maennlich']}" rendered="#{kunde.geschlecht eq 'MAENNLICH'}"/>
-						
-									</h:panelGrid>
-								</r:panel>
-							</r:tab>
-							
-							<r:tab id="fileTab" rendered="#{not empty kunde.file}">
-								<f:facet name="header">
-									<h:panelGroup id="fileLabel">
-										<h:graphicImage id="fileGif"
-										                name="bild.gif"
-										                library="images"/>
-										#{' '}
-										#{msgKv['viewKunde.kunde.bildVideoAudio']}
-									</h:panelGroup>
-								</f:facet>
-								
-								<c:set var="file" value="${kunde.file}" scope="view"/>
-								<c:set var="multimediaType" value="${file.multimediaType}" scope="view"/>
-								<c:set var="filename" value="#{kundeModel.getFilename(file)}" scope="view"/>
-								<c:choose>
-									<c:when test="${multimediaType eq 'IMAGE'}">
-										<h:graphicImage id="bild" value="/../filesDb/shop/#{filename}"
-														alt="#{msgKv['viewKunde.kunde.bild.alt']}"/>
-									</c:when>
-										
-									<c:when test="${multimediaType eq 'VIDEO'}">
-										<!-- MediaElement von http://mediaelementjs.com und https://github.com/johndyer/mediaelement/tree/master/build -->
-										<!-- Alternativen siehe http://html5video.org/wiki/HTML5_Video_Player_Comparison -->
-										<h:outputScript id="jsVideo" library="js" name="mediaelement-and-player.min.js"/>
-										<h:outputStylesheet id="cssVideo" library="css" name="mediaelementplayer.css"/>
-										<video id="video"
-											   controls="controls"
-											   width="640"
-											   height="480">
-											<source src="/../filesDb/shop/#{filename}"
-											        type="#{file.mimeType.toString()}"/>
-										</video>
-										
-										<!-- http://www.videojs.com -->
-										<!--
-										<h:outputStylesheet id="cssVideo" library="css" name="video-js.css"/>
-										<h:outputScript id="jsVideo" library="js" name="video.js"/>
-										<script>
-											videojs.options.flash.swf = "#{resource['js:video-js.swf']}"
-										</script>
-										<video id="video"
-										       class="video-js vjs-default-skin"
-										       controls="controls"
-										       preload="auto"
-										       width="640"
-										       height="480"
-										       data-setup='{"example_option":true}'>
-											<source src="/../filesDb/shop/#{filename}" type="#{file.mimeType.toString()}" />
-										</video>
 										-->
 										
-									</c:when>
-	
-									<c:when test="${multimediaType eq 'AUDIO'}">
-										TODO: AUDIO
-									</c:when>
-								</c:choose>
-							</r:tab>
-							
-							<r:tab id="bestellungenTab" rendered="#{not empty kunde.bestellungen}">
-								<f:facet name="header">
-									<h:panelGroup id="bestellungenLabel">
-										<h:graphicImage id="bestellungenGif"
-										                name="bestellungen.gif"
-										                library="images"/>
-										#{' '}
-										#{msgKv['viewKunde.kunde.bestellungen']}
-									</h:panelGroup>
-								</f:facet>
-								
-								<r:dataTable id="bestellungenTabelle" value="#{kunde.bestellungen}" var="bestellung">
-									<f:facet name="header">
-										<r:columnGroup id="positionenSpalten">
-											<r:column id="artikelIdSpalte">
-												#{msgKv['viewKunde.artikel.id']}
-											</r:column>
-											<r:column id="bezeichnungSpalte">
-												#{msgKv['viewKunde.artikel.bezeichnung']}
-											</r:column>
-											<r:column id="anzahlSpalte">
-												#{msgKv['viewKunde.artikel.anzahl']}
-											</r:column>
-										</r:columnGroup>
-									</f:facet>
-									
-									<r:column id="togglerSpalte" colspan="3">
-										<r:collapsibleSubTableToggler id="subTableToggler"
-										                              for="positionenSubtable"
-										                              collapsedLabel="#{msgKv['viewKunde.bestellung']} #{bestellung.id} : #{bestellung.getErzeugt('yyyy-MM-dd')}"
-										                              expandedLabel="#{msgKv['viewKunde.bestellung']} #{bestellung.id} : #{bestellung.getErzeugt('yyyy-MM-dd')}"/>
-									</r:column>
-									
-									<r:collapsibleSubTable id="positionenSubtable"
-									                       value="#{bestellung.bestellpositionen}"
-									                       var="pos"
-									                       rowClasses="odd-row, even-row"
-										                   styleClass="tabelleMitZebrastil"
-									                       expandMode="client"
-									                       expanded="#{false}"> <!-- https://issues.jboss.org/browse/RF-10715 -->
-										<r:column id="artikelIdSpalteSub">
-											#{pos.artikel.id}
-										</r:column>
-							
-										<r:column id="bezeichnungSpalteSub">
-											#{pos.artikel.bezeichnung}
-										</r:column>
-							
-										<r:column id="anzahlSpalteSub">
-											#{pos.anzahl}
-										</r:column>
-									</r:collapsibleSubTable>
-								</r:dataTable>
-							</r:tab>
+										
+									</h:panelGrid>
+								</r:panel>
+							</r:tab>							
 						</r:tabPanel>
 					
 						<p id="buttons">
-							<h:panelGroup id="buttonsGroup" rendered="#{not empty kunde}">
-								<h:commandLink id="updateButtonKunde"
-								               action="/kundenverwaltung/updateKunde"
-								               alt="#{msgKv['viewKunde.update.alt']}">
+							<h:panelGroup id="buttonsGroup" rendered="#{not empty artikel}">
+								<h:commandLink id="updateButtonArtikel"
+								               action="/artikelverwaltung/updateArtikel"
+								               alt="#{msgAv['viewArtikel.update.alt']}">
 									<h:graphicImage id="editIconPrivat"
 			    	                                name="edit.gif"
 			        	                            library="images"/>
 									<c:if test="#{not empty javax.enterprise.context.conversation.id}">
-										<f:param id="updateKundeCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+										<f:param id="updateArtikelCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 									</c:if>
 								</h:commandLink>
 
 								#{' '}
 								<h:commandLink id="deleteButton"
-											   action="#{kundeModel.deleteAngezeigtenKunden}"
-										       onclick="return confirm('#{msgKv['viewKunde.deleteKundeBestaetigung']}')"
-										       alt="#{msgKv['viewKunde.deleteButtonAlt']}"
+											   action="#{viewArtikel.deleteAngezeigtenArtikeln}"
+										       onclick="return confirm('#{msgAv['viewArtikel.deleteArtikelBestaetigung']}')"
+										       alt="#{msgAv['viewArtikel.deleteButtonAlt']}"
 										       rendered="#{r:isUserInRole('admin')}">
 									<h:graphicImage id="deleteIcon"
 						    	                    name="delete.gif"

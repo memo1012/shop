@@ -1,5 +1,8 @@
 package de.shop.artikelverwaltung.web;
 
+import static de.shop.util.Constants.JSF_INDEX;
+import static de.shop.util.Constants.JSF_REDIRECT_SUFFIX;
+
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
@@ -9,21 +12,35 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.TransactionAttribute;
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Model;
 import javax.faces.context.Flash;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
+import javax.persistence.OptimisticLockException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.jboss.logging.Logger;
+import org.richfaces.push.cdi.Push;
 import org.richfaces.ui.iteration.SortOrder;
 import org.richfaces.ui.toggle.panelMenu.UIPanelMenuItem;
 
 import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
+import de.shop.artikelverwaltung.service.BezeichnungExistsException;
+import de.shop.auth.web.AuthModel;
+import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.Kunde;
+import de.shop.kundenverwaltung.service.EmailExistsException;
+import de.shop.kundenverwaltung.service.KundeDeleteBestellungException;
 import de.shop.kundenverwaltung.service.KundeService.FetchType;
+import de.shop.util.AbstractShopException;
 import de.shop.util.interceptor.Log;
+import de.shop.util.persistence.ConcurrentDeletedException;
+import de.shop.util.persistence.File;
+import de.shop.util.persistence.FileHelper;
 import de.shop.util.web.Client;
 
 //Neon Import
@@ -56,6 +73,20 @@ public class ArtikelModel implements Serializable {
 	private static final String JSF_VIEW_ARTIKEL = JSF_ARTIKELVERWALTUNG + "viewArtikel";
 	private static final String CLIENT_ID_ARTIKELID = "form:artikelIdInput";
 	private static final String MSG_KEY_ARTIKEL_NOT_FOUND_BY_ID = "artikel.notFound.id";
+	private static final String CLIENT_ID_CREATE_CAPTCHA_INPUT = "createArtikelForm:captchaInput";
+	private static final String MSG_KEY_CREATE_Artikel_WRONG_CAPTCHA = "artikel.wrongCaptcha";
+	private static final String CLIENT_ID_CREATE_BEZEICHNUNG = "createArtikelForm:bezeichnung";
+	private static final String MSG_KEY_BEZEICHNUNG_EXISTS = ".artikel.bezeichnungExists";
+	
+	private static final String CLIENT_ID_UPDATE_BEZEICHNUNG = "updateArtikelForm:bezeichnung";
+	private static final String MSG_KEY_CONCURRENT_UPDATE = "persistence.concurrentUpdate";
+	private static final String MSG_KEY_CONCURRENT_DELETE = "persistence.concurrentDelete";	
+	private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
+	private static final String JSF_UPDATE_ARTIKEL = JSF_ARTIKELVERWALTUNG + "updateKunde";
+	private static final String MSG_KEY_DELETE_ARTIKEL = "artikel.delete";
+	private static final String REQUEST_ARTIKEL_ID = "artikelId";
+	private static final String JSF_DELETE_OK = JSF_ARTIKELVERWALTUNG + "okDelete";
+
 	
 	@Inject
 	@Client
@@ -65,7 +96,24 @@ public class ArtikelModel implements Serializable {
 	private Messages messages;
 	
 	@Inject
+	private FileHelper fileHelper;
+	
+	@Inject
 	private transient HttpServletRequest request;
+	
+	@Inject
+	private Captcha captcha;
+	
+	@Inject
+	private AuthModel auth;
+	
+	@Inject
+	@Push(topic = "marketing") //Whats a topic ?
+	private transient Event<String> neuerArtikelEvent;
+	
+	@Inject
+	@Push(topic = "updateKunde")
+	private transient Event<String> updateArtikelEvent;
 	
 	private Long artikelId;
 	private Artikel artikel;
@@ -207,6 +255,203 @@ public class ArtikelModel implements Serializable {
 		}
 		
 		
+		@TransactionAttribute
+		@Log
+		public String createArtikel() {
+			if (!captcha.getValue().equals(captchaInput)) {
+				final String outcome = createArtikelErrorMsg(null);
+				return outcome;
+			}
+			
+			// Push-Event fuer Webbrowser
+			neuerArtikelEvent.fire(String.valueOf(neuerArtikel.getId()));
+			
+			// Aufbereitung fuer viewKunde.xhtml
+			artikelId = neuerArtikel.getId();
+			artikel = neuerArtikel;
+			neuerArtikel = null;  // zuruecksetzen
+			
+			return JSF_VIEW_ARTIKEL + JSF_REDIRECT_SUFFIX;
+		}
+
+		private String createArtikelErrorMsg(AbstractShopException e) {
+			if (e == null) {
+				messages.error(MSG_KEY_CREATE_Artikel_WRONG_CAPTCHA, locale, CLIENT_ID_CREATE_CAPTCHA_INPUT);
+			}
+			else {
+				final Class<?> exceptionClass = e.getClass(); //A verifier pour le nom de l exeption
+				if (BezeichnungExistsException.class.equals(exceptionClass)) {
+					final BezeichnungExistsException e2 = BezeichnungExistsException.class.cast(e);
+					messages.error(MSG_KEY_BEZEICHNUNG_EXISTS, locale, CLIENT_ID_CREATE_BEZEICHNUNG, e2.getBezeichnung());
+				}
+				else {
+					throw new RuntimeException(e);
+				}
+			}
+			
+			return null;
+		}
+
+		public void createEmptyArtikel() {
+			captchaInput = null;
+
+			if (neuerArtikel != null) {
+				return;
+			}
+
+			neuerArtikel = new Artikel();
+			/*
+			final Adresse adresse = new Adresse();
+			adresse.setKunde(neuerKunde);
+			neuerKunde.setAdresse(adresse);
+			*/
+		}
+		
+		@TransactionAttribute    // Bestellungen ggf. nachladen
+		@Log
+		public String details(Artikel ausgewaehlterArtikel) {
+			if (ausgewaehlterArtikel == null) {
+				return null;
+			}
+			
+			artikel = ausgewaehlterArtikel;
+			artikelId = ausgewaehlterArtikel.getId();
+			
+			return JSF_VIEW_ARTIKEL;
+		}
+		
+
+		
+		/**
+		 * Verwendung als ValueChangeListener bei updateKunde.xhtml
+		 * @param e Ereignis-Objekt mit der Aenderung in einem Eingabefeld, z.B. inputText
+		 */
+		public void geaendert(ValueChangeEvent e) {
+			if (geaendertArtikel) {
+				return;
+			}
+			
+			if (e.getOldValue() == null) {
+				if (e.getNewValue() != null) {
+					geaendertArtikel = true;
+				}
+				return;
+			}
+
+			if (!e.getOldValue().equals(e.getNewValue())) {
+				geaendertArtikel = true;				
+			}
+		}
+		
+		/////// Block TO DO
+		
+		@TransactionAttribute
+		@Log
+		public String update() {
+			auth.preserveLogin();
+			
+			if (!geaendertArtikel || artikel == null) {
+				return JSF_INDEX;
+			}
+					
+			LOGGER.tracef("Aktualisierter Artikel: %s", artikel);
+			try {
+				artikel = as.updateArtikel(artikel);
+			}
+			catch (BezeichnungExistsException | ConcurrentDeletedException | OptimisticLockException e) {
+				final String outcome = updateErrorMsg(e, artikel.getClass());
+				return outcome;
+			}
+
+			// Push-Event fuer Webbrowser
+			neuerArtikelEvent.fire(String.valueOf(artikel.getId()));
+			return JSF_INDEX + JSF_REDIRECT_SUFFIX;
+		}
+		
+		private String updateErrorMsg(RuntimeException e, Class<? extends Artikel> artikelClass) {
+			final Class<? extends RuntimeException> exceptionClass = e.getClass();
+			if (BezeichnungExistsException.class.equals(exceptionClass)) {
+				final BezeichnungExistsException e2 = BezeichnungExistsException.class.cast(e);
+				messages.error(MSG_KEY_BEZEICHNUNG_EXISTS, locale, CLIENT_ID_UPDATE_BEZEICHNUNG, e2.getBezeichnung());
+			}
+			else if (OptimisticLockException.class.equals(exceptionClass)) {
+				messages.error(MSG_KEY_CONCURRENT_UPDATE, locale, null);
+
+			}
+			else if (ConcurrentDeletedException.class.equals(exceptionClass)) {
+				messages.error(MSG_KEY_CONCURRENT_DELETE, locale, null);
+			}
+			else {
+				throw new RuntimeException(e);
+			}
+			return null;
+		}
+		
+		@Log
+		public String selectForUpdate(Artikel ausgewaehlterArtikel) {
+			if (ausgewaehlterArtikel == null) {
+				return null;
+			}
+			
+			artikel = ausgewaehlterArtikel;
+			
+			return Kunde.class.equals(ausgewaehlterArtikel.getClass())
+				   ? JSF_UPDATE_ARTIKEL
+				   : "";//JSF_UPDATE_FIRMENKUNDE;
+		}
+		
+		
+		// TO DO
+		/**
+		 * Action Methode, um einen zuvor gesuchten Kunden zu l&ouml;schen
+		 * @return URL fuer Startseite im Erfolgsfall, sonst wieder die gleiche Seite
+		 */
+		@TransactionAttribute
+		@Log
+		public String deleteAngezeigtenArtikel() {
+			if (artikel == null) {
+				return null;
+			}
+			
+			LOGGER.trace(artikel);
+			try {
+				as.deleteArtikel(artikel);
+			}
+			catch (Exception e) {
+				messages.error(MSG_KEY_DELETE_ARTIKEL, locale, CLIENT_ID_DELETE_BUTTON );
+				return null;
+			}
+			
+			// Aufbereitung fuer ok.xhtml
+			request.setAttribute(REQUEST_ARTIKEL_ID, artikel.getId());
+			return JSF_DELETE_OK;
+		}
+
+		@TransactionAttribute
+		@Log
+		public String delete(Artikel ausgewaehlterArtikel) {
+			try {
+				as.deleteArtikel(ausgewaehlterArtikel);
+			}
+			catch (Exception e) {
+				messages.error(MSG_KEY_DELETE_ARTIKEL, locale, null);
+				return null;
+			}
+
+			// Aufbereitung fuer ok.xhtml
+			request.setAttribute(REQUEST_ARTIKEL_ID, artikel.getId());
+			return JSF_DELETE_OK;
+		}
+		
+		public String getFilename(File file) {
+			if (file == null) {
+				return "";
+			}
+			
+			fileHelper.store(file);
+			return file.getFilename();
+		}
+		
 	
 	////////////////////////////////////
 	////////////////////////////////////
@@ -272,8 +517,7 @@ public class ArtikelModel implements Serializable {
 		if (session.getAttribute(SESSION_VERFUEGBARE_ARTIKEL) == null) {
 			final List<Artikel> alleArtikel = as.findVerfuegbareArtikel();
 			session.setAttribute(SESSION_VERFUEGBARE_ARTIKEL, alleArtikel);
-		}
-		
+		}		
 		return JSF_SELECT_ARTIKEL;
 	}
 }
