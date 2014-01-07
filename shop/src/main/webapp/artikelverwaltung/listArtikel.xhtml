@@ -50,7 +50,7 @@
 						             styleClass="tabelleMitZebrastil"
 						             cellspacing="10"
 						             rendered="#{not empty artikel or param.init ne 'true'}">
-							<r:column id="idSpalte">
+							<r:column id="idSpalte" rendered="#{r:isUserInRole('admin , mitarbeiter')}">
 								<f:facet name="header">
 									#{msgAv['listArtikel.id']}
 								</f:facet>

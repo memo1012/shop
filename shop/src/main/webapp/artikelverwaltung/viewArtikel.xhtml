@@ -75,25 +75,38 @@
 									</h:panelGroup>
 								</f:facet>
 								
-								<r:panel id="stammdatenPanel">
+								<r:panel id="stammdatenPanel"><!--ID, Aktualisiert,ausgesondert,Version,bezeichnung,erzeugt,preis  -->
 									<h:panelGrid id="stammdatenGrid" columns="2">
+									
+									
 										<h:outputText id="artikelIdLabel" value="#{msgAv['viewArtikel.artikelnr']}"/>
 										<h:outputText id="artikelId" value="#{artikel.id}"/>
 								
 										<h:outputText id="bezeichnungLabel" value="#{msgAv['viewArtikel.bezeichnung']}"/>
 										<h:outputText id="bezeichnung" value="#{artikel.bezeichnung}"/>
 						
-										
-										<h:outputText id="erzeugtLabel" value="#{msgAv['viewArtikel.erzeugt']}"/>
-										<h:outputText id="erzeugt" value="#{artikel.erzeugt}">
-											<f:convertDateTime type="date" dateStyle="long"/>
-										</h:outputText>
-										
 										<h:outputText id="preisLabel" value="#{msgAv['viewArtikel.preis']}"/>
 										<h:outputText id="preis" value="#{artikel.preis}">
 											<f:convertNumber type="currency"
 											                 currencyCode="EUR"/>
-										</h:outputText>
+										</h:outputText>										
+										
+										<h:outputText id="ausgesondertLabel" value="#{msgAv['viewArtikel.ausgesondert']}" rendered="#{r:isUserInRole('admin , mitarbeiter')}"/>
+										<h:outputText id="ausgesondert" value="#{artikel.ausgesondert}" rendered="#{r:isUserInRole('admin , mitarbeiter')}"/>
+										
+										<h:outputText id="erzeugtLabel" value="#{msgAv['viewArtikel.erzeugt']}" rendered="#{r:isUserInRole('admin , mitarbeiter')}"/>
+										<h:outputText id="erzeugt" value="#{artikel.erzeugt}" rendered="#{r:isUserInRole('admin , mitarbeiter')}">
+											<f:convertDateTime type="date" dateStyle="long"/>
+										</h:outputText>	
+										
+										<h:outputText id="aktualisiertLabel" value="#{msgAv['viewArtikel.aktualisiert']}" rendered="#{r:isUserInRole('admin')}"/>
+										<h:outputText id="aktualisiert" value="#{artikel.aktualisiert}" rendered="#{r:isUserInRole('admin')}">
+											<f:convertDateTime type="date" dateStyle="long"/>
+										</h:outputText>										
+										
+										<h:outputText id="versionLabel" value="#{msgAv['viewArtikel.version']}" rendered="#{r:isUserInRole('admin')}"/>
+										<h:outputText id="version" value="#{artikel.version}" rendered="#{r:isUserInRole('admin')}"/>
+										
 						
 					
 										<!--<h:outputText id="kundeLabel" value="#{msgKv['viewKunde.kundenart']}" />-->

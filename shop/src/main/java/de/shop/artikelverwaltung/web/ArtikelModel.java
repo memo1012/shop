@@ -380,7 +380,7 @@ public class ArtikelModel implements Serializable {
 
 			// Push-Event fuer Webbrowser
 			neuerArtikelEvent.fire(String.valueOf(artikel.getId()));
-			return JSF_INDEX + JSF_REDIRECT_SUFFIX;
+			return JSF_VIEW_ARTIKEL + JSF_REDIRECT_SUFFIX;
 		}
 		
 		private String updateErrorMsg(RuntimeException e, Class<? extends Artikel> artikelClass) {
