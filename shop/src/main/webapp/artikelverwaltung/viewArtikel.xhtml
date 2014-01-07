@@ -140,10 +140,10 @@
 
 								#{' '}
 								<h:commandLink id="deleteButton"
-											   action="#{viewArtikel.deleteAngezeigtenArtikeln}"
+											   action="#{artikelModel.deleteAngezeigtenArtikel}"
 										       onclick="return confirm('#{msgAv['viewArtikel.deleteArtikelBestaetigung']}')"
 										       alt="#{msgAv['viewArtikel.deleteButtonAlt']}"
-										       rendered="#{r:isUserInRole('admin')}">
+										       rendered="#{r:isUserInRole('admin , mitarbeiter')}">
 									<h:graphicImage id="deleteIcon"
 						    	                    name="delete.gif"
 						        	                library="images"/>

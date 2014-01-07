@@ -70,7 +70,7 @@ public class ArtikelService implements Serializable {
 			// Noch kein Artikel mit dieser Bezeichnung
 			LOGGER.trace("Bezeichnung existiert noch nicht");
 		}
-		LOGGER.trace("Bevor Persist");
+		LOGGER.trace("Bevor Persist im Artikel Service Create Artikel");
 		em.persist(artikel);
 		LOGGER.trace("Nach Persist");
 		return artikel;

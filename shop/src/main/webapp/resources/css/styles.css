@@ -22,6 +22,8 @@
 	height: 550px;
 	padding: 5px;
 	background-color: #BED6F8;   /* blueSky */
+	
+	
 }
 
 #content {
@@ -30,11 +32,24 @@
 	/* width: calc(85% - 2px); */
 	overflow: auto;
 	padding: 5px;
+	background-color: #BED6F8;
+	border-style:solid;
+	border-size:1px;
+	border-color:#C0C0C0;
+	font-family : Arial, Helvetica, sans-serif; 
 }
 
 #footer {
 	clear: left;    /* http://de.selfhtml.org/css/eigenschaften/positionierung.htm#clear */
 	padding: 10px;
+	background-color: #B4CDCD;
+}
+
+body{
+	background-color: #fff;
+	font-family : Arial, Helvetica, sans-serif; 
+	color : #a5bcff; 
+	
 }
 
 img {
@@ -42,7 +57,8 @@ img {
 }
 
 h1 {
-	font-style: italic;
+	color: black;
+	text-decoration:underline;
 }
 
 /*

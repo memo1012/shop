@@ -25,17 +25,11 @@
 		
 				<h:form id="createArtikelForm">
 					<r:jQuery id="bezeichnungFocus" selector="#bezeichnung" query="focus()"/>
-					<!-- fokussiert auf id="kategorie" statt auf id="nachname" WARUM?
-					<r:focus id="createKundeFormFocus"/>
-					-->
+					
 					
 					<c:set var="artikel" value="#{artikelModel.neuerArtikel}" scope="view"/>
-					<!-- <c:set var="adresse" value="#{kunde.adresse}" scope="view"/> -->
 					
-					<!--
-						https://issues.jboss.org/browse/AS7-1348
-						http://community.jboss.org/thread/169487 
-					-->
+					
 					<r:graphValidator id="artikelValidator" value="#{artikel}"> <!--  groups="#{artikelModel.passwordGroup}" -->
 						<r:messages id="fehlermeldungArtikelValidator" for="artikeValidator"/>
 						<r:messages id="fehlermeldungGlobal" globalOnly="true"/>
@@ -43,7 +37,7 @@
 						<h:panelGrid id="createArtikelTabelle" columns="3">
 				
 							<h:outputLabel id="bezeichnungLabel" for="bezeichnung" value="#{msgAv['createArtikel.bezeichnung']}"/>
-							<h:inputText id="bezeichnung" value="#{artikel.bezeichnung}">
+							<h:inputText id="bezeichnung" value="#{artikelModel.neuerArtikel.bezeichnung}">
 								<!-- Validierung durch Ajax mit JSF -->
 								<!--
 								<f:ajax event="blur" render="fehlermeldungenUmsatz"/>
@@ -58,7 +52,7 @@
 				
 							<h:outputLabel id="preisLabel" for="preis" value="#{msgAv['createArtikel.preis']}"/>
 							<h:inputText id="preis"
-							             value="#{artikel.preis}"
+							             value="#{artikelModel.neuerArtikel.preis}"
 							             converterMessage="#{msgAv['createArtikel.preis.convert']}">
 							             <r:validator/>
 							    <!--

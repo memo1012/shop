@@ -2,6 +2,8 @@ package de.shop.artikelverwaltung.web;
 
 import static de.shop.util.Constants.JSF_INDEX;
 import static de.shop.util.Constants.JSF_REDIRECT_SUFFIX;
+import static javax.ejb.TransactionAttributeType.SUPPORTS;
+import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
@@ -12,12 +14,15 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Model;
 import javax.faces.context.Flash;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -53,7 +58,11 @@ import de.shop.util.web.Messages;
  * Dialogsteuerung fuer ArtikelService
  * @author <a href="mailto:Juergen.Zimmermann@HS-Karlsruhe.de">J&uuml;rgen Zimmermann</a>
  */
-@Model
+//@Model
+@SessionScoped
+@Named
+@Stateful
+@TransactionAttribute(SUPPORTS)
 public class ArtikelModel implements Serializable {
 	private static final long serialVersionUID = 1564024850446471639L;
 
@@ -258,19 +267,24 @@ public class ArtikelModel implements Serializable {
 		@TransactionAttribute
 		@Log
 		public String createArtikel() {
-			/*
+			
 			if (!captcha.getValue().equals(captchaInput)) {
 				final String outcome = createArtikelErrorMsg(null);
 				return outcome;
 			}
-			*/
+			
 			// Push-Event fuer Webbrowser
 			neuerArtikelEvent.fire(String.valueOf(neuerArtikel.getId()));
+			
+			//In DB speichern
+			neuerArtikel= as.createArtikel(neuerArtikel);
 			
 			// Aufbereitung fuer viewKunde.xhtml
 			artikelId = neuerArtikel.getId();
 			artikel = neuerArtikel;
 			neuerArtikel = null;  // zuruecksetzen
+			
+			
 			
 			return JSF_VIEW_ARTIKEL + JSF_REDIRECT_SUFFIX;
 		}
