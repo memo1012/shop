@@ -30,6 +30,7 @@ import de.shop.util.interceptor.Log;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
 
 @Log
 public class ArtikelService implements Serializable {
@@ -39,6 +40,9 @@ public class ArtikelService implements Serializable {
 
 	@Inject
 	private transient EntityManager em;
+	
+	@Inject
+	private transient HttpServletRequest request;
 
 	@PostConstruct
 	private void postConstruct() {
@@ -156,11 +160,24 @@ public class ArtikelService implements Serializable {
 		if (Strings.isNullOrEmpty(bezeichnung)) {
 			return findVerfuegbareArtikel();
 		}
-
+		
+		
+		if  (request.isUserInRole("admin") || request.isUserInRole("mitarbeiter")) {
+			LOGGER.trace("findArtikelbyBezeichnung als admin/mitarbeiter");
 		return em
 				.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG, Artikel.class)
 				.setParameter(Artikel.PARAM_BEZEICHNUNG,
 						"%" + bezeichnung + "%").getResultList();
+		}
+		
+			
+			LOGGER.trace("findArtikelbyBezeichnung als Kunde");
+			return em
+					.createNamedQuery(Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG_KUNDE, Artikel.class)
+					.setParameter(Artikel.PARAM_BEZEICHNUNG,
+							"%" + bezeichnung + "%").getResultList();
+		
+		
 	}
 
 	public List<String> findArtikelByPrefix(String bezeichnungPrefix) {

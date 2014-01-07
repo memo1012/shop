@@ -41,6 +41,7 @@
 						<c:set var="artikel" value="#{flash.artikel}" scope="view"/>
 						<c:set target="#{flash}" property="artikel" value="#{artikel}"/>
 						
+						<!--ID-, Aktualisiert,ausgesondert,Version,bezeichnung,erzeugt,preis  -->
 						<r:dataTable id="artikelTabelle"
 						             value="#{artikel}"
 						             var="art"
@@ -68,6 +69,31 @@
 								#{msgAv['listArtikel.preis']}
 								</f:facet>
 								#{art.preis} €
+							</r:column>
+							<r:column id="ausgesondertSpalte" rendered="#{r:isUserInRole('admin , mitarbeiter')}">
+							<f:facet name="header">
+								#{msgAv['listArtikel.ausgesondert']}
+								</f:facet>
+								#{art.ausgesondert} 
+							</r:column>
+							
+							<r:column id="erzeugtSpalte" rendered="#{r:isUserInRole('admin , mitarbeiter')}">
+							<f:facet name="header">
+								#{msgAv['listArtikel.erzeugt']}
+								</f:facet>
+								#{art.erzeugt} 
+							</r:column>
+							<r:column id="aktualisiertSpalte" rendered="#{r:isUserInRole('admin , mitarbeiter')}">
+							<f:facet name="header">
+								#{msgAv['listArtikel.aktualisiert']}
+								</f:facet>
+								#{art.aktualisiert} 
+							</r:column>
+							<r:column id="versionSpalte" rendered="#{r:isUserInRole('admin')}">
+							<f:facet name="header">
+								#{msgAv['listArtikel.version']}
+								</f:facet>
+								#{art.version} 
 							</r:column>
 							
 							<r:column id="buttonSpalte"
