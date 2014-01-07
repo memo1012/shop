@@ -42,11 +42,10 @@
 						</c:if>
 					</h:link>
 				</r:panelMenuItem>
-				<r:panelMenuItem id="kundenverwaltungUploadItem" >
+				<r:panelMenuItem id="kundenverwaltungUploadItem" rendered="#{authModel.loggedIn}" >
 					<h:link id="kundenverwaltungUpload"
 					        outcome="/kundenverwaltung/upload"
-					        value="#{msg['nav.kundenverwaltung.upload']}"
-					        rendered="#{authModel.loggedIn}">
+					        value="#{msg['nav.kundenverwaltung.upload']}">
 						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
 							<f:param id="uploadCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
@@ -64,11 +63,10 @@
 			                  
 			                  
 			                   <!--Suche mit ID -->			                   
-			    <r:panelMenuItem id="artikelverwaltungViewArtikelItem">
+			    <r:panelMenuItem id="artikelverwaltungViewArtikelItem" rendered="#{r:isUserInRole('admin, mitarbeiter')}" >
 				    <h:link id="artikelverwaltungViewArtikel"
 							outcome="/artikelverwaltung/viewArtikel"
-							value="#{msg['nav.artikelverwaltung.viewArtikel']}"
-							rendered="#{r:isUserInRole('admin, mitarbeiter')}">
+							value="#{msg['nav.artikelverwaltung.viewArtikel']}">
 						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
 							<f:param id="viewArtikelCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
@@ -94,11 +92,10 @@
 				</r:panelMenuItem>
 				
 				<!-- Neon Update -->
-				<r:panelMenuItem id="artikelverwaltungCreateArtikelItem">
+				<r:panelMenuItem id="artikelverwaltungCreateArtikelItem" rendered="#{r:isUserInRole('admin, mitarbeiter')}">
 					<h:link id="artikelverwaltungCreateArtikel"
 					        outcome="/artikelverwaltung/createArtikel"
-						    value="#{msg['nav.artikelverwaltung.createArtikel']}"
-						    rendered="#{r:isUserInRole('admin, mitarbeiter')}">
+						    value="#{msg['nav.artikelverwaltung.createArtikel']}">
 						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
 							<f:param id="createArtikelCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
