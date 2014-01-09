@@ -10,6 +10,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
@@ -85,7 +86,7 @@ public class KundeModel implements Serializable {
 	private static final String MSG_KEY_CONCURRENT_DELETE = "persistence.concurrentDelete";
 	
 	private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
-	private static final String MSG_KEY_DELETE_KUNDE_BESTELLUNG = "kunde.deleteMitBestellung";
+	private static final String MSG_KEY_DELETE_KUNDE/*_BESTELLUNG*/ = "kunde.delete";//MitBestellung";
 	
 	@PersistenceContext(type = EXTENDED)
 	private transient EntityManager em;
@@ -512,8 +513,9 @@ public class KundeModel implements Serializable {
 			ks.deleteKunde(kunde);
 		}
 		catch (KundeDeleteBestellungException e) {
-			messages.error(MSG_KEY_DELETE_KUNDE_BESTELLUNG, locale, CLIENT_ID_DELETE_BUTTON,
-					       e.getKundeId(), e.getAnzahlBestellungen());
+			messages.error(MSG_KEY_DELETE_KUNDE, locale, CLIENT_ID_DELETE_BUTTON);
+			/*messages.error(MSG_KEY_DELETE_KUNDE_BESTELLUNG, locale, CLIENT_ID_DELETE_BUTTON);,
+		       e.getKundeId(), e.getAnzahlBestellungen());*/
 			return null;
 		}
 		
@@ -529,7 +531,7 @@ public class KundeModel implements Serializable {
 			ks.deleteKunde(ausgewaehlterKunde);
 		}
 		catch (KundeDeleteBestellungException e) {
-			messages.error(MSG_KEY_DELETE_KUNDE_BESTELLUNG, locale, null, e.getKundeId(), e.getAnzahlBestellungen());
+			messages.error(MSG_KEY_DELETE_KUNDE/*_BESTELLUNG*/, locale, null, e.getKundeId(), e.getAnzahlBestellungen());
 			return null;
 		}
 
