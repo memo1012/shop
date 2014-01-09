@@ -49,6 +49,20 @@
 						                          inputSize="2"/>
 						</r:column>
 						
+						<r:column id="einzelpreisSpalte">
+							<f:facet name="header">
+								#{msgBv['confirmBestellung.artikel.einzelpreis']}
+							</f:facet>
+							#{position.artikel.preis} €
+						</r:column>
+						
+						<r:column id="preisSpalte">
+							<f:facet name="header">
+								#{msgBv['confirmBestellung.artikel.preis']}
+							</f:facet>
+							#{position.anzahl * position.artikel.preis} €
+						</r:column>
+						
 						<r:column id="deleteButton">
 							<h:commandLink id="deleteLink"
 									       action="#{warenkorb.remove(position)}"
