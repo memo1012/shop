@@ -368,6 +368,9 @@ public class KundeModel implements Serializable {
 		// Push-Event fuer Webbrowser
 		neuerKundeEvent.fire(String.valueOf(neuerKunde.getId()));
 		
+		//In DB speichern
+		neuerKunde = ks.createKunde(neuerKunde);
+		
 		// Aufbereitung fuer viewKunde.xhtml
 		kundeId = neuerKunde.getId();
 		kunde = neuerKunde;
