@@ -21,6 +21,10 @@
 					</h:outputFormat>
 				</h1>
 				
+				<p><i id="hinweisPflichtfelder">
+					#{msgKv['updateKunde.required']}
+				</i></p>
+				
 				<h:outputText id="fehlerKeinKunde"
 				              value="#{msgKv['updateKunde.keinKunde']}"
 				              class="rf-msg-err"
@@ -109,10 +113,6 @@
 						<h:commandButton id="button" action="#{kundeModel.update}" value="#{msgKv['updateKunde.submit']}"/>
 						#{' '}
 						<h:commandButton type="reset" value="#{msgKv['updateKunde.reset']}"/>
-					</p>
-					
-					<p id="hinweisPflichtfelder">
-						#{msgKv['updateKunde.required']}
 					</p>
 				</h:form>
 			</ui:define>

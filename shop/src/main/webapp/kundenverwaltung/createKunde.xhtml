@@ -20,6 +20,10 @@
 					#{msgKv['createKunde.heading']}
 				</h1>
 		
+				<p><i id="hinweisPflichtfelder">
+					#{msgKv['createKunde.required']}
+				</i></p>
+		
 				<r:messages id="fehlermeldungGobal" globalOnly="true"/>
 				<r:notifyMessages id="notifyMessages" stayTime="2000" nonblocking="true"/>
 		
@@ -168,10 +172,6 @@
 						</p>
 					</r:graphValidator>
 				</h:form>
-				
-				<p id="hinweisPflichtfelder">
-					#{msgKv['createKunde.required']}
-				</p>
 			</ui:define>
 		</ui:composition>
 	</body>
