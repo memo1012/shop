@@ -530,9 +530,11 @@ public class KundeModel implements Serializable {
 			return null;
 		}
 
+		kunde.setAktiv(false);
 		// Aufbereitung fuer ok.xhtml
 		request.setAttribute(REQUEST_KUNDE_ID, kunde.getId());
-		return JSF_DELETE_OK;
+		
+		return JSF_UPDATE_Kunde;
 	}
 	
 	public String getFilename(File file) {

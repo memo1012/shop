@@ -139,35 +139,22 @@ public class Kunde implements Serializable, Cloneable {
 	/*
 	 * Pattern
 	 */
-	private static final String NAME_PATTERN = "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]+";
+	private static final String NAME_PATTERN = "[A-Z\u00c4\u00d6\u00dc][a-z\u00e4\u00f6\u00fc\u00df]+";
 	private static final String NACHNAME_PREFIX = "(o'|von|von der|von und zu|van)?";
 
 	private static final String VORNAME_PATTERN = NAME_PATTERN;
 	public static final String NACHNAME_PATTERN = NACHNAME_PREFIX
 			+ NAME_PATTERN + "(-" + NAME_PATTERN + ")?";
 
-	/*
-	 * //private static final String NAME_PATTERN =
-	 * "[A-Z\u00C4\u00D6\u00DC][a-z\u00E4\u00F6\u00FC\u00DF]"; private static
-	 * final String PREFIX_ADEL = "(o'|von|von der|von und zu|van)?";
+	/*Zusatz
 	 * 
-	 * //Zusatz
+	 * private static final String UPP_CASE = "[A-Z\u00C4\u00D6\u00DC]"; 
+	 * private static final String LOW_CASE = "[a-z\u00E4\u00F6\u00FC\u00DF]"; 
+	 * private static final String STRG_INPUT = UPP_CASE + LOW_CASE + "(-" + LOW_CASE +")?";
+	 * private static final String NAME_PATTERN = STRG_INPUT ;
 	 * 
-	 * private static final String UPP_CASE = "[A-Z\u00C4\u00D6\u00DC]"; private
-	 * static final String LOW_CASE = "[a-z\u00E4\u00F6\u00FC\u00DF]"; private
-	 * static final String STRG_INPUT = UPP_CASE + LOW_CASE + "(-" + LOW_CASE +
-	 * ")?"; private static final String NAME_PATTERN = STRG_INPUT ;
-	 * 
-	 * 
-	 * public static final String VORNAME_PATTERN = NAME_PATTERN ; //public
-	 * static final String VORNAME_PATTERN = NAME_PATTERN + "( " + NAME_PATTERN
-	 * + ")?";
-	 * 
-	 * //public static final String NACHNAME_PATTERN = PREFIX_ADEL +
-	 * NAME_PATTERN + "(-" + NAME_PATTERN + ")?"; public static final String
-	 * NACHNAME_PATTERN = PREFIX_ADEL + NAME_PATTERN; //NACHNAME_PREFIX +
-	 * NAME_PATTERN + "(-" + NAME_PATTERN + ")?";
 	 */
+
 	private static final int NACHNAME_LENGTH_MIN = 2;
 	private static final int NACHNAME_LENGTH_MAX = 32;
 	private static final int VORNAME_LENGTH_MAX = 32;

@@ -254,7 +254,7 @@
 
 								#{' '}
 								<h:commandLink id="deleteButton"
-											   action="#{kundeModel.deleteAngezeigtenKunden}"
+											   action="#{kundeModel.delete(AngezeigtenKunden)}"
 										       onclick="return confirm('#{msgKv['viewKunde.deleteKundeBestaetigung']}')"
 										       alt="#{msgKv['viewKunde.deleteButtonAlt']}"
 										       rendered="#{r:isUserInRole('admin')}">

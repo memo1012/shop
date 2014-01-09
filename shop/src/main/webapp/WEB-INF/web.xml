@@ -215,9 +215,8 @@
   </security-constraint>
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>Kunden erzeugen und modifizieren</web-resource-name>
+      <web-resource-name>Kunden modifizieren</web-resource-name>
       <url-pattern>/rest/kunden</url-pattern>
-      <http-method>POST</http-method>
       <http-method>PUT</http-method>
     </web-resource-collection>
     <auth-constraint>
