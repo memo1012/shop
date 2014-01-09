@@ -294,6 +294,28 @@ public class KundeModel implements Serializable {
 		
 		return kundenPrefix;
 	}
+		
+	@Log
+	public List<Long> findKundenByIdPrefixNeu(String idPrefix) {
+		List<Long> kundenPrefix = null;
+		Long id = null; 
+		try {
+			id = Long.valueOf(idPrefix);
+		}
+		catch (NumberFormatException e) {
+			findKundeByIdErrorMsg(idPrefix);
+			return (List<Long>) Collections.EMPTY_LIST;
+		}
+		
+		kundenPrefix = ks.findKundenByIdPrefixNeu(id);
+		if (kundenPrefix == null || kundenPrefix.isEmpty()) {
+			// Kein Kunde zu gegebenem ID-Praefix vorhanden
+			findKundeByIdErrorMsg(idPrefix);
+			return (List<Long>) Collections.EMPTY_LIST;
+		}
+		
+		return kundenPrefix;
+	}
 	
 	@Log
 	public void loadKundeById() {

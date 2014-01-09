@@ -30,6 +30,7 @@ import org.jboss.logging.Logger;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 
+import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.auth.domain.RolleType;
 import de.shop.auth.service.AuthService;
 import de.shop.bestellverwaltung.domain.Bestellposition;
@@ -199,7 +200,7 @@ public class KundeService implements Serializable {
 				.setParameter(Kunde.PARAM_KUNDE_ID_PREFIX, id.toString() + '%')
 				.setMaxResults(MAX_AUTOCOMPLETE).getResultList();
 	}
-
+	
 	public List<Long> findIdsByPrefix(String idPrefix) {
 		if (Strings.isNullOrEmpty(idPrefix)) {
 			return Collections.emptyList();
@@ -211,6 +212,16 @@ public class KundeService implements Serializable {
 		return ids;
 	}
 
+	public List<Long> findKundenByIdPrefixNeu(Long id) {
+		if (id == null) {
+			return Collections.emptyList();
+		}
+
+		return em.createNamedQuery(Kunde.FIND_IDS_BY_PREFIX_NEU, Long.class)
+				.setParameter(Kunde.PARAM_KUNDE_ID_PREFIX_NEU, id.toString() + '%')
+				.setMaxResults(MAX_AUTOCOMPLETE).getResultList();
+	}
+	
 	/**
 	 */
 	public Kunde findKundeByEmail(String email) {
@@ -428,8 +439,10 @@ public class KundeService implements Serializable {
 		if (!kunde.getBestellungen().isEmpty()) {
 			throw new KundeDeleteBestellungException(kunde);
 		}
-
-		em.remove(kunde);
+		
+		//Wir loeschen nicht, sondern verandern wir die Verfugbarkeit 
+		kunde.setAktiv(false);
+		updateKunde(kunde,false);
 	}
 
 	/**

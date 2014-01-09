@@ -27,13 +27,15 @@
 							                mode="ajax"
 							                minChars="1"
 							                autocompleteMethod="#{kundeModel.findKundenByIdPrefix}"
-							                var="kunde"
+							                var="kunde"  
 							                fetchValue="#{kunde.id}"
 							                converter="javax.faces.Number"
 							                converterMessage="#{msgKv['viewKunde.kundenr.converterError']}"
 							                required="true"
 							                requiredMessage="#{msgKv['viewKunde.kundenr.required']}">
 								#{kunde.id} : #{kunde.nachname}, #{kunde.vorname}
+								<!-- Validierung durch Javascript mit RichFaces -->
+								<r:validator/>
 							</r:autocomplete> 
 		
 							<r:commandButton id="findButton"

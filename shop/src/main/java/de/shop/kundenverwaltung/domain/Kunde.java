@@ -71,55 +71,75 @@ import de.shop.auth.domain.RolleType;
 		@Index(columnList = "file_fk") })
 @NamedQueries({
 		@NamedQuery(name = Kunde.FIND_KUNDEN, query = "SELECT k"
-				+ " FROM   Kunde k"),				
+				+ " FROM   Kunde k"
+				+ " WHERE k.aktiv = TRUE"),				
 		@NamedQuery(name = Kunde.FIND_KUNDEN_ORDER_BY_ID, query = "SELECT   k"
-				+ " FROM  Kunde k" + " ORDER BY k.id"),
+				+ " FROM  Kunde k" 
+				+ " WHERE k.aktiv = TRUE" + " ORDER BY k.id"),
 		@NamedQuery(name = Kunde.FIND_IDS_BY_PREFIX, query = "SELECT   k.id"
-				+ " FROM  Kunde k" + " WHERE CONCAT('', k.id) LIKE :"
+				+ " FROM  Kunde k" 
+				+ " WHERE k.aktiv = TRUE" + " AND CONCAT('', k.id) LIKE :"
 				+ Kunde.PARAM_KUNDE_ID_PREFIX + " ORDER BY k.id"),
 		@NamedQuery(name = Kunde.FIND_KUNDEN_BY_NACHNAME, query = "SELECT k"
 				+ " FROM   Kunde k" + " WHERE  UPPER(k.nachname) = UPPER(:"
-				+ Kunde.PARAM_KUNDE_NACHNAME + ")"),
+				+ Kunde.PARAM_KUNDE_NACHNAME + ")"
+				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_NACHNAMEN_BY_PREFIX, query = "SELECT   DISTINCT k.nachname"
 				+ " FROM  Kunde k "
 				+ " WHERE UPPER(k.nachname) LIKE UPPER(:"
-				+ Kunde.PARAM_KUNDE_NACHNAME_PREFIX + ")"),
+				+ Kunde.PARAM_KUNDE_NACHNAME_PREFIX + ")"
+				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_NACHNAMEN_BY_PREFIX, query = "SELECT   DISTINCT k.nachname"
 				+ " FROM  Kunde k "
 				+ " WHERE UPPER(k.nachname) LIKE UPPER(:"
-				+ Kunde.PARAM_KUNDE_NACHNAME_PREFIX + ")"),
+				+ Kunde.PARAM_KUNDE_NACHNAME_PREFIX + ")"
+				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_ALL_NACHNAMEN, query = "SELECT      DISTINCT k.nachname"
-				+ " FROM     Kunde k" + " ORDER BY k.nachname"),
+				+ " FROM     Kunde k" 
+				+ " WHERE k.aktiv = TRUE" + " ORDER BY k.nachname"),
 		@NamedQuery(name = Kunde.FIND_KUNDEN_OHNE_BESTELLUNGEN, query = "SELECT k"
-				+ " FROM   Kunde k" + " WHERE  k.bestellungen IS EMPTY"),
+				+ " FROM   Kunde k" + " WHERE  k.bestellungen IS EMPTY" + " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_KUNDEN_BY_NACHNAME_FETCH_BESTELLUNGEN, query = "SELECT DISTINCT k"
 				+ " FROM   Kunde k LEFT JOIN FETCH k.bestellungen"
 				+ " WHERE  UPPER(k.nachname) = UPPER(:"
-				+ Kunde.PARAM_KUNDE_NACHNAME + ")"),
+				+ Kunde.PARAM_KUNDE_NACHNAME + ")"
+				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_KUNDE_BY_ID_FETCH_BESTELLUNGEN, query = "SELECT DISTINCT k"
 				+ " FROM   Kunde k LEFT JOIN FETCH k.bestellungen"
-				+ " WHERE  k.id = :" + Kunde.PARAM_KUNDE_ID ),
+				+ " WHERE  k.id = :" + Kunde.PARAM_KUNDE_ID
+				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_KUNDE_BY_EMAIL, query = "SELECT DISTINCT k"
 				+ " FROM   Kunde k"
 				+ " WHERE  k.email = :"
-				+ Kunde.PARAM_KUNDE_EMAIL),
+				+ Kunde.PARAM_KUNDE_EMAIL
+				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_KUNDEN_BY_PLZ, query = "SELECT k"
 				+ " FROM  Kunde k" + " WHERE k.adresse.plz = :"
-				+ Kunde.PARAM_KUNDE_ADRESSE_PLZ ),
+				+ Kunde.PARAM_KUNDE_ADRESSE_PLZ 
+				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_KUNDE_BY_USERNAME, query = "SELECT   k"
 				+ " FROM  Kunde k" + " WHERE CONCAT('', k.id) = :"
-				+ Kunde.PARAM_KUNDE_USERNAME),
+				+ Kunde.PARAM_KUNDE_USERNAME
+				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_USERNAME_BY_USERNAME_PREFIX, query = "SELECT   CONCAT('', k.id)"
 				+ " FROM  Kunde k"
 				+ " WHERE CONCAT('', k.id) LIKE :"
-				+ Kunde.PARAM_USERNAME_PREFIX ),
+				+ Kunde.PARAM_USERNAME_PREFIX 
+				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_KUNDEN_BY_DATE, query = "SELECT k"
 				+ " FROM  Kunde k" + " WHERE k.seit = :"
-				+ Kunde.PARAM_KUNDE_SEIT ),
+				+ Kunde.PARAM_KUNDE_SEIT 
+				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_KUNDEN_BY_ID_PREFIX, query = "SELECT k"
 				+ " FROM  Kunde k"
 				+ " WHERE CONCAT('', k.id) LIKE :"
-				+ Kunde.PARAM_KUNDE_ID_PREFIX ) })
+				+ Kunde.PARAM_KUNDE_ID_PREFIX 
+				+ " AND k.aktiv = TRUE"),
+		@NamedQuery(name = Kunde.FIND_KUNDEN_BY_ID_PREFIX_NEU, query = "SELECT k.id"
+				+ " FROM  Kunde k"
+				+ " WHERE CONCAT('', k.id) LIKE :"
+				+ Kunde.PARAM_KUNDE_ID_PREFIX 
+				+ " AND k.aktiv = TRUE") })
 
 		@NamedEntityGraphs({ @NamedEntityGraph(name = Kunde.GRAPH_BESTELLUNGEN, 
 		attributeNodes = @NamedAttributeNode("bestellungen")) })
@@ -172,8 +192,11 @@ public class Kunde implements Serializable, Cloneable {
 	public static final String FIND_KUNDEN_ORDER_BY_ID = PREFIX
 			+ "findKundenOrderById";
 	public static final String FIND_IDS_BY_PREFIX = PREFIX + "findIdsByPrefix";
+	public static final String FIND_IDS_BY_PREFIX_NEU = PREFIX + "findIdsByPrefix";
 	public static final String FIND_KUNDEN_BY_ID_PREFIX = PREFIX
 			+ "findKundenByIdPrefix";
+	public static final String FIND_KUNDEN_BY_ID_PREFIX_NEU = PREFIX
+			+ "findKundenByIdPrefixNEU";
 	public static final String FIND_KUNDEN_BY_NACHNAME = PREFIX
 			+ "findKundenByNachname";
 	public static final String FIND_KUNDEN_BY_NACHNAME_FETCH_BESTELLUNGEN = PREFIX
@@ -201,6 +224,7 @@ public class Kunde implements Serializable, Cloneable {
 
 	public static final String PARAM_KUNDE_ID = "kundeId";
 	public static final String PARAM_KUNDE_ID_PREFIX = "idPrefix";
+	public static final String PARAM_KUNDE_ID_PREFIX_NEU = "idPrefix";
 	public static final String PARAM_KUNDE_NACHNAME = "nachname";
 	public static final String PARAM_KUNDE_NACHNAME_PREFIX = "nachnamePrefix";
 	public static final String PARAM_GESCHLECHT = "geschlecht";
