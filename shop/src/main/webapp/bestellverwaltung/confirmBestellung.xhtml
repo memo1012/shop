@@ -41,6 +41,20 @@
 							#{pos.anzahl}
 						</r:column>
 						
+						<r:column id="einzelpreisSpalte">
+							<f:facet name="header">
+								#{msgBv['confirmBestellung.artikel.einzelpreis']}
+							</f:facet>
+							#{pos.artikel.preis} €
+						</r:column>
+						
+						<r:column id="preisSpalte">
+							<f:facet name="header">
+								#{msgBv['confirmBestellung.artikel.preis']}
+							</f:facet>
+							#{pos.anzahl * pos.artikel.preis} €
+						</r:column>
+						
 						<f:facet name="footer">
 		    				<h:panelGroup id="buttons">
 		    					<h:commandButton id="bestellungButton"
