@@ -102,7 +102,7 @@ public class Artikel implements Serializable {
 	public static final String FIND_ARTIKEL_BY_BEZEICHNUNG = PREFIX
 			+ "findArtikelByBezeichnung";
 	public static final String FIND_ARTIKEL_BY_BEZEICHNUNG_KUNDE = PREFIX
-			+ "findArtikelByBezeichnungkunde";
+			+ "findArtikelByBezeichnungkunde"; //Muss ein eindeutige Name haben fur die Hashtebelle 
 
 	public static final String PARAM_BEZEICHNUNG = "bezeichnung";
 	public static final String PARAM_PREIS = "preis";

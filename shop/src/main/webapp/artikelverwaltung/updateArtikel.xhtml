@@ -41,7 +41,7 @@
 					
 					<h:panelGrid id="updateArtikelTabelle"
 					             columns="3">
-						<h:outputLabel id="bezeichnungLabel" for="bezeichnung" value="#{msgAv['updateArtikel.bezeichnung']}"/>
+						<h:outputLabel id="bezeichnungLabel" for="bezeichnung" value="#{msgAv['viewArtikel.bezeichnung']}"/>
 						<h:inputText id="bezeichnung"
 						             value="#{artikel.bezeichnung}"
 						             valueChangeListener="#{artikelModel.geaendert}">
@@ -55,7 +55,7 @@
 
 						<h:outputLabel id="erzeugtLabel"
 						               for="erzeugt"
-						               value="#{msgAv['updateArtikel.erzeugt']}"
+						               value="#{msgAv['viewArtikel.erzeugt']}"
 						               escape="false"/>
 						<r:calendar id="erzeugt"
 						            datePattern="#{msgAv['updateArtikel.calendar.pattern']}"
@@ -80,6 +80,13 @@
 							<f:ajax event="blur" render="updateArtikelForm:fehlermeldungenPreis"/>
 						</h:inputText>
 						<r:messages id="fehlermeldungenPreis" for="preis"/>
+						
+						<h:outputText id="ausgesondertLabel" value="#{msgAv['viewArtikel.ausgesondert']}"/>
+							<h:selectOneRadio id="ausgesondert" value="#{artikel.ausgesondert}">
+								<f:selectItem id="verfuegbar" itemValue="false" itemLabel="#{msgAv['updateArtikel.ausgesondert.verfuegbar']}"/>
+								<f:selectItem id="gespeert" itemValue="true" itemLabel="#{msAv['updateArtikel.ausgesondert.gespeert']}"/>
+							</h:selectOneRadio>
+							<f:verbatim/>
 
 					</h:panelGrid>
 							
