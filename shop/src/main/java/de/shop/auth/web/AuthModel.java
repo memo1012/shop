@@ -156,7 +156,7 @@ public class AuthModel implements Serializable {
 			messages.error(MSG_KEY_LOGIN_ERROR, locale, CLIENT_ID_USERNAME);
 			return null;   // Gleiche Seite nochmals aufrufen: mit den fehlerhaften Werten
 		}
-		
+	
 		try {
 			request.login(username, password);
 		}
@@ -166,6 +166,8 @@ public class AuthModel implements Serializable {
 			messages.error(MSG_KEY_LOGIN_ERROR, locale, CLIENT_ID_USERNAME);
 			return null;   // Gleiche Seite nochmals aufrufen: mit den fehlerhaften Werten
 		}
+		
+        //principal.getName();
 		
 		user = ks.findKundeByUserName(username);
 		if (user == null) {

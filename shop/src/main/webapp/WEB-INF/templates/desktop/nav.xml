@@ -106,13 +106,23 @@
 			<r:panelMenuGroup id="bestellverwaltung"
 			                  label="#{msg['nav.bestellverwaltung']}"
 			                  expanded="true"
-			                  rendered="#{not empty warenkorb.positionen}">
-				<r:panelMenuItem id="bestellverwaltunghowViewWarenkorbItem">
+			                  rendered="#{not empty warenkorb.positionen or authModel.loggedIn}">
+			                 <!-- -->
+				<r:panelMenuItem id="bestellverwaltunghowViewWarenkorbItem" rendered="#{not empty warenkorb.positionen}"> 
 					<h:link id="bestellverwaltungViewWarenkorb"
 					        outcome="/bestellverwaltung/viewWarenkorb.jsf"
 					        value="#{msg['nav.bestellverwaltung.viewWarenkorb']}">
 						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
 							<f:param id="viewWarenkorbCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+						</c:if>
+					</h:link>
+				</r:panelMenuItem>
+				<r:panelMenuItem id="bestellverwaltunghowViewBestellungenItem" rendered="#{authModel.loggedIn}">
+					<h:link id="bestellverwaltungViewBestellungen"
+					        outcome="/bestellverwaltung/viewBestellungen.jsf"
+					        value="#{msg['nav.bestellverwaltung.viewBestellungen']}">
+						<c:if test="#{not empty javax.enterprise.context.conversation.id}">
+							<f:param id="viewBestellungCid" name="cid" value="#{javax.enterprise.context.conversation.id}"/>
 						</c:if>
 					</h:link>
 				</r:panelMenuItem>

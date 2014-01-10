@@ -32,6 +32,7 @@ import org.richfaces.ui.iteration.SortOrder;
 import org.richfaces.ui.toggle.panelMenu.UIPanelMenuItem;
 
 import de.shop.auth.web.AuthModel;
+import de.shop.auth.web.KundeLoggedIn;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.PasswordGroup;
@@ -124,7 +125,7 @@ public class KundeModel implements Serializable {
 	private Long kundeId;
 	
 	private Kunde kunde;
-	
+		
 	@Pattern(regexp = Kunde.NACHNAME_PATTERN, message = "{kunde.nachname.pattern}")
 	private String nachname;
 	
@@ -261,6 +262,25 @@ public class KundeModel implements Serializable {
 		
 		return JSF_VIEW_KUNDE;
 	}
+	@Log
+	public String findKundeByUsername(String username) {
+		if (username == null) {
+			return null;
+		}
+		
+		kunde = ks.findKundeById(Long.parseLong(username), FetchType.NUR_KUNDE);
+		if (kunde == null) {
+			// Kein Kunde zu gegebener ID gefunden
+			return findKundeByIdErrorMsg(kundeId.toString());
+		}
+		if (kunde.getFile() != null) {
+			kunde.getFile().getId(); // nachladen
+		}
+		
+		return JSF_VIEW_KUNDE;
+	}
+	
+	
 	
 
 	private String findKundeByIdErrorMsg(String id) {
