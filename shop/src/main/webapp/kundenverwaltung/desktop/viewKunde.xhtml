@@ -245,7 +245,8 @@
 							<h:panelGroup id="buttonsGroup" rendered="#{not empty kunde}">
 								<h:commandLink id="updateButtonKunde"
 								               action="/kundenverwaltung/updateKunde"
-								               alt="#{msgKv['viewKunde.update.alt']}">
+								               alt="#{msgKv['viewKunde.update.alt']}"
+								               rendered="#{r:isUserInRole('admin')}">
 									<h:graphicImage id="editIconPrivat"
 			    	                                name="edit.gif"
 			        	                            library="images"/>

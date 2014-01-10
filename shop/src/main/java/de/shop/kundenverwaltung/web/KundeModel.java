@@ -383,6 +383,7 @@ public class KundeModel implements Serializable {
 	@TransactionAttribute
 	@Log
 	public String createKunde() {
+		System.out.println("dgdsg");
 		if (!captcha.getValue().equals(captchaInput)) {
 			final String outcome = createKundeErrorMsg(null);
 			return outcome;
