@@ -142,7 +142,8 @@
 							<h:panelGroup id="buttonsGroup" rendered="#{not empty artikel}">
 								<h:commandLink id="updateButtonArtikel"
 								               action="/artikelverwaltung/updateArtikel"
-								               alt="#{msgAv['viewArtikel.update.alt']}">
+								               alt="#{msgAv['viewArtikel.update.alt']}"
+								               rendered="#{r:isUserInRole('admin , mitarbeiter')}">
 									<h:graphicImage id="editIconPrivat"
 			    	                                name="edit.gif"
 			        	                            library="images"/>
