@@ -29,8 +29,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.logging.Logger;
 
-import de.shop.kundenverwaltung.domain.Kunde;
-
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
@@ -62,20 +60,20 @@ import javax.persistence.PreUpdate;
 		@NamedQuery(name = Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG, query = "SELECT      a"
 				+ " FROM     Artikel a"
 				+ " WHERE UPPER(a.bezeichnung) LIKE UPPER(:"
-				+ Artikel.PARAM_BEZEICHNUNG+")"),
+				+ Artikel.PARAM_BEZEICHNUNG + ")"),
 		@NamedQuery(name = Artikel.FIND_ARTIKEL_BY_BEZEICHNUNG_KUNDE, query = "SELECT      a"
 						+ " FROM     Artikel a"
 						+ " WHERE UPPER(a.bezeichnung) LIKE UPPER(:"
-						+ Artikel.PARAM_BEZEICHNUNG+") "
+						+ Artikel.PARAM_BEZEICHNUNG + ") "
 					    + " AND a.ausgesondert = 0"),
 		@NamedQuery(name = Artikel.FIND_ARTIKELN_BY_ID_PREFIX, query = "SELECT a"
 				+ " FROM  Artikel a"
 				+ " WHERE CONCAT('', a.id) LIKE :"
-				+Artikel.PARAM_ARTIKEL_ID_PREFIX + ")"),				
+				+ Artikel.PARAM_ARTIKEL_ID_PREFIX + ")"),				
 		@NamedQuery(name = Artikel.FIND_BEZEICHNUNG_BY_PREFIX, query = "SELECT   DISTINCT a.bezeichnung"
 				+ " FROM  Artikel a "
 				+ " WHERE UPPER(a.bezeichnung) LIKE UPPER(:"
-				+ Artikel.PARAM_ARTIKEL_BEZEICHNUNG_PREFIX + ")")
+				+  Artikel.PARAM_ARTIKEL_BEZEICHNUNG_PREFIX + ")")
 
 		
 		

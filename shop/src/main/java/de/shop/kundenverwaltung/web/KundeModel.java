@@ -3,7 +3,6 @@ package de.shop.kundenverwaltung.web;
 import static de.shop.util.Constants.JSF_INDEX;
 import static de.shop.util.Constants.JSF_REDIRECT_SUFFIX;
 import static javax.ejb.TransactionAttributeType.SUPPORTS;
-import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
@@ -20,9 +19,7 @@ import javax.enterprise.event.Event;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
@@ -32,7 +29,6 @@ import org.richfaces.ui.iteration.SortOrder;
 import org.richfaces.ui.toggle.panelMenu.UIPanelMenuItem;
 
 import de.shop.auth.web.AuthModel;
-import de.shop.auth.web.KundeLoggedIn;
 import de.shop.kundenverwaltung.domain.Kunde;
 import de.shop.kundenverwaltung.domain.Adresse;
 import de.shop.kundenverwaltung.domain.PasswordGroup;
@@ -62,7 +58,7 @@ public class KundeModel implements Serializable {
 	private static final String JSF_KUNDENVERWALTUNG = "/kundenverwaltung/";
 	private static final String JSF_VIEW_KUNDE = JSF_KUNDENVERWALTUNG + "viewKunde";
 	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "/kundenverwaltung/listKunden";
-	private static final String JSF_UPDATE_Kunde = JSF_KUNDENVERWALTUNG + "updateKunde";
+	private static final String JSF_UPDATE_KUNDE = JSF_KUNDENVERWALTUNG + "updateKunde";
 	//private static final String JSF_UPDATE_FIRMENKUNDE = JSF_KUNDENVERWALTUNG + "updateFirmenkunde";
 	private static final String JSF_DELETE_OK = JSF_KUNDENVERWALTUNG + "okDelete";
 	
@@ -78,19 +74,19 @@ public class KundeModel implements Serializable {
 	private static final String MSG_KEY_EMAIL_EXISTS = ".kunde.emailExists";
 	
 	private static final String CLIENT_ID_CREATE_CAPTCHA_INPUT = "createKundeForm:captchaInput";
-	private static final String MSG_KEY_CREATE_Kunde_WRONG_CAPTCHA = "kunde.wrongCaptcha";
+	private static final String MSG_KEY_CREATE_KUNDE_WRONG_CAPTCHA = "kunde.wrongCaptcha";
 	
-	private static final Class<?>[] PASSWORD_GROUP = { PasswordGroup.class };
+	private static final Class<?>[] PASSWORD_GROUP = {PasswordGroup.class};
 	
 	private static final String CLIENT_ID_UPDATE_EMAIL = "updateKundeForm:email";
 	private static final String MSG_KEY_CONCURRENT_UPDATE = "persistence.concurrentUpdate";
 	private static final String MSG_KEY_CONCURRENT_DELETE = "persistence.concurrentDelete";
 	
 	private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
-	private static final String MSG_KEY_DELETE_KUNDE/*_BESTELLUNG*/ = "kunde.delete";//MitBestellung";
+	private static final String MSG_KEY_DELETE_KUNDE/*_BESTELLUNG*/ = "kunde.delete"; //MitBestellung";
 	
-	@PersistenceContext(type = EXTENDED)
-	private transient EntityManager em;
+	//@PersistenceContext(type = EXTENDED)
+	//private transient EntityManager em;
 	
 	@Inject
 	private KundeService ks;
@@ -112,10 +108,10 @@ public class KundeModel implements Serializable {
 	@Push(topic = "marketing")
 	private transient Event<String> neuerKundeEvent;
 	
-	@Inject
+	/*@Inject
 	@Push(topic = "updateKunde")
 	private transient Event<String> updateKundeEvent;
-	
+	*/
 	@Inject
 	private Captcha captcha;
 	
@@ -383,7 +379,6 @@ public class KundeModel implements Serializable {
 	@TransactionAttribute
 	@Log
 	public String createKunde() {
-		System.out.println("dgdsg");
 		if (!captcha.getValue().equals(captchaInput)) {
 			final String outcome = createKundeErrorMsg(null);
 			return outcome;
@@ -405,7 +400,7 @@ public class KundeModel implements Serializable {
 
 	private String createKundeErrorMsg(AbstractShopException e) {
 		if (e == null) {
-			messages.error(MSG_KEY_CREATE_Kunde_WRONG_CAPTCHA, locale, CLIENT_ID_CREATE_CAPTCHA_INPUT);
+			messages.error(MSG_KEY_CREATE_KUNDE_WRONG_CAPTCHA, locale, CLIENT_ID_CREATE_CAPTCHA_INPUT);
 		}
 		else {
 			final Class<?> exceptionClass = e.getClass();
@@ -516,8 +511,8 @@ public class KundeModel implements Serializable {
 		kunde = ausgewaehlterKunde;
 		
 		return Kunde.class.equals(ausgewaehlterKunde.getClass())
-			   ? JSF_UPDATE_Kunde
-			   : "";//JSF_UPDATE_FIRMENKUNDE;
+			   ? JSF_UPDATE_KUNDE
+			   : ""; //JSF_UPDATE_FIRMENKUNDE;
 	}
 	
 	/**
@@ -562,7 +557,7 @@ public class KundeModel implements Serializable {
 		// Aufbereitung fuer ok.xhtml
 		request.setAttribute(REQUEST_KUNDE_ID, kunde.getId());
 		
-		return JSF_UPDATE_Kunde;
+		return JSF_UPDATE_KUNDE;
 	}
 	
 	public String getFilename(File file) {

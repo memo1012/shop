@@ -30,7 +30,6 @@ import org.jboss.logging.Logger;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 
-import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.auth.domain.RolleType;
 import de.shop.auth.service.AuthService;
 import de.shop.bestellverwaltung.domain.Bestellposition;
@@ -442,7 +441,7 @@ public class KundeService implements Serializable {
 		
 		//Wir loeschen nicht, sondern verandern wir die Verfugbarkeit 
 		kunde.setAktiv(false);
-		updateKunde(kunde,false);
+		updateKunde(kunde, false);
 	}
 
 	/**

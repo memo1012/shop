@@ -8,7 +8,6 @@ import static de.shop.util.Constants.KEINE_ID;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URI;
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;

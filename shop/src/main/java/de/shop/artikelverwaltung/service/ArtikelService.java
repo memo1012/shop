@@ -4,7 +4,6 @@ import static de.shop.util.Constants.MAX_AUTOCOMPLETE;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,9 +22,6 @@ import com.google.common.base.Strings;
 import org.jboss.logging.Logger;
 
 import de.shop.artikelverwaltung.domain.Artikel;
-import de.shop.kundenverwaltung.domain.Kunde;
-import de.shop.kundenverwaltung.service.KundeDeleteBestellungException;
-import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.util.interceptor.Log;
 
 import javax.persistence.NoResultException;

@@ -3,11 +3,8 @@ package de.shop.artikelverwaltung.web;
 import static de.shop.util.Constants.JSF_INDEX;
 import static de.shop.util.Constants.JSF_REDIRECT_SUFFIX;
 import static javax.ejb.TransactionAttributeType.SUPPORTS;
-import static javax.persistence.PersistenceContextType.EXTENDED;
-
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -18,7 +15,6 @@ import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Event;
-import javax.enterprise.inject.Model;
 import javax.faces.context.Flash;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
@@ -36,11 +32,6 @@ import de.shop.artikelverwaltung.domain.Artikel;
 import de.shop.artikelverwaltung.service.ArtikelService;
 import de.shop.artikelverwaltung.service.BezeichnungExistsException;
 import de.shop.auth.web.AuthModel;
-import de.shop.kundenverwaltung.domain.Adresse;
-import de.shop.kundenverwaltung.domain.Kunde;
-import de.shop.kundenverwaltung.service.EmailExistsException;
-import de.shop.kundenverwaltung.service.KundeDeleteBestellungException;
-import de.shop.kundenverwaltung.service.KundeService.FetchType;
 import de.shop.util.AbstractShopException;
 import de.shop.util.interceptor.Log;
 import de.shop.util.persistence.ConcurrentDeletedException;
@@ -83,7 +74,7 @@ public class ArtikelModel implements Serializable {
 	private static final String CLIENT_ID_ARTIKELID = "form:artikelIdInput";
 	private static final String MSG_KEY_ARTIKEL_NOT_FOUND_BY_ID = "artikel.notFound.id";
 	private static final String CLIENT_ID_CREATE_CAPTCHA_INPUT = "createArtikelForm:captchaInput";
-	private static final String MSG_KEY_CREATE_Artikel_WRONG_CAPTCHA = "artikel.wrongCaptcha";
+	private static final String MSG_KEY_CREATE_ARTIKEL_WRONG_CAPTCHA = "artikel.wrongCaptcha";
 	private static final String CLIENT_ID_CREATE_BEZEICHNUNG = "createArtikelForm:bezeichnung";
 	private static final String MSG_KEY_BEZEICHNUNG_EXISTS = ".artikel.bezeichnungExists";
 	
@@ -277,7 +268,7 @@ public class ArtikelModel implements Serializable {
 			neuerArtikelEvent.fire(String.valueOf(neuerArtikel.getId()));
 			
 			//In DB speichern
-			neuerArtikel= as.createArtikel(neuerArtikel);
+			neuerArtikel = as.createArtikel(neuerArtikel);
 			
 			// Aufbereitung fuer viewKunde.xhtml
 			artikelId = neuerArtikel.getId();
@@ -291,7 +282,7 @@ public class ArtikelModel implements Serializable {
 
 		private String createArtikelErrorMsg(AbstractShopException e) {
 			if (e == null) {
-				messages.error(MSG_KEY_CREATE_Artikel_WRONG_CAPTCHA, locale, CLIENT_ID_CREATE_CAPTCHA_INPUT);
+				messages.error(MSG_KEY_CREATE_ARTIKEL_WRONG_CAPTCHA, locale, CLIENT_ID_CREATE_CAPTCHA_INPUT);
 			}
 			else {
 				final Class<?> exceptionClass = e.getClass(); //A verifier pour le nom de l exeption
@@ -412,7 +403,7 @@ public class ArtikelModel implements Serializable {
 			
 			return Artikel.class.equals(ausgewaehlterArtikel.getClass())
 				   ? JSF_UPDATE_ARTIKEL
-				   : "";//JSF_UPDATE_FIRMENKUNDE;
+				   : ""; //JSF_UPDATE_FIRMENKUNDE;
 		}
 		
 		
@@ -429,13 +420,13 @@ public class ArtikelModel implements Serializable {
 			}
 			
 			LOGGER.trace(artikel);
-			try {
+			//try {
 				as.deleteArtikel(artikel);
-			}
-			catch (Exception e) {
-				messages.error(MSG_KEY_DELETE_ARTIKEL, locale, CLIENT_ID_DELETE_BUTTON );
-				return null;
-			}
+			//}
+			/*catch (Exception e) {
+				messages.error(MSG_KEY_DELETE_ARTIKEL, locale, CLIENT_ID_DELETE_BUTTON);
+				return null;}*/
+			
 			
 			// Aufbereitung fuer ok.xhtml
 			request.setAttribute(REQUEST_ARTIKEL_ID, artikel.getId());
@@ -445,13 +436,13 @@ public class ArtikelModel implements Serializable {
 		@TransactionAttribute
 		@Log
 		public String delete(Artikel ausgewaehlterArtikel) {
-			try {
+			//try {
 				as.deleteArtikel(ausgewaehlterArtikel);
-			}
-			catch (Exception e) {
-				messages.error(MSG_KEY_DELETE_ARTIKEL, locale, null);
-				return null;
-			}
+		//	}
+			//catch (Exception e) {
+			//	messages.error(MSG_KEY_DELETE_ARTIKEL, locale, null);
+			//	return null;
+			//}
 
 			// Aufbereitung fuer ok.xhtml
 			request.setAttribute(REQUEST_ARTIKEL_ID, artikel.getId());
@@ -513,7 +504,7 @@ public class ArtikelModel implements Serializable {
 	@Log
 	public String findArtikelByBezeichnung() {
 		final List<Artikel> artikel = as.findArtikelByBezeichnung(bezeichnung);
-		flash.put(FLASH_ARTIKEL, artikel);
+		 flash.put(FLASH_ARTIKEL, artikel);
 
 		return JSF_LIST_ARTIKEL;
 	}
