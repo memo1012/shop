@@ -61,8 +61,6 @@ public class KundeModel implements Serializable {
 
 	private static final String JSF_KUNDENVERWALTUNG = "/kundenverwaltung/";
 	private static final String JSF_VIEW_KUNDE = JSF_KUNDENVERWALTUNG + "viewKunde";
-	private static final String JSF_BESTELLVERWALTUNG = "/bestellverwaltung/";
-	private static final String JSF_VIEW_BESTELLUNGEN = JSF_BESTELLVERWALTUNG + "viewBestellungen";
 	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "/kundenverwaltung/listKunden";
 	private static final String JSF_UPDATE_Kunde = JSF_KUNDENVERWALTUNG + "updateKunde";
 	//private static final String JSF_UPDATE_FIRMENKUNDE = JSF_KUNDENVERWALTUNG + "updateFirmenkunde";
