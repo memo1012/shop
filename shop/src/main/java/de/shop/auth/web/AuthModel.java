@@ -109,6 +109,10 @@ public class AuthModel implements Serializable {
 		return username;
 	}
 
+	public Kunde getUser() {
+		return user;
+	}
+	
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -170,6 +174,7 @@ public class AuthModel implements Serializable {
         //principal.getName();
 		
 		user = ks.findKundeByUserName(username);
+		
 		if (user == null) {
 			logout();
 			throw new InternalError("Kein Kunde mit dem Loginnamen \"" + username + "\" gefunden");

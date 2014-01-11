@@ -61,6 +61,8 @@ public class KundeModel implements Serializable {
 
 	private static final String JSF_KUNDENVERWALTUNG = "/kundenverwaltung/";
 	private static final String JSF_VIEW_KUNDE = JSF_KUNDENVERWALTUNG + "viewKunde";
+	private static final String JSF_BESTELLVERWALTUNG = "/bestellverwaltung/";
+	private static final String JSF_VIEW_BESTELLUNGEN = JSF_BESTELLVERWALTUNG + "viewBestellungen";
 	private static final String JSF_LIST_KUNDEN = JSF_KUNDENVERWALTUNG + "/kundenverwaltung/listKunden";
 	private static final String JSF_UPDATE_Kunde = JSF_KUNDENVERWALTUNG + "updateKunde";
 	//private static final String JSF_UPDATE_FIRMENKUNDE = JSF_KUNDENVERWALTUNG + "updateFirmenkunde";
@@ -262,27 +264,7 @@ public class KundeModel implements Serializable {
 		
 		return JSF_VIEW_KUNDE;
 	}
-	@Log
-	public String findKundeByUsername(String username) {
-		if (username == null) {
-			return null;
-		}
-		
-		kunde = ks.findKundeById(Long.parseLong(username), FetchType.NUR_KUNDE);
-		if (kunde == null) {
-			// Kein Kunde zu gegebener ID gefunden
-			return findKundeByIdErrorMsg(kundeId.toString());
-		}
-		if (kunde.getFile() != null) {
-			kunde.getFile().getId(); // nachladen
-		}
-		
-		return JSF_VIEW_KUNDE;
-	}
 	
-	
-	
-
 	private String findKundeByIdErrorMsg(String id) {
 		messages.error(MSG_KEY_KUNDE_NOT_FOUND_BY_ID, locale, CLIENT_ID_KUNDEID, id);
 		return null;

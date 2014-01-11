@@ -13,10 +13,7 @@
 		
 			<ui:define name="content">
 			
-				<c:set var="kundeid" value="#{authModel.username}" scope="view"/>
-				 <c:set var="kunde" value="#{kundeModel.findKundeByUsername(kundeid)}" scope="view"/>
-				
-	#{authModel.username} #{kunde} 
+				<c:set var="kunde" value="#{authModel.user}" scope="view"/>
 				<r:dataTable id="bestellungenTabelle" value="#{kunde.bestellungen}" var="bestellung">
 									<f:facet name="header">
 										<r:columnGroup d="positionenSpalten">
@@ -58,7 +55,7 @@
 											#{pos.anzahl}
 										</r:column>
 									</r:collapsibleSubTable>
-								</r:dataTable>
+				</r:dataTable>
 			</ui:define>
 		</ui:composition>
 	</body>

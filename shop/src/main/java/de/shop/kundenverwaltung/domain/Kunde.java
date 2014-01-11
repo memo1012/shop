@@ -118,7 +118,7 @@ import de.shop.auth.domain.RolleType;
 				+ Kunde.PARAM_KUNDE_ADRESSE_PLZ 
 				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_KUNDE_BY_USERNAME, query = "SELECT   k"
-				+ " FROM  Kunde k" + " WHERE CONCAT('', k.id) = :"
+				+ " FROM  Kunde k LEFT JOIN FETCH k.bestellungen" + " WHERE CONCAT('', k.id) = :"
 				+ Kunde.PARAM_KUNDE_USERNAME
 				+ " AND k.aktiv = TRUE"),
 		@NamedQuery(name = Kunde.FIND_USERNAME_BY_USERNAME_PREFIX, query = "SELECT   CONCAT('', k.id)"
