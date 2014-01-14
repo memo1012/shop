@@ -5,7 +5,6 @@ import static de.shop.util.Constants.JSF_REDIRECT_SUFFIX;
 import static javax.ejb.TransactionAttributeType.SUPPORTS;
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -81,9 +80,9 @@ public class ArtikelModel implements Serializable {
 	private static final String CLIENT_ID_UPDATE_BEZEICHNUNG = "updateArtikelForm:bezeichnung";
 	private static final String MSG_KEY_CONCURRENT_UPDATE = "persistence.concurrentUpdate";
 	private static final String MSG_KEY_CONCURRENT_DELETE = "persistence.concurrentDelete";	
-	private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
+	//private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
 	private static final String JSF_UPDATE_ARTIKEL = JSF_ARTIKELVERWALTUNG + "updateArtikel";
-	private static final String MSG_KEY_DELETE_ARTIKEL = "artikel.delete";
+	//private static final String MSG_KEY_DELETE_ARTIKEL = "artikel.delete";
 	private static final String REQUEST_ARTIKEL_ID = "artikelId";
 	private static final String JSF_DELETE_OK = JSF_ARTIKELVERWALTUNG + "okDelete";
 
@@ -111,9 +110,9 @@ public class ArtikelModel implements Serializable {
 	@Push(topic = "marketing") //Whats a topic ?
 	private transient Event<String> neuerArtikelEvent;
 	
-	@Inject
+	/*@Inject
 	@Push(topic = "updateArtikel")
-	private transient Event<String> updateArtikelEvent;
+	private transient Event<String> updateArtikelEvent;*/
 	
 	private Long artikelId;
 	private Artikel artikel;

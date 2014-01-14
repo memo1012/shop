@@ -3,6 +3,7 @@ package de.shop.kundenverwaltung.web;
 import static de.shop.util.Constants.JSF_INDEX;
 import static de.shop.util.Constants.JSF_REDIRECT_SUFFIX;
 import static javax.ejb.TransactionAttributeType.SUPPORTS;
+import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
@@ -19,7 +20,9 @@ import javax.enterprise.event.Event;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
@@ -83,10 +86,10 @@ public class KundeModel implements Serializable {
 	private static final String MSG_KEY_CONCURRENT_DELETE = "persistence.concurrentDelete";
 	
 	private static final String CLIENT_ID_DELETE_BUTTON = "form:deleteButton";
-	private static final String MSG_KEY_DELETE_KUNDE/*_BESTELLUNG*/ = "kunde.delete"; //MitBestellung";
+	private static final String MSG_KEY_DELETE_KUNDE = "kunde.delete";
 	
-	//@PersistenceContext(type = EXTENDED)
-	//private transient EntityManager em;
+	@PersistenceContext(type = EXTENDED)
+	private transient EntityManager em;
 	
 	@Inject
 	private KundeService ks;
@@ -110,8 +113,8 @@ public class KundeModel implements Serializable {
 	
 	/*@Inject
 	@Push(topic = "updateKunde")
-	private transient Event<String> updateKundeEvent;
-	*/
+	private transient Event<String> updateKundeEvent;*/
+	
 	@Inject
 	private Captcha captcha;
 	
@@ -512,7 +515,7 @@ public class KundeModel implements Serializable {
 		
 		return Kunde.class.equals(ausgewaehlterKunde.getClass())
 			   ? JSF_UPDATE_KUNDE
-			   : ""; //JSF_UPDATE_FIRMENKUNDE;
+			   : "";
 	}
 	
 	/**

@@ -114,7 +114,6 @@ public class Messages implements Serializable {
 			}
 			
 			if (bundle == null) {
-				System.out.println("!!!default");
 				// Keine Texte zu aktuellen Sprache gefunden: Default-Sprache verwenden
 				bundle = defaultBundle;
 				locale = defaultLocale;
