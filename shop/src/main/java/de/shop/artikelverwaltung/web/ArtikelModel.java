@@ -117,7 +117,7 @@ public class ArtikelModel implements Serializable {
 	
 	private Long artikelId;
 	private Artikel artikel;
-	private List<Artikel> artikeln = Collections.emptyList();
+
 	
 	private SortOrder bezeichnungSortOrder = SortOrder.unsorted;
 	private String bezeichnungFilter = "";
